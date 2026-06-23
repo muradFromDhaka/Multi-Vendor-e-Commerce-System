@@ -15,14 +15,8 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
-    @Query("""
-            SELECT new ProductResponseDto(...)
-            FROM Product p
-            JOIN p.category c
-            JOIN p.brand b
-            JOIN p.vendor v
-            """)
-    Page<ProductResponseDto> findByDeletedFalse(Pageable pageable);
+    @EntityGraph(attributePaths = {"category","brand","vendor"})
+    Page<Product> findByDeletedFalse(Pageable pageable);
 
     @EntityGraph(attributePaths = {"category","brand","vendor"})
     @Query("""
@@ -37,12 +31,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByVendorId(Long vendorId, Pageable pageable);
 
     List<Product> findByVendorIdAndDeletedFalse(Long vendorId);
-
-
-    @EntityGraph(attributePaths = {"brand","vendor","category"})
-    Page<Product> findProducts(Pageable pageable);
-
-
 
 
     @Query("""

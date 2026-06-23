@@ -214,7 +214,7 @@ public class ProductService {
                 .map(p-> ProductMapper.toDto(p));
     }
 
-    public Page<ProductResponseDto> getAllProducts( Pageable pageable) {
+    public Page<ProductResponseDto> getAllProducts(Pageable pageable) {
 
         return productRepository.findByDeletedFalse(pageable)
                 .map(ProductMapper::toDto);
