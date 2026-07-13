@@ -1,0 +1,150 @@
+/* ===========================
+   Admin Dashboard
+=========================== */
+
+:host {
+  display: block;
+  padding: 24px;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #666;
+}
+
+/* ===========================
+   Headings
+=========================== */
+
+h2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 25px;
+}
+
+h3 {
+  margin: 35px 0 18px;
+  font-size: 22px;
+  color: #334155;
+  font-weight: 600;
+}
+
+/* ===========================
+   Grid
+=========================== */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* ===========================
+   Card
+=========================== */
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
+  transition: .3s ease;
+  border-left: 5px solid #3b82f6;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,.15);
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.card p {
+  margin-top: 15px;
+  margin-bottom: 0;
+  font-size: 30px;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.card h2 {
+  margin-top: 15px;
+  margin-bottom: 0;
+  font-size: 30px;
+  color: #0f172a;
+}
+
+/* ===========================
+   Different Colors
+=========================== */
+
+/* Revenue */
+.card:nth-child(1) {
+  border-left-color: #22c55e;
+}
+
+.card:nth-child(2) {
+  border-left-color: #10b981;
+}
+
+.card:nth-child(3) {
+  border-left-color: #0ea5e9;
+}
+
+.card:nth-child(4) {
+  border-left-color: #6366f1;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width: 992px) {
+
+  :host {
+    padding: 18px;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  h2 {
+    font-size: 24px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .card p,
+  .card h2 {
+    font-size: 26px;
+  }
+
+}

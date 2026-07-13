@@ -1,0 +1,177 @@
+<div class="product-form-container">
+
+  <div class="card">
+
+    <h2>Add Product</h2>
+
+    <form
+      [formGroup]="productForm"
+      (ngSubmit)="submit()">
+
+      <!-- Name -->
+
+      <div class="form-group">
+
+        <label>Product Name</label>
+
+        <input
+          type="text"
+          formControlName="name">
+
+      </div>
+
+      <!-- Description -->
+
+      <div class="form-group">
+
+        <label>Description</label>
+
+        <textarea
+          rows="5"
+          formControlName="description">
+        </textarea>
+
+      </div>
+
+      <div class="row">
+
+        <!-- Category -->
+
+        <div class="form-group">
+
+          <label>Category</label>
+
+          <select formControlName="categoryId">
+
+            <option [ngValue]="null">
+              Select Category
+            </option>
+
+            <option
+              *ngFor="let c of categories"
+              [value]="c.id">
+
+              {{ c.name }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- Brand -->
+
+        <div class="form-group">
+
+          <label>Brand</label>
+
+          <select formControlName="brandId">
+
+            <option [ngValue]="null">
+              Select Brand
+            </option>
+
+            <option
+              *ngFor="let b of brands"
+              [value]="b.id">
+
+              {{ b.name }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <!-- Status -->
+
+      <div class="form-group">
+
+        <label>Status</label>
+
+        <select formControlName="status">
+
+          <option
+            *ngFor="let status of statuses"
+            [value]="status">
+
+            {{ status }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- Release Date -->
+
+      <div class="form-group">
+
+        <label>Release Date</label>
+
+        <input
+          type="date"
+          formControlName="releaseDate">
+      </div>
+
+      <!-- Images -->
+
+      <div class="form-group">
+
+        <label>Product Images</label>
+
+        <input
+          type="file"
+          multiple
+          (change)="onFileSelect($event)">
+      </div>
+
+      <!-- Preview -->
+
+      <div
+        class="preview-container"
+        *ngIf="selectedImages.length">
+
+        <div
+          class="preview-card"
+          *ngFor="
+            let image of selectedImages;
+            let i = index
+          ">
+
+          <span>
+            {{ image.name }}
+          </span>
+
+          <button
+            type="button"
+            (click)="removeImage(i)">
+
+            ✖
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <button
+        type="submit"
+        class="save-btn"
+        [disabled]="loading">
+
+        {{
+          loading
+            ? 'Saving...'
+            : 'Save Product'
+        }}
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>

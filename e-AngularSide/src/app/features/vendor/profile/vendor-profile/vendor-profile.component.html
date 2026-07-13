@@ -1,0 +1,44 @@
+<h1 class="profile-title">Welcome to - {{vendor?.shopName}}</h1>
+<div *ngIf="vendor" class="profile-card">
+
+  <!-- Banner -->
+  <div class="banner-wrapper">
+    <img *ngIf="vendor.bannerUrl" [src]="vendor.bannerUrl" alt="Banner" class="banner"/>
+  </div>
+
+  <!-- Profile Info -->
+  <div class="profile-info">
+    
+    <!-- Logo / Profile Picture -->
+    <div class="logo-wrapper">
+      <img *ngIf="vendor.logoUrl" [src]="vendor.logoUrl" alt="Logo" class="logo"/>
+    </div>
+
+    <!-- Shop / User Details -->
+    <h2 class="shop-name">{{ vendor.shopName }}</h2>
+    <p><strong>Phone:</strong> {{ vendor.phone }}</p>
+    <p><strong>Address:</strong> {{ vendor.address }}</p>
+    <p><strong>Email:</strong> {{ vendor.businessEmail }}</p>
+    <p><strong>Description:</strong> {{ vendor.description }}</p>
+
+    <!-- Action Button -->
+    <button class="edit-btn" [routerLink]="['/vendor/vendorEditForm', vendor.id]">Edit Profile</button>
+  </div>
+
+  <!-- Stats Section (Optional) -->
+  <div class="profile-stats">
+    <div class="stat">
+      <h3>25</h3>
+      <p>Products</p>
+    </div>
+    <div class="stat">
+      <h3>5</h3>
+      <p>Followers</p>
+    </div>
+    <div class="stat">
+      <h3>3</h3>
+      <p>Following</p>
+    </div>
+  </div>
+</div>
+

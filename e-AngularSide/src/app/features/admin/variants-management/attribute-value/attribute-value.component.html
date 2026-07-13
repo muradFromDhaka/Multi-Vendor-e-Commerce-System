@@ -1,0 +1,158 @@
+<div class="card mb-4">
+
+  <h3>{{ editing ? 'Update Attribute Value' : 'Add Attribute Value' }}</h3>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+
+    <div class="row">
+
+      <div class="col-md-5">
+
+        <label>Attribute</label>
+
+        <select class="form-select" formControlName="attributeId">
+
+          <option [ngValue]="null">Select Attribute</option>
+
+          <option
+            *ngFor="let item of attributes"
+            [value]="item.id">
+
+            {{ item.name }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="col-md-5">
+
+        <label>Value</label>
+
+        <input
+          class="form-control"
+          type="text"
+          formControlName="value">
+
+      </div>
+
+      <div class="col-md-2 d-flex align-items-end">
+
+        <button class="btn btn-primary w-100">
+
+          {{ editing ? 'Update' : 'Save' }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </form>
+
+</div>
+
+<div class="card">
+
+  <h3>Attribute Value List</h3>
+
+  <table class="table table-bordered table-hover">
+
+    <thead>
+
+      <tr>
+
+        <th>ID</th>
+
+        <th>Attribute</th>
+
+        <th>Value</th>
+
+        <th width="170">Action</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr *ngIf="loading">
+        <td colspan="4" class="text-center">
+          Loading...
+        </td>
+      </tr>
+
+      <tr *ngFor="let item of attributeValues">
+
+        <td>{{ item.id }}</td>
+
+        <td>{{ item.attributeName }}</td>
+
+        <td>{{ item.value }}</td>
+
+        <td>
+
+          <button
+            class="btn btn-warning btn-sm"
+            (click)="edit(item)">
+
+            Edit
+
+          </button>
+
+          <button
+            class="btn btn-danger btn-sm ms-2"
+            (click)="delete(item.id)">
+
+            Delete
+
+          </button>
+
+        </td>
+
+      </tr>
+
+      <tr *ngIf="!loading && attributeValues.length==0">
+
+        <td colspan="4" class="text-center">
+
+          No Data Found
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+  <div class="d-flex justify-content-between">
+
+    <button
+      class="btn btn-outline-primary"
+      [disabled]="page==0"
+      (click)="previous()">
+
+      Previous
+
+    </button>
+
+    <span>
+
+      Page {{page+1}} / {{totalPages}}
+
+    </span>
+
+    <button
+      class="btn btn-outline-primary"
+      [disabled]="page+1>=totalPages"
+      (click)="next()">
+
+      Next
+
+    </button>
+
+  </div>
+
+</div>

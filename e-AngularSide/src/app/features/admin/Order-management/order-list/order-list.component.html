@@ -1,0 +1,219 @@
+<div class="container-fluid py-3">
+
+  <!-- Header -->
+  <div class="page-header">
+
+    <div>
+      <h3>Order Management</h3>
+      <p>Manage all customer orders</p>
+    </div>
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search Order ID / Order Number"
+        [(ngModel)]="searchText"
+        (keyup.enter)="search()">
+
+      <button
+        class="btn btn-primary"
+        (click)="search()">
+
+        Search
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- Loading -->
+
+  <div
+    *ngIf="loading"
+    class="text-center py-5">
+
+    <div class="spinner-border text-primary"></div>
+
+  </div>
+
+  <!-- Table -->
+
+  <div
+    class="table-responsive"
+    *ngIf="!loading">
+
+    <table class="table table-hover align-middle">
+
+      <thead>
+
+        <tr>
+
+          <th>Order No</th>
+
+          <th>Customer</th>
+
+          <th>Items</th>
+
+          <th>Total</th>
+
+          <th>Status</th>
+
+          <th>Payment</th>
+
+          <th>Created</th>
+
+          <th width="90">Action</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let order of orders">
+
+          <td>
+
+            <strong>{{order.orderNumber}}</strong>
+
+          </td>
+
+          <td>
+
+            {{order.customerName}}
+
+          </td>
+
+          <td>
+
+            {{order.totalItems}}
+
+          </td>
+
+          <td>
+
+            ৳ {{order.totalPrice}}
+
+          </td>
+
+          <td>
+
+            <span
+              class="badge"
+              [ngClass]="{
+
+              'bg-warning':order.orderStatus=='PENDING',
+
+              'bg-info':order.orderStatus=='PROCESSING',
+
+              'bg-primary':order.orderStatus=='SHIPPED',
+
+              'bg-success':order.orderStatus=='DELIVERED',
+
+              'bg-danger':order.orderStatus=='CANCELLED'
+
+              }">
+
+              {{order.orderStatus}}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            <span
+              class="badge"
+              [ngClass]="{
+
+              'bg-warning':order.paymentStatus=='PENDING',
+
+              'bg-success':order.paymentStatus=='PAID',
+
+              'bg-danger':order.paymentStatus=='FAILED',
+
+              'bg-secondary':order.paymentStatus=='REFUNDED'
+
+              }">
+
+              {{order.paymentStatus}}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            {{order.createdAt}}
+
+          </td>
+
+          <td>
+
+            <button
+              class="btn btn-sm btn-outline-primary"
+              (click)="viewOrder(order.id)">
+
+              View
+
+            </button>
+
+          </td>
+
+        </tr>
+
+        <tr *ngIf="orders.length==0">
+
+          <td colspan="8" class="text-center py-5">
+
+            No Orders Found
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- Pagination -->
+
+  <div class="pagination-area">
+
+    <button
+      class="btn btn-outline-secondary"
+
+      [disabled]="page==0"
+
+      (click)="pageChanged(page-1)">
+
+      Previous
+
+    </button>
+
+    <span>
+
+      Page {{page+1}}
+
+    </span>
+
+    <button
+
+      class="btn btn-outline-secondary"
+
+      [disabled]="(page+1)*size>=totalElements"
+
+      (click)="pageChanged(page+1)">
+
+      Next
+
+    </button>
+
+  </div>
+
+</div>

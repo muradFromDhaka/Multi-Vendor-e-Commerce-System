@@ -1,0 +1,53 @@
+package com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto;
+
+import com.abc.multiVendorEProject.DTOs.projectDtos.OrderItemResponseDTO;
+import com.abc.multiVendorEProject.DTOs.projectDtos.ShippingAddressResponseDto;
+import com.abc.multiVendorEProject.enums.OrderStatus;
+import com.abc.multiVendorEProject.enums.PaymentMethod;
+import com.abc.multiVendorEProject.enums.PaymentStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class AdminOrderDetailsResponseDto {
+
+    private Long id;
+
+    private String orderNumber;
+
+    private String customerName;
+
+    private String email;
+
+    private String phone;
+
+    private BigDecimal subtotal;
+
+    private BigDecimal shippingFee;
+
+    private BigDecimal discount;
+
+    private BigDecimal totalPrice;
+
+    private OrderStatus orderStatus;
+
+    private PaymentStatus paymentStatus;
+
+    private PaymentMethod paymentMethod;
+
+    private ShippingAddressResponseDto shippingAddress;
+
+    private List<OrderItemResponseDTO> items;
+
+    private String createdAt;
+
+    private String updatedAt;
+}

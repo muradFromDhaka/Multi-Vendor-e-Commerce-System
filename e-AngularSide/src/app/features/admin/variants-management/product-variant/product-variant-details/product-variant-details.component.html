@@ -1,0 +1,243 @@
+<div class="container-fluid py-4">
+
+    <!-- Loading -->
+
+    <div
+        class="text-center py-5"
+        *ngIf="loading">
+
+        <div class="spinner-border text-primary"></div>
+
+        <h5 class="mt-3">
+            Loading Variant...
+        </h5>
+
+    </div>
+
+    <!-- Details -->
+
+    <div
+        class="row"
+        *ngIf="!loading && variant">
+
+        <!-- Images -->
+
+        <div class="col-lg-5 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <img
+    *ngIf="variant.imageUrls?.length"
+    [src]="selectedImage"
+    class="main-image">
+
+                    <img
+                        *ngIf="!variant.imageUrls?.length"
+                        src="assets/images/no-image.png"
+                        class="main-image">
+
+                    <div
+                        class="thumb-wrapper"
+                        *ngIf="variant.imageUrls?.length">
+
+                        <img
+    *ngFor="let image of variant.imageUrls"
+    [src]="baseImageUrl + image"
+    class="thumb-image"
+    (mouseenter)="selectedImage = baseImageUrl + image"
+    [class.active]="selectedImage === baseImageUrl + image">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Information -->
+
+        <div class="col-lg-7">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h2 class="mb-3">
+
+                        {{ variant.productName }}
+
+                    </h2>
+
+                    <table class="table">
+
+                        <tr>
+
+                            <th width="180">
+
+                                SKU
+
+                            </th>
+
+                            <td>
+
+                                {{ variant.sku }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Product ID
+
+                            </th>
+
+                            <td>
+
+                                #{{ variant.productId }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Variant ID
+
+                            </th>
+
+                            <td>
+
+                                #{{ variant.id }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Price
+
+                            </th>
+
+                            <td>
+
+                                <span
+                                    class="price">
+
+                                    ৳{{ variant.discountPrice || variant.price }}
+
+                                </span>
+
+                                <span
+                                    *ngIf="variant.discountPrice"
+                                    class="old-price">
+
+                                    ৳{{ variant.price }}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Stock
+
+                            </th>
+
+                            <td>
+
+                                <span
+                                    class="badge bg-success"
+                                    *ngIf="variant.stock>10">
+
+                                    In Stock
+
+                                </span>
+
+                                <span
+                                    class="badge bg-warning text-dark"
+                                    *ngIf="variant.stock>0 && variant.stock<=10">
+
+                                    Low Stock
+
+                                </span>
+
+                                <span
+                                    class="badge bg-danger"
+                                    *ngIf="variant.stock==0">
+
+                                    Out of Stock
+
+                                </span>
+
+                                <span class="ms-2">
+
+                                    ({{ variant.stock }} pcs)
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Attributes
+
+                            </th>
+
+                            <td>
+
+                                <span
+                                    class="attribute-chip"
+                                    *ngFor="let item of variant.attributeValues">
+
+                                    {{ item.attributeName }}
+
+                                    :
+
+                                    {{ item.value }}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                    <button
+                        class="btn btn-secondary"
+                        (click)="back()">
+
+                        <i class="fas fa-arrow-left me-2"></i>
+
+                        Back
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

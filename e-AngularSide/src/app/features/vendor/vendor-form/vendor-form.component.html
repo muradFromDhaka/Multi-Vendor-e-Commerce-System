@@ -1,0 +1,82 @@
+<!-- <h2>{{ isEditMode ? 'Edit Vendor' : 'Create Vendor' }}</h2>
+<form [formGroup]="vendorForm" (ngSubmit)="submit()">
+  <input formControlName="shopName" placeholder="Shop Name" />
+  <input formControlName="phone" placeholder="Phone" />
+  <input formControlName="address" placeholder="Address" />
+  <input formControlName="businessEmail" placeholder="Business Email" />
+  <textarea formControlName="description" placeholder="Description"></textarea>
+  <input formControlName="logoUrl" placeholder="Logo URL" />
+  <input formControlName="bannerUrl" placeholder="Banner URL" />
+
+  <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
+</form> -->
+
+
+
+<div class="vendor-form-wrapper">
+  <div class="vendor-form-card">
+    <h2>{{ isEditMode ? 'Edit Vendor' : 'Create Vendor' }}</h2>
+
+    <form [formGroup]="vendorForm" (ngSubmit)="submit()">
+      <!-- Shop Name -->
+      <div class="form-group">
+        <label>Shop Name</label>
+        <input type="text" formControlName="shopName" />
+        <small *ngIf="vendorForm.get('shopName')?.touched && vendorForm.get('shopName')?.invalid">
+          Shop name is required
+        </small>
+      </div>
+
+      <!-- Phone -->
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" formControlName="phone" />
+        <small *ngIf="vendorForm.get('phone')?.touched && vendorForm.get('phone')?.invalid">
+          Phone is required
+        </small>
+      </div>
+
+      <!-- Business Email -->
+      <div class="form-group">
+        <label>Business Email</label>
+        <input type="email" formControlName="businessEmail" />
+        <small *ngIf="vendorForm.get('businessEmail')?.touched && vendorForm.get('businessEmail')?.invalid">
+          Valid email is required
+        </small>
+      </div>
+
+      <!-- Address -->
+      <div class="form-group">
+        <label>Address</label>
+        <textarea rows="3" formControlName="address"></textarea>
+        <small *ngIf="vendorForm.get('address')?.touched && vendorForm.get('address')?.invalid">
+          Address is required
+        </small>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label>Description</label>
+        <textarea rows="3" formControlName="description"></textarea>
+      </div>
+
+      <!-- Logo URL -->
+      <div class="form-group">
+        <label>Logo URL</label>
+        <input type="text" formControlName="logoUrl" />
+      </div>
+
+      <!-- Banner URL -->
+      <div class="form-group">
+        <label>Banner URL</label>
+        <input type="text" formControlName="bannerUrl" />
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" [disabled]="vendorForm.invalid">
+        {{ isEditMode ? 'Update Vendor' : 'Create Vendor' }}
+      </button>
+    </form>
+  </div>
+</div>
+

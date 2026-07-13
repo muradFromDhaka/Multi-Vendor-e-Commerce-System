@@ -1,0 +1,115 @@
+<div class="vendor-container">
+
+  <div class="header">
+    <div>
+      <h2>Vendor Management</h2>
+      <p>Manage all registered vendors</p>
+    </div>
+
+    <input
+    type="text"
+    placeholder="Search vendor..."
+    [(ngModel)]="searchText"
+    (input)="onSearch()"
+    class="search-box">
+  </div>
+
+  <div class="status-tabs">
+
+  <button
+    *ngFor="let tab of statuses"
+    (click)="changeStatus(tab.value)"
+    [class.active]="selectedStatus === tab.value">
+
+    {{ tab.label }} ({{ tab.count }})
+
+  </button>
+
+</div>
+
+  <div class="table-wrapper">
+
+<!-- Logo
+Shop
+Owner
+Email
+Phone
+Status
+Actions -->
+
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Vendor</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Shop</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+      <tr *ngFor="let vendor of vendors">
+
+        <td>{{vendor.id}}</td>
+
+        <td>{{vendor.shopName}}</td>
+
+        <td>{{vendor.businessEmail}}</td>
+
+        <td>{{vendor.phone}}</td>
+
+        <td>{{vendor.shopName}}</td>
+
+        <td>
+
+          <span
+            class="status"
+            [ngClass]="{
+              active: vendor.status==='APPROVED',
+              pending: vendor.status==='PENDING',
+              rejected: vendor.status==='REJECTED'
+            }">
+
+            {{vendor.status}}
+
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            class="view-btn"
+            (click)="viewVendor(vendor.id)">
+            View
+          </button>
+
+          <button
+            class="delete-btn"
+            (click)="deleteVendor(vendor.id)">
+            Delete
+          </button>
+
+        </td>
+
+      </tr>
+
+      <tr *ngIf="vendors.length==0">
+
+        <td colspan="7" class="empty">
+          No Vendors Found
+        </td>
+
+      </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

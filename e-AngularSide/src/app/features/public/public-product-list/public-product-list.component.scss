@@ -1,0 +1,151 @@
+.product-card{
+
+    background:#fff;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+    height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.product-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+
+}
+
+.image-wrapper{
+
+    height:240px;
+
+    overflow:hidden;
+
+    background:#f8f9fa;
+
+}
+
+.image-wrapper img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:.3s;
+
+}
+
+.product-card:hover img{
+
+    transform:scale(1.05);
+
+}
+
+.card-body{
+
+    padding:15px;
+
+    flex:1;
+
+}
+
+.product-name{
+
+    font-size:18px;
+
+    font-weight:600;
+
+    min-height:50px;
+
+}
+
+.rating{
+
+    color:#f39c12;
+
+    margin:10px 0;
+
+}
+
+.rating span{
+
+    color:#777;
+
+    font-size:13px;
+
+}
+
+.price-section{
+
+    margin:15px 0;
+
+}
+
+.discount-price{
+
+    font-size:22px;
+
+    color:#dc3545;
+
+    font-weight:bold;
+
+    margin-right:10px;
+
+}
+
+.price{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+.strike{
+
+    text-decoration:line-through;
+
+    color:#999;
+
+}
+
+.card-footer{
+
+    padding:15px;
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+}
+
+.card-footer button{
+
+    flex:1;
+
+}
+
+@media(max-width:768px){
+
+    .image-wrapper{
+
+        height:180px;
+
+    }
+
+}

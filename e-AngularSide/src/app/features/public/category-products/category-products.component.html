@@ -1,0 +1,47 @@
+<div class="category-products container">
+
+  <h2 class="title">
+    Products
+    <span *ngIf="categoryName">in "{{ categoryName }}"</span>
+  </h2>
+
+  <div class="loading" *ngIf="loading">
+    Loading products...
+  </div>
+
+  <div class="empty" *ngIf="!loading && products.length === 0">
+    No products found.
+  </div>
+
+  <div class="product-grid" *ngIf="!loading && products.length > 0">
+    <div class="product-card" *ngFor="let p of products">
+
+      <div class="image">
+        <img
+             *ngIf="p.thumbnailUrl"
+             [src]="baseImageUrl + p.thumbnailUrl"
+             [alt]="p.name"
+           />
+      </div>
+
+      <h3 class="name">{{ p.name }}</h3>
+
+      <div class="price">
+        <span class="discount" *ngIf="p.discountPrice">
+          {{ p.discountPrice }}৳
+        </span>
+        <span class="original" [class.strike]="p.discountPrice">
+          {{ p.price }}৳
+        </span>
+      </div>
+
+      <div class="rating" *ngIf="p.averageRating">
+        ⭐ {{ p.averageRating }}
+      </div>
+
+      <button class="delete" [routerLink]="['/view',p.id]">View</button>
+  <button class="btn btn-success" (click)="addToCart(p)">Add to Cart</button>
+    </div>
+  </div>
+
+</div>

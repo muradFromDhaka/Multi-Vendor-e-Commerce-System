@@ -1,0 +1,12 @@
+<div *ngIf="vendor">
+  <h2>{{ vendor.shopName }}</h2>
+  <p>Slug: {{ vendor.slug }}</p>
+  <p>Phone: {{ vendor.phone }}</p>
+  <p>Email: {{ vendor.businessEmail }}</p>
+  <p>Status: {{ vendor.status }}</p>
+  <p>Rating: {{ vendor.rating }}</p>
+  <p>Description: {{ vendor.description }}</p>
+  <img *ngIf="vendor.logoUrl" [src]="vendor.logoUrl" alt="Logo" width="100" />
+  <img *ngIf="vendor.bannerUrl" [src]="vendor.bannerUrl" alt="Banner" width="200" />
+</div>
+

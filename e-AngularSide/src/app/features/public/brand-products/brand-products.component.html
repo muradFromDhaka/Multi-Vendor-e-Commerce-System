@@ -1,0 +1,170 @@
+<div class="container py-5">
+
+    <!-- Page Header -->
+
+    <div class="page-header">
+
+        <h2>
+
+            Brand Products
+
+        </h2>
+
+        <p>
+
+            Browse all products from this brand
+
+        </p>
+
+    </div>
+
+
+    <!-- Loading -->
+
+    <div
+        class="text-center py-5"
+        *ngIf="loading">
+
+        <div class="spinner-border text-primary"></div>
+
+        <p class="mt-3">
+
+            Loading products...
+
+        </p>
+
+    </div>
+
+
+    <!-- Empty -->
+
+    <div
+        class="empty-state"
+        *ngIf="!loading && products.length==0">
+
+        <i class="fas fa-box-open"></i>
+
+        <h4>
+
+            No Products Found
+
+        </h4>
+
+        <p>
+
+            There are no products available for this brand.
+
+        </p>
+
+    </div>
+
+
+    <!-- Products -->
+
+    <div
+        class="row"
+        *ngIf="!loading && products.length">
+
+        <div
+
+            class="col-xl-3 col-lg-4 col-md-6 mb-4"
+
+            *ngFor="let product of products">
+
+            <div class="product-card">
+
+                <!-- Image -->
+
+                <div class="product-image">
+
+                    <img
+
+                        [src]="getImageUrl(product)"
+
+                        [alt]="product.name">
+
+                </div>
+
+                <!-- Body -->
+
+                <div class="product-body">
+
+                    <h5>
+
+                        {{product.name}}
+
+                    </h5>
+
+                    <div class="rating">
+
+                        ⭐ {{product.averageRating || 0}}
+
+                        <span>
+
+                            ({{product.totalReviews || 0}} Reviews)
+
+                        </span>
+
+                    </div>
+
+                    <div class="price">
+
+                        <span
+
+                            class="discount"
+
+                            *ngIf="product.discountPrice">
+
+                            {{product.discountPrice | currency:'BDT '}}
+
+                        </span>
+
+                        <span
+
+                            [class.line-through]="product.discountPrice">
+
+                            {{product.price | currency:'BDT '}}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+
+                <div class="product-footer">
+
+                    <button
+
+                        class="btn btn-outline-primary"
+
+                        [routerLink]="['/view', product.id]">
+
+                        View Details
+
+                    </button>
+
+
+                          <button
+                          class="btn btn-outline-primary"
+                          [routerLink]="['/view', product.id]">
+                                 View
+                          </button>
+
+                          <button
+                           class="btn btn-warning"
+                            (click)="addToCart(product)">
+                                Add Cart
+                            </button>    
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

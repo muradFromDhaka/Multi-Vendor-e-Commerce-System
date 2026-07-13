@@ -1,0 +1,24 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Placeholder image styling */
+img[src*="placeholder.com"] {
+  background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+  border: 1px solid #ddd;
+}
+
+

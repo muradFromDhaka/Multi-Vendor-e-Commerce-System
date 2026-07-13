@@ -1,0 +1,210 @@
+<div class="vendor-details">
+
+  <!-- Banner -->
+  <div class="banner">
+
+    <img
+      *ngIf="vendor?.bannerUrl"
+      [src]="getImageUrl(vendor?.bannerUrl)">
+
+    <div class="banner-overlay"></div>
+
+  </div>
+
+  <!-- ================= Header ================= -->
+
+  <div class="header-card">
+
+    <div class="profile-section">
+
+      <div class="logo">
+
+        <img
+          *ngIf="vendor?.logoUrl"
+          [src]="getImageUrl(vendor?.logoUrl)">
+
+        <span *ngIf="!vendor?.logoUrl">
+          {{vendor?.shopName?.charAt(0)}}
+        </span>
+
+      </div>
+
+      <div class="profile-info">
+
+        <h2>{{vendor?.shopName}}</h2>
+
+        <p>{{vendor?.businessEmail}}</p>
+
+        <div class="rating">
+
+          ⭐ {{vendor?.rating}}
+
+        </div>
+
+        <span
+          class="status-badge"
+          [ngClass]="{
+            approved: vendor?.status==='APPROVED',
+            pending: vendor?.status==='PENDING',
+            rejected: vendor?.status==='REJECTED',
+            suspended: vendor?.status==='SUSPENDED',
+            active: vendor?.status==='ACTIVE'
+          }">
+
+          {{vendor?.status}}
+
+        </span>
+
+      </div>
+
+    </div>
+
+    <div class="quick-actions">
+
+      <button
+        class="products"
+        (click)="viewVendorProducts()">
+
+        Products
+
+      </button>
+
+      <button
+        class="orders"
+        (click)="viewVendorOrders()">
+
+        Orders
+
+      </button>
+
+      <button
+       class="edit"
+       (click)="editVendor()">
+
+      Edit Vendor
+
+     </button>
+
+    </div>
+
+  </div>
+
+  <!-- ================= Stats ================= -->
+
+  <div class="stats">
+
+    <div class="stat-card">
+
+      <h4>Total Products</h4>
+
+      <h2>{{stats?.totalProducts}}</h2>
+
+    </div>
+
+    <div class="stat-card">
+
+      <h4>Total Orders</h4>
+
+      <h2>{{stats?.totalOrders}}</h2>
+
+    </div>
+
+    <div class="stat-card">
+
+      <h4>Total Revenue</h4>
+
+      <h2>
+
+        {{stats?.totalRevenue | currency:'BDT ':'symbol':'1.0-0'}}
+
+      </h2>
+
+    </div>
+
+    <div class="stat-card">
+
+      <h4>Customers</h4>
+
+      <h2>{{stats?.totalCustomers}}</h2>
+
+    </div>
+
+  </div>
+
+  <!-- ================= Information ================= -->
+
+  <div class="grid">
+
+    <div class="card">
+
+      <h3>Owner Information</h3>
+
+      <p><strong>Owner :</strong> {{vendor?.userName}}</p>
+
+      <p><strong>Email :</strong> {{vendor?.businessEmail}}</p>
+
+      <p><strong>Phone :</strong> {{vendor?.phone}}</p>
+
+      <p><strong>Address :</strong> {{vendor?.address}}</p>
+
+    </div>
+
+    <div class="card">
+
+      <h3>Business Information</h3>
+
+      <p><strong>Slug :</strong> {{vendor?.slug}}</p>
+
+      <p><strong>Status :</strong> {{vendor?.status}}</p>
+
+      <p><strong>Trade License :</strong> Verified</p>
+
+      <p><strong>NID :</strong> Verified</p>
+
+    </div>
+
+  </div>
+
+  <!-- ================= Admin Actions ================= -->
+
+  <div class="actions">
+
+    <button
+      *ngIf="vendor?.status==='PENDING'"
+      class="approve"
+      (click)="approveVendor()">
+
+      Approve
+
+    </button>
+
+    <button
+      *ngIf="vendor?.status==='PENDING'"
+      class="reject"
+      (click)="rejectVendor()">
+
+      Reject
+
+    </button>
+
+    <button
+      *ngIf="vendor?.status==='APPROVED'"
+      class="suspend"
+      (click)="suspendVendor()">
+
+      Suspend
+
+    </button>
+
+    <button
+      *ngIf="vendor?.status==='SUSPENDED'"
+      class="activate"
+      (click)="activateVendor()">
+
+      Activate
+
+    </button>
+
+  </div>
+
+</div>

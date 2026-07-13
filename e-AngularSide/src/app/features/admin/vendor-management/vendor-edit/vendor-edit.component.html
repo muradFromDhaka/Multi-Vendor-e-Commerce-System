@@ -1,0 +1,201 @@
+<div class="page">
+
+    <!-- ================= Header ================= -->
+
+    <div class="header">
+
+        <button
+            class="back-btn"
+            (click)="cancel()">
+
+            ← Back
+
+        </button>
+
+        <div>
+
+            <h2>Edit Vendor</h2>
+
+            <p>
+
+                Update vendor information
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- ================= Loading ================= -->
+
+    <div
+        class="loading"
+        *ngIf="loading">
+
+        Loading Vendor...
+
+    </div>
+
+    <!-- ================= Form ================= -->
+
+    <div
+        class="card"
+        *ngIf="!loading">
+
+        <form
+            [formGroup]="form"
+            (ngSubmit)="save()">
+
+            <!-- Shop Name -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Shop Name *
+
+                </label>
+
+                <input
+                    type="text"
+                    formControlName="shopName">
+
+                <small
+                    class="error"
+                    *ngIf="
+                    form.get('shopName')?.invalid &&
+                    form.get('shopName')?.touched">
+
+                    Shop Name is required.
+
+                </small>
+
+            </div>
+
+            <!-- Description -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Description
+
+                </label>
+
+                <textarea
+                    rows="5"
+                    formControlName="description">
+
+                </textarea>
+
+            </div>
+
+            <!-- Email + Phone -->
+
+            <div class="row">
+
+                <div class="form-group">
+
+                    <label>
+
+                        Business Email
+
+                    </label>
+
+                    <input
+                        type="email"
+                        formControlName="businessEmail">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Phone
+
+                    </label>
+
+                    <input
+                        type="text"
+                        formControlName="phone">
+
+                </div>
+
+            </div>
+
+            <!-- Address -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Address
+
+                </label>
+
+                <textarea
+                    rows="3"
+                    formControlName="address">
+
+                </textarea>
+
+            </div>
+
+            <!-- Logo + Banner -->
+
+            <div class="row">
+
+                <div class="form-group">
+
+                    <label>Logo</label>
+
+               <input
+                   type="file"
+                        accept="image/*"
+                            (change)="onLogoChange($event)">
+
+                <img *ngIf="logoPreview" [src]="logoPreview" width="120">
+
+                </div>
+
+                <div class="form-group">
+
+                   <label>Banner</label>
+
+                   <input type="file" accept="image/*" (change)="onBannerChange($event)">
+                   <img *ngIf="bannerPreview" [src]="bannerPreview" width="250">
+
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+
+            <div class="actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    (click)="cancel()">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                    [disabled]="saving">
+
+                    {{saving ? 'Saving...' : 'Save Changes'}}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

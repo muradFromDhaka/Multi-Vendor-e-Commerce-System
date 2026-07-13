@@ -1,0 +1,223 @@
+<div class="customer-container">
+
+  <!-- ================= Header ================= -->
+
+  <div class="page-header">
+
+    <div>
+      <h2>Customer Management</h2>
+      <p>Manage all registered customers.</p>
+    </div>
+
+  </div>
+
+  <!-- ================= Statistics ================= -->
+
+  <div class="statistics">
+
+    <div class="stat-card">
+      <span>Total Customers</span>
+      <h3>{{ statistics?.totalCustomers }}</h3>
+    </div>
+
+    <div class="stat-card active-card">
+      <span>Active</span>
+      <h3>{{ statistics?.activeCustomers }}</h3>
+    </div>
+
+    <div class="stat-card disabled-card">
+      <span>Disabled</span>
+      <h3>{{ statistics?.disabledCustomers }}</h3>
+    </div>
+
+  </div>
+
+  <!-- ================= Toolbar ================= -->
+
+  <div class="toolbar">
+
+    <div class="filters">
+
+      <button
+        [class.selected]="selectedFilter=='ALL'"
+        (click)="changeFilter('ALL')">
+
+        All
+
+      </button>
+
+      <button
+        [class.selected]="selectedFilter=='ACTIVE'"
+        (click)="changeFilter('ACTIVE')">
+
+        Active
+
+      </button>
+
+      <button
+        [class.selected]="selectedFilter=='DISABLED'"
+        (click)="changeFilter('DISABLED')">
+
+        Disabled
+
+      </button>
+
+    </div>
+
+    <input
+      type="text"
+      placeholder="Search customer..."
+      [(ngModel)]="searchTerm"
+      (keyup)="searchCustomer()">
+
+  </div>
+
+  <!-- ================= Loading ================= -->
+
+  <div
+    class="loading"
+    *ngIf="loading">
+
+    Loading customers...
+
+  </div>
+
+  <!-- ================= Table ================= -->
+
+  <table *ngIf="!loading && customers.length">
+
+    <thead>
+
+      <tr>
+
+        <th>Username</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th width="280">Actions</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let customer of customers">
+
+        <td>
+
+
+            {{customer.userName}}
+
+
+        </td>
+
+        <td>
+
+          {{customer.userFirstName}}
+          {{customer.userLastName}}
+
+        </td>
+
+        <td>
+
+          {{customer.email}}
+
+        </td>
+
+        <td>
+
+          <span
+            class="status"
+            [class.active]="customer.enabled"
+            [class.disabled]="!customer.enabled">
+
+            {{customer.enabled ? 'Active' : 'Disabled'}}
+
+          </span>
+
+        </td>
+
+        <td class="actions">
+
+          <button
+            class="view"
+            [routerLink]="['/admin/customer',customer.userName]">
+
+            Details
+
+          </button>
+
+          <button
+            *ngIf="customer.enabled"
+            class="disable"
+            (click)="disable(customer)">
+
+            Disable
+
+          </button>
+
+          <button
+            *ngIf="!customer.enabled"
+            class="enable"
+            (click)="enable(customer)">
+
+            Enable
+
+          </button>
+
+          <button
+            class="delete"
+            (click)="delete(customer)">
+
+            Delete
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+  <!-- ================= Empty ================= -->
+
+  <div
+    class="empty"
+    *ngIf="!loading && customers.length==0">
+
+    No customer found.
+
+  </div>
+
+  <!-- ================= Pagination ================= -->
+
+  <div class="pagination">
+
+    <button
+      (click)="previousPage()"
+      [disabled]="page==0">
+
+      Previous
+
+    </button>
+
+    <span>
+
+      {{page+1}} / {{totalPages}}
+
+    </span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="page>=totalPages-1">
+
+      Next
+
+    </button>
+
+  </div>
+
+</div>

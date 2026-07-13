@@ -1,0 +1,56 @@
+<div class="admin-dashboard">
+
+  <div class="main-layout">
+
+    <!-- Left: Roles creation + list -->
+    <section class="roles-section">
+      <h2>Roles Management</h2>
+
+      <!-- Create Role Form -->
+      <div class="create-role">
+        <input type="text" placeholder="Role Name" [(ngModel)]="newRoleName">
+        <input type="text" placeholder="Description" [(ngModel)]="newRoleDescription">
+        <button (click)="createRole()">Create Role</button>
+      </div>
+
+      <!-- Existing Roles List -->
+      <ul>
+        <li *ngFor="let role of roles">
+          <span>{{ role.roleName }}</span>
+          <button (click)="loadUsersByRole(role.roleName)">View Users</button>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Right: Users by Role -->
+    <section class="users-section" *ngIf="usersByRole.length > 0">
+      <h2>Users with role: {{ selectedRoleName }}</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of usersByRole">
+            <td>{{ user.userName }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <span *ngFor="let role of user.roles; let last = last">
+                {{ role.roleName }}<span *ngIf="!last">, </span>
+              </span>
+            </td>
+            <td>
+              <button (click)="assignRolesToUser(user)">Assign Roles</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </div>
+
+</div>

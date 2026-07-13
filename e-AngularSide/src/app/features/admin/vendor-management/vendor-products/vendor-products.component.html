@@ -1,0 +1,271 @@
+<div class="container-fluid py-4">
+
+    <!-- ================= Header ================= -->
+
+    <div class="page-header">
+
+        <div>
+
+            <button
+                class="btn btn-outline-secondary mb-3"
+                [routerLink]="['/admin/vendors', vendorId]">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Vendor
+
+            </button>
+
+            <h2>Vendor Products</h2>
+
+            <p>
+
+                Total Products
+
+                <span class="count">
+
+                    {{totalElements}}
+
+                </span>
+
+            </p>
+
+        </div>
+
+        <div class="search-box">
+
+            <i class="fa fa-search"></i>
+
+            <input
+
+                type="text"
+
+                placeholder="Search Product..."
+
+                [(ngModel)]="searchText"
+
+                (keyup)="filterProducts()">
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= Loading ================= -->
+
+    <div
+        class="loading"
+        *ngIf="loading">
+
+        <div class="spinner-border text-primary"></div>
+
+        <p>
+
+            Loading products...
+
+        </p>
+
+    </div>
+
+
+    <!-- ================= Empty ================= -->
+
+    <div
+        class="empty-state"
+        *ngIf="!loading && filteredProducts.length==0">
+
+        <i class="fa-solid fa-box-open"></i>
+
+        <h3>
+
+            No Products Found
+
+        </h3>
+
+        <p>
+
+            This vendor has no products.
+
+        </p>
+
+    </div>
+
+
+    <!-- ================= Table ================= -->
+
+    <div
+        class="table-wrapper"
+
+        *ngIf="!loading && filteredProducts.length">
+
+        <table class="table table-hover align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>Image</th>
+
+                    <th>Name</th>
+
+                    <th>Price</th>
+
+                    <th>Stock</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr
+
+                    *ngFor="let product of filteredProducts">
+
+                    <td>
+
+                        <img
+
+                            [src]="getProductImage(product)"
+
+                            class="product-image">
+
+                    </td>
+
+                    <td>
+
+                        <div class="product-info">
+
+                            <h6>
+
+                                {{product.name}}
+
+                            </h6>
+
+                            <small>
+
+                                ID : {{product.id}}
+
+                            </small>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <strong>
+
+                            {{getPrice(product)
+
+                            | currency:'BDT ':'symbol':'1.0-0'}}
+
+                        </strong>
+
+                    </td>
+
+                    <td>
+
+                        {{getStock(product)}}
+
+                    </td>
+
+                    <td>
+
+                        <span
+
+                            class="badge"
+
+                            [ngClass]="{
+
+                                'success': getStock(product)>20,
+
+                                'warning': getStock(product)<=20 && getStock(product)>0,
+
+                                'danger': getStock(product)==0
+
+                            }">
+
+                            {{
+
+                            getStock(product)==0
+
+                            ? 'Out of Stock'
+
+                            : getStock(product)<=20
+
+                            ? 'Low Stock'
+
+                            : 'In Stock'
+
+                            }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ================= Pagination ================= -->
+
+    <div
+        class="pagination-box"
+
+        *ngIf="totalPages>1">
+
+        <button
+
+            class="btn btn-outline-primary"
+
+            (click)="previousPage()"
+
+            [disabled]="page==0">
+
+            Previous
+
+        </button>
+
+        <span>
+
+            Page
+
+            <strong>
+
+                {{page+1}}
+
+            </strong>
+
+            of
+
+            <strong>
+
+                {{totalPages}}
+
+            </strong>
+
+        </span>
+
+        <button
+
+            class="btn btn-outline-primary"
+
+            (click)="nextPage()"
+
+            [disabled]="page==totalPages-1">
+
+            Next
+
+        </button>
+
+    </div>
+
+</div>

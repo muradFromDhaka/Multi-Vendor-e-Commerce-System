@@ -1,0 +1,52 @@
+<div class="login-container">
+  <div class="login-card">
+
+    <h2 class="login-title">Login</h2>
+
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+
+      <!-- Username -->
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          required
+          placeholder="Enter your username"
+        />
+      </div>
+
+      <!-- Password -->
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          placeholder="Enter your password"
+        />
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
+
+      <!-- Optional Links -->
+      <div class="login-links">
+        <a routerLink="/forgot-password">Forgot Password?</a>
+        <a routerLink="/register">Create Account</a>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+

@@ -1,0 +1,187 @@
+<div class="product-list-container">
+
+  <div class="header">
+
+    <h2>My Products</h2>
+
+    <button
+      class="add-btn"
+      routerLink="/vendor/productForm">
+
+      + Add Product
+
+    </button>
+
+  </div>
+
+  <!-- Loading -->
+
+  <div
+    *ngIf="loading"
+    class="loading">
+
+    Loading products...
+
+  </div>
+
+  <!-- Product List -->
+
+  <div
+    class="cards"
+    *ngIf="!loading && products.length">
+
+    <div
+      class="product-card"
+      *ngFor="let product of products">
+
+      <div class="image">
+
+        <img
+          *ngIf="product.imageUrls?.length"
+          [src]="'http://localhost:8080/' + product.imageUrls[0]"
+          [alt]="product.name">
+
+      </div>
+
+      <div class="body">
+
+        <h3>{{ product.name }}</h3>
+
+        <p>
+
+          <strong>Category :</strong>
+
+          {{ product.categoryName }}
+
+        </p>
+
+        <p>
+
+          <strong>Brand :</strong>
+
+          {{ product.brandName }}
+
+        </p>
+
+        <p>
+
+          <strong>Status :</strong>
+
+          {{ product.status }}
+
+        </p>
+
+        <p>
+
+          <strong>Variants :</strong>
+
+          {{ product.totalVariants }}
+
+        </p>
+
+        <p>
+
+          <strong>Reviews :</strong>
+
+          {{ product.totalReviews || 0 }}
+
+        </p>
+
+        <p>
+
+          <strong>Rating :</strong>
+
+          ⭐ {{ product.averageRating || 0 }}
+
+        </p>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="view"
+          (click)="viewProduct(product.id)">
+
+          View
+
+        </button>
+
+        <button
+          class="edit"
+          (click)="editProduct(product.id)">
+
+          Edit
+
+        </button>
+
+        <button
+          class="delete"
+          (click)="deleteProduct(product.id)">
+
+          Delete
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Empty -->
+
+  <div
+    *ngIf="!loading && products.length===0"
+    class="empty">
+
+    No products found.
+
+  </div>
+
+  <!-- Pagination -->
+
+  <div
+    class="pagination"
+    *ngIf="totalPages > 1">
+
+    <button
+      (click)="previousPage()"
+      [disabled]="page===0">
+
+      &laquo; Previous
+
+    </button>
+
+    <ng-container *ngFor="let p of pages">
+
+      <button
+        *ngIf="p !== '...'"
+        (click)="changePage(+p)"
+        [class.active]="page===p">
+
+        {{ +p + 1 }}
+
+      </button>
+
+      <span
+        *ngIf="p==='...'"
+        class="dots">
+
+        ...
+
+      </span>
+
+    </ng-container>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="page===totalPages-1">
+
+      Next &raquo;
+
+    </button>
+
+  </div>
+
+</div>

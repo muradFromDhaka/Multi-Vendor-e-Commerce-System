@@ -1,0 +1,119 @@
+<div class="customer-details" *ngIf="!loading">
+
+    <div class="top-bar">
+
+    <h2>Customer Details</h2>
+
+    <button
+        class="back-btn"
+        (click)="back()"> ← Back </button>
+    </div>
+
+    <div class="card">
+
+        <div class="avatar">
+
+            {{customer.userFirstName?.charAt(0)}}
+
+        </div>
+
+        <table>
+
+            <tr>
+                <td>Username</td>
+                <td>{{customer.userName}}</td>
+            </tr>
+
+            <tr>
+                <td>First Name</td>
+                <td>{{customer.userFirstName}}</td>
+            </tr>
+
+            <tr>
+                <td>Last Name</td>
+                <td>{{customer.userLastName}}</td>
+            </tr>
+
+            <tr>
+                <td>Email</td>
+                <td>{{customer.email}}</td>
+            </tr>
+
+            <tr>
+                <td>Status</td>
+
+                <td>
+
+                    <span
+                        class="badge"
+                        [class.active]="customer.enabled"
+                        [class.disabled]="!customer.enabled">
+
+                        {{customer.enabled ? 'Active' : 'Disabled'}}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>Roles</td>
+
+                <td>
+
+                    <span
+                        class="role"
+                        *ngFor="let role of customer.roles">
+
+                        {{role}}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+        <div class="action-buttons">
+
+            <button
+                *ngIf="customer.enabled"
+                class="disable"
+                (click)="disable()">
+
+                Disable
+
+            </button>
+
+            <button
+                *ngIf="!customer.enabled"
+                class="enable"
+                (click)="enable()">
+
+                Enable
+
+            </button>
+
+            <button
+                class="delete"
+                (click)="delete()">
+
+                Delete
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div
+    *ngIf="loading"
+    class="loading">
+
+    Loading Customer...
+
+</div>

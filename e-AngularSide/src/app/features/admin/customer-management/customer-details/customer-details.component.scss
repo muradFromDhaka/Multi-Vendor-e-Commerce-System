@@ -1,0 +1,148 @@
+.customer-details {
+
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 20px;
+
+}
+
+.top-bar {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+
+}
+
+.back-btn{
+
+    border:none;
+    background:#022e70;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+
+}
+
+.card{
+
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 3px 15px rgba(0,0,0,.1);
+    padding:35px;
+
+}
+
+.avatar{
+
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:#1976d2;
+    color:white;
+    font-size:34px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+    margin-bottom:30px;
+
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+td{
+
+    padding:14px;
+    border-bottom:1px solid #eee;
+
+}
+
+td:first-child{
+
+    font-weight:bold;
+    width:180px;
+
+}
+
+.badge{
+
+    padding:6px 14px;
+    border-radius:20px;
+    color:white;
+
+}
+
+.active{
+
+    background:#28a745;
+
+}
+
+.disabled{
+
+    background:#dc3545;
+
+}
+
+.role{
+
+    background:#0d6efd;
+    color:white;
+    padding:4px 10px;
+    border-radius:20px;
+    margin-right:6px;
+    font-size:13px;
+
+}
+
+.action-buttons{
+
+    margin-top:30px;
+    display:flex;
+    gap:15px;
+
+}
+
+button{
+
+    border:none;
+    color:white;
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+
+}
+
+.enable{
+
+    background:#198754;
+
+}
+
+.disable{
+
+    background:#fd7e14;
+
+}
+
+.delete{
+
+    background:#dc3545;
+
+}
+
+.loading{
+
+    text-align:center;
+    padding:80px;
+    font-size:20px;
+
+}

@@ -1,0 +1,151 @@
+.product-form-container {
+
+  max-width: 900px;
+
+  margin: 30px auto;
+
+  padding: 25px;
+
+  background: white;
+
+  border-radius: 10px;
+
+  box-shadow: 0 5px 20px rgba(0,0,0,.08);
+
+}
+
+h2{
+
+  margin-bottom:25px;
+
+  text-align:center;
+
+}
+
+.form-group{
+
+  margin-bottom:20px;
+
+}
+
+label{
+
+  display:block;
+
+  margin-bottom:8px;
+
+  font-weight:600;
+
+}
+
+.form-control{
+
+  width:100%;
+
+  padding:10px;
+
+  border:1px solid #ccc;
+
+  border-radius:6px;
+
+  font-size:15px;
+
+}
+
+textarea{
+
+  resize:vertical;
+
+}
+
+small{
+
+  color:red;
+
+}
+
+.image-preview{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:15px;
+
+  margin-top:20px;
+
+}
+
+.image-card{
+
+  position:relative;
+
+}
+
+.image-card img{
+
+  width:130px;
+
+  height:130px;
+
+  object-fit:cover;
+
+  border-radius:8px;
+
+  border:1px solid #ddd;
+
+}
+
+.remove-btn{
+
+  position:absolute;
+
+  top:-8px;
+
+  right:-8px;
+
+  width:28px;
+
+  height:28px;
+
+  border:none;
+
+  border-radius:50%;
+
+  background:#dc3545;
+
+  color:white;
+
+  cursor:pointer;
+
+}
+
+.submit-btn{
+
+  width:100%;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:8px;
+
+  background:#0d6efd;
+
+  color:white;
+
+  font-size:16px;
+
+  cursor:pointer;
+
+  margin-top:20px;
+
+}
+
+.submit-btn:disabled{
+
+  opacity:.6;
+
+  cursor:not-allowed;
+
+}

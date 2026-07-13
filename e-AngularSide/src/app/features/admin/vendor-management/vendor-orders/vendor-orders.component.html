@@ -1,0 +1,130 @@
+<div class="order-container">
+
+    <div class="header">
+
+    <div class="header-left">
+
+        <button
+            class="back-btn"
+            routerLink="/admin/vendors">
+
+            ← Back
+
+        </button>
+
+        <div>
+
+            <h2>Vendor Orders</h2>
+
+            <p>
+                Total Orders :
+                <strong>{{ totalElements }}</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Customer</th>
+
+                    <th>Total Price</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let order of orders">
+
+                    <td>
+
+                        #{{order.id}}
+
+                    </td>
+
+                    <td>
+
+                        {{order.userName}}
+
+                    </td>
+
+                    <td>
+
+                        {{order.totalPrice | currency:'BDT':'symbol':'1.0-0'}}
+
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="status"
+                            [ngClass]="order.orderStatus.toLowerCase()">
+
+                            {{order.orderStatus}}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                <tr *ngIf="orders.length===0">
+
+                    <td
+                        colspan="4"
+                        class="empty">
+
+                        No Orders Found
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="pagination">
+
+        <button
+            (click)="previousPage()"
+            [disabled]="page===0">
+
+            Previous
+
+        </button>
+
+        <span>
+
+            Page {{page+1}} of {{totalPages}}
+
+        </span>
+
+        <button
+            (click)="nextPage()"
+            [disabled]="page===totalPages-1">
+
+            Next
+
+        </button>
+
+    </div>
+
+</div>

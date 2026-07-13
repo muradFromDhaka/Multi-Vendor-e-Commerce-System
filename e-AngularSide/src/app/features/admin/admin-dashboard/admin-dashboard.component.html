@@ -1,0 +1,167 @@
+<div *ngIf="loading" class="loading">
+
+    Loading Dashboard...
+
+</div>
+
+<div *ngIf="dashboard">
+
+    <h2>Admin Dashboard</h2>
+
+    <!-- Revenue -->
+
+    <div class="card-grid">
+
+        <div class="card">
+            <h3>Total Revenue</h3>
+            <p>{{dashboard.totalRevenue | number}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Today Revenue</h3>
+            <p>{{dashboard.todayRevenue | number}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Monthly Revenue</h3>
+            <p>{{dashboard.monthlyRevenue | number}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Yearly Revenue</h3>
+            <p>{{dashboard.yearlyRevenue | number}}</p>
+        </div>
+
+    </div>
+
+    <!-- Orders -->
+
+    <h3>Orders</h3>
+
+    <div class="card-grid">
+
+        <div class="card">Total {{dashboard.totalOrders}}</div>
+
+        <div class="card">Pending {{dashboard.pendingOrders}}</div>
+
+        <div class="card">Processing {{dashboard.processingOrders}}</div>
+
+        <div class="card">Shipped {{dashboard.shippedOrders}}</div>
+
+        <div class="card">Delivered {{dashboard.deliveredOrders}}</div>
+
+        <div class="card">Cancelled {{dashboard.cancelledOrders}}</div>
+
+        <div class="card">Returned {{dashboard.returnedOrders}}</div>
+
+    </div>
+
+    <!-- Users -->
+
+    <h3>Users</h3>
+
+    <div class="card-grid">
+
+        <div class="card">Total Customers: {{dashboard.totalCustomers}}</div>
+
+        <div class="card">Total Vendors: {{dashboard.totalVendors}}</div>
+
+        <div class="card">Approved Vendors: {{dashboard.approvedVendors}}</div>
+
+        <div class="card">Pending Vendors: {{dashboard.pendingVendors}}</div>
+
+        <div class="card">Rejected Vendors: {{dashboard.rejectVendors}}</div>
+
+        <div class="card">Suspended Vendors: {{dashboard.suspendedVendors}}</div>
+
+    </div>
+
+    <!-- Products -->
+
+    <h3>Product Catalog</h3>
+
+    <div class="card-grid">
+
+        <div class="card">Products {{dashboard.totalProducts}}</div>
+
+        <div class="card">Variants {{dashboard.totalProductVariants}}</div>
+
+        <div class="card">Categories {{dashboard.totalCategories}}</div>
+
+        <div class="card">Brands {{dashboard.totalBrands}}</div>
+
+    </div>
+
+    <!-- Inventory -->
+
+    <h3>Product Inventory</h3>
+
+    <div class="card-grid">
+
+        <div class="card">
+
+            Out Of Stock
+
+            <h2>{{dashboard.outOfStockProducts}}</h2>
+
+        </div>
+
+        <div class="card">
+
+            Low Stock
+
+            <h2>{{dashboard.lowStockProducts}}</h2>
+
+        </div>
+
+    </div>
+
+    <!-- Others -->
+
+    <h3>Others</h3>
+
+    <div class="card-grid">
+
+        <div class="card">
+            Reviews
+            <h2>{{dashboard.totalReviews}}</h2>
+        </div>
+
+        <div class="card">
+            Wishlist
+            <h2>{{dashboard.totalWishlistItems}}</h2>
+        </div>
+
+        <div class="card">
+            Carts
+            <h2>{{dashboard.totalCarts}}</h2>
+        </div>
+
+        <div class="card">
+            Avg Order
+            <h2>{{dashboard.averageOrderValue}}</h2>
+        </div>
+
+        <div class="card">
+            Highest Order
+            <h2>{{dashboard.highestOrderValue}}</h2>
+        </div>
+
+        <div class="card">
+            Today Orders
+            <h2>{{dashboard.todayOrders}}</h2>
+        </div>
+
+        <div class="card">
+            Today Customers
+            <h2>{{dashboard.todayCustomers}}</h2>
+        </div>
+
+        <div class="card">
+            Today Vendors
+            <h2>{{dashboard.todayVendors}}</h2>
+        </div>
+
+    </div>
+
+</div>

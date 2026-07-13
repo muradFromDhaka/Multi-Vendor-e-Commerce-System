@@ -1,0 +1,268 @@
+.product-list-container {
+
+  padding: 25px;
+
+}
+
+.header {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 25px;
+
+}
+
+.header h2{
+
+  margin:0;
+
+}
+
+.add-btn{
+
+  padding:10px 18px;
+
+  border:none;
+
+  border-radius:6px;
+
+  background:#0d6efd;
+
+  color:white;
+
+  cursor:pointer;
+
+  font-weight:600;
+
+  transition:.25s;
+
+}
+
+.add-btn:hover{
+
+  background:#0b5ed7;
+
+}
+
+.loading,
+.empty{
+
+  text-align:center;
+
+  padding:40px;
+
+  font-size:18px;
+
+}
+
+.cards{
+
+  display:grid;
+
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+
+  gap:25px;
+
+}
+
+.product-card{
+
+  background:white;
+
+  border-radius:10px;
+
+  overflow:hidden;
+
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+
+  transition:.25s;
+
+}
+
+.product-card:hover{
+
+  transform:translateY(-5px);
+
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+
+}
+
+.image{
+
+  height:220px;
+
+  background:#f7f7f7;
+
+}
+
+.image img{
+
+  width:100%;
+
+  height:100%;
+
+  object-fit:cover;
+
+}
+
+.body{
+
+  padding:18px;
+
+}
+
+.body h3{
+
+  margin-top:0;
+
+  margin-bottom:12px;
+
+}
+
+.body p{
+
+  margin:7px 0;
+
+  color:#555;
+
+  font-size:14px;
+
+}
+
+.actions{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  padding:15px;
+
+  border-top:1px solid #eee;
+
+}
+
+.actions button{
+
+  border:none;
+
+  border-radius:5px;
+
+  padding:8px 14px;
+
+  color:white;
+
+  cursor:pointer;
+
+  transition:.25s;
+
+}
+
+.view{
+
+  background:#17a2b8;
+
+}
+
+.view:hover{
+
+  background:#138496;
+
+}
+
+.edit{
+
+  background:#ffc107;
+
+  color:#222 !important;
+
+}
+
+.edit:hover{
+
+  background:#e0a800;
+
+}
+
+.delete{
+
+  background:#dc3545;
+
+}
+
+.delete:hover{
+
+  background:#bb2d3b;
+
+}
+
+/* Pagination */
+
+.pagination {
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  flex-wrap:wrap;
+
+  gap:8px;
+
+  margin-top:35px;
+
+}
+
+.pagination button{
+
+  min-width:40px;
+
+  height:40px;
+
+  padding:0 14px;
+
+  border:1px solid #ddd;
+
+  background:white;
+
+  border-radius:6px;
+
+  cursor:pointer;
+
+  transition:.25s;
+
+}
+
+.pagination button:hover:not(:disabled){
+
+  background:#f4f4f4;
+
+}
+
+.pagination button.active{
+
+  background:#0d6efd;
+
+  color:white;
+
+  border-color:#0d6efd;
+
+}
+
+.pagination button:disabled{
+
+  opacity:.5;
+
+  cursor:not-allowed;
+
+}
+
+.dots{
+
+  padding:0 6px;
+
+  font-weight:bold;
+
+}

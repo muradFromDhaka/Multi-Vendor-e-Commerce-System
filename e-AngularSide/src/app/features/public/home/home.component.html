@@ -1,0 +1,863 @@
+<!-- =========================
+        HERO SECTION
+========================== -->
+
+<section class="hero-section">
+
+  <div class="container">
+
+    <div class="row align-items-center">
+
+      <!-- Left Side -->
+
+      <div class="col-lg-6">
+
+        <div class="hero-content">
+
+          <span class="hero-tag">
+            Welcome to Our Store
+          </span>
+
+          <h1>
+
+            Discover Amazing Products
+
+          </h1>
+
+          <p>
+
+            Shop thousands of quality products at the best prices.
+            Fast delivery, secure payment and trusted sellers.
+
+          </p>
+
+          <!-- Search -->
+
+          <div class="search-box">
+
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="searchQuery"
+              placeholder="Search products...">
+
+            <button
+              class="btn btn-primary"
+              (click)="onSearch()">
+
+              <i class="fa fa-search"></i>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Right Side -->
+
+      <div class="col-lg-6">
+
+        <div
+          class="hero-slider"
+          *ngIf="categories.length">
+
+          <div
+            class="slider-wrapper"
+            [style.transform]="'translateX(-'+ currentIndex *100 +'%)'">
+
+            <div
+              class="slider-item"
+              *ngFor="let category of categories">
+
+              <img
+
+                [src]="baseImageUrl + category.imageUrl"
+
+                [alt]="category.name">
+
+            </div>
+
+          </div>
+
+
+          <!-- Indicators -->
+
+          <div class="slider-dots">
+
+            <span
+
+              *ngFor="let category of categories; let i=index"
+
+              (click)="goToSlide(i)"
+
+              [class.active]="i==currentIndex">
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+        CATEGORY SECTION
+========================== -->
+
+<section class="category-section">
+
+  <div class="container">
+
+    <div class="section-header">
+
+      <h2>
+
+        Shop by Categories
+
+      </h2>
+
+      <p>
+
+        Browse products by category
+
+      </p>
+
+    </div>
+
+
+    <div class="row">
+
+      <div
+
+        class="col-xl-2 col-lg-3 col-md-4 col-6 mb-4"
+
+        *ngFor="let category of categories">
+
+        <div
+
+          class="category-card"
+
+          [routerLink]="['/categoryProduct',category.id,category.name]">
+
+          <div class="category-image">
+
+            <img
+
+              [src]="baseImageUrl + category.imageUrl"
+
+              [alt]="category.name">
+
+          </div>
+
+          <div class="category-body">
+
+            <h6>
+
+              {{category.name}}
+
+            </h6>
+
+            <small>
+
+              {{category.parentName}}
+
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+      FEATURED PRODUCTS
+========================== -->
+
+<section class="product-section">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <h2>
+
+                Featured Products
+
+            </h2>
+
+            <p>
+
+                Latest products available in our store
+
+            </p>
+
+        </div>
+
+        <div class="row">
+
+            <div
+
+                class="col-xl-3 col-lg-4 col-md-6 mb-4"
+
+                *ngFor="let product of products">
+
+                <div class="product-card">
+
+                    <!-- Badge -->
+
+                    <span
+
+                        class="status"
+
+                        [ngClass]="{
+
+                        'active':product.status=='ACTIVE',
+
+                        'inactive':product.status!='ACTIVE'
+
+                    }">
+
+                        {{product.status}}
+
+                    </span>
+
+                    <!-- Image -->
+
+                    <div class="product-image">
+
+                        <img
+
+                            [src]="getImageUrl(product)"
+
+                            [alt]="product.name">
+
+                    </div>
+
+                    <!-- Body -->
+
+                    <div class="product-body">
+
+                        <h5>
+
+                            {{product.name}}
+
+                        </h5>
+
+                        <div class="rating">
+
+                            ⭐ {{product.averageRating || 0}}
+
+                            <span>
+
+                                ({{product.totalReviews || 0}})
+
+                            </span>
+
+                        </div>
+
+                        <div class="price">
+
+                            <span
+
+                                class="discount"
+
+                                *ngIf="product.discountPrice">
+
+                                {{product.discountPrice | currency:'BDT '}}
+
+                            </span>
+
+                            <span
+
+                                [class.line-through]="product.discountPrice">
+
+                                {{product.price | currency:'BDT '}}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Footer -->
+
+                    <div class="product-footer">
+
+                        <button
+
+                            class="btn btn-outline-primary"
+
+                            [routerLink]="['/view',product.id]">
+
+                            View
+
+                        </button>
+
+                        <button
+
+                            class="btn btn-warning"
+
+                            (click)="addToCart(product)">
+
+                            Add Cart
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===========================================
+            MOST POPULAR PRODUCTS
+=========================================== -->
+
+<section class="product-section popular-section">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <h2>
+
+                Most Popular Products
+
+            </h2>
+
+            <p>
+
+                Best selling and customer favorite products
+
+            </p>
+
+        </div>
+
+        <div class="row">
+
+            <div
+
+                class="col-xl-3 col-lg-4 col-md-6 mb-4"
+
+                *ngFor="let product of mostPopularProducts">
+
+                <div class="product-card">
+
+                    <span class="popular-badge">
+
+                        Popular
+
+                    </span>
+
+                    <!-- Image -->
+
+                    <div class="product-image">
+
+                        <img
+
+                            [src]="getImageUrl(product)"
+
+                            [alt]="product.name">
+
+                    </div>
+
+                    <!-- Body -->
+
+                    <div class="product-body">
+
+                        <h5>
+
+                            {{product.name}}
+
+                        </h5>
+
+                        <div class="rating">
+
+                            ⭐ {{product.averageRating || 0}}
+
+                            <span>
+
+                                ({{product.totalReviews || 0}} Reviews)
+
+                            </span>
+
+                        </div>
+
+                        <div class="price">
+
+                            <span
+
+                                class="discount"
+
+                                *ngIf="product.discountPrice">
+
+                                {{product.discountPrice | currency:'BDT '}}
+
+                            </span>
+
+                            <span
+
+                                [class.line-through]="product.discountPrice">
+
+                                {{product.price | currency:'BDT '}}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Footer -->
+
+                    <div class="product-footer">
+
+                        <button
+
+                            class="btn btn-outline-primary"
+
+                            [routerLink]="['/view', product.id]">
+
+                            View
+
+                        </button>
+
+                        <button
+
+                            class="btn btn-warning"
+
+                            (click)="addToCart(product)">
+
+                            Add Cart
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===========================================
+                TOP BRANDS
+=========================================== -->
+
+<section class="brand-section">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <h2>
+
+                Top Brands
+
+            </h2>
+
+            <p>
+
+                Trusted brands available in our marketplace
+
+            </p>
+
+        </div>
+
+        <div class="row justify-content-center">
+
+            <div
+
+                class="col-xl-2 col-lg-3 col-md-4 col-6 mb-4"
+
+                *ngFor="let brand of topBrands">
+
+                <div class="brand-card">
+
+                    <div class="brand-image">
+
+                        <img
+
+                            [src]="brand.logoUrl?.startsWith('http')
+                                ? brand.logoUrl
+                                : baseImageUrl + brand.logoUrl"
+
+                            [alt]="brand.name">
+
+                    </div>
+
+                    <div class="brand-body">
+
+                        <h6>
+
+                            {{brand.name}}
+
+                        </h6>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===========================================
+                WHY CHOOSE US
+=========================================== -->
+
+<section class="feature-section">
+
+    <div class="container">
+
+        <div class="row text-center">
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="feature-card">
+
+                    <i class="fas fa-shipping-fast"></i>
+
+                    <h5>Fast Delivery</h5>
+
+                    <p>
+                        Nationwide delivery with trusted courier partners.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="feature-card">
+
+                    <i class="fas fa-lock"></i>
+
+                    <h5>Secure Payment</h5>
+
+                    <p>
+                        100% secure payment with trusted payment gateways.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="feature-card">
+
+                    <i class="fas fa-undo"></i>
+
+                    <h5>Easy Return</h5>
+
+                    <p>
+                        Simple return policy for eligible products.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="feature-card">
+
+                    <i class="fas fa-headset"></i>
+
+                    <h5>24/7 Support</h5>
+
+                    <p>
+                        Friendly customer support whenever you need help.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===========================================
+                NEWSLETTER
+=========================================== -->
+
+<section class="newsletter-section">
+
+    <div class="container">
+
+        <div class="newsletter-box">
+
+            <h2>
+
+                Subscribe to our Newsletter
+
+            </h2>
+
+            <p>
+
+                Get updates about new arrivals, discounts and exclusive offers.
+
+            </p>
+
+            <div class="newsletter-form">
+
+                <input
+
+                    type="email"
+
+                    class="form-control"
+
+                    placeholder="Enter your email">
+
+                <button
+
+                    class="btn btn-primary">
+
+                    Subscribe
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===========================================
+                    FOOTER
+=========================================== -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="row">
+
+            <!-- About -->
+
+            <div class="col-lg-4 mb-4">
+
+                <h4>
+
+                    My Marketplace
+
+                </h4>
+
+                <p>
+
+                    Your trusted online shopping destination.
+
+                    Buy quality products from verified vendors with confidence.
+
+                </p>
+
+            </div>
+
+            <!-- Quick Links -->
+
+            <div class="col-lg-2 col-md-6 mb-4">
+
+                <h5>
+
+                    Quick Links
+
+                </h5>
+
+                <ul>
+
+                    <li>
+
+                        <a routerLink="/">
+
+                            Home
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a routerLink="/products">
+
+                            Products
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a routerLink="/brands">
+
+                            Brands
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a routerLink="/categories">
+
+                            Categories
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- Customer -->
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <h5>
+
+                    Customer Service
+
+                </h5>
+
+                <ul>
+
+                    <li>
+
+                        <a href="#">
+
+                            Contact Us
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="#">
+
+                            Privacy Policy
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="#">
+
+                            Terms & Conditions
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="#">
+
+                            Help Center
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- Contact -->
+
+            <div class="col-lg-3 mb-4">
+
+                <h5>
+
+                    Contact
+
+                </h5>
+
+                <p>
+
+                    <i class="fas fa-envelope"></i>
+
+                    support@marketplace.com
+
+                </p>
+
+                <p>
+
+                    <i class="fas fa-phone"></i>
+
+                    +880 1234-567890
+
+                </p>
+
+                <p>
+
+                    <i class="fas fa-map-marker-alt"></i>
+
+                    Dhaka, Bangladesh
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="text-center">
+
+            © 2026 My Marketplace.
+
+            All Rights Reserved.
+
+        </div>
+
+    </div>
+
+</footer>

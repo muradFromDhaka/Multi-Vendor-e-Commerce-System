@@ -1,0 +1,222 @@
+<div class="product-form-container">
+
+  <h2>
+    {{ isEditMode ? 'Update Product' : 'Create Product' }}
+  </h2>
+
+  <form
+    [formGroup]="productForm"
+    (ngSubmit)="submit()">
+
+    <!-- Product Name -->
+    <div class="form-group">
+
+      <label>Product Name</label>
+
+      <input
+        type="text"
+        formControlName="name"
+        class="form-control">
+
+      <small
+        *ngIf="f['name'].touched && f['name'].invalid">
+
+        Product name is required.
+
+      </small>
+
+    </div>
+
+
+    <!-- Description -->
+
+    <div class="form-group">
+
+      <label>Description</label>
+
+      <textarea
+        rows="5"
+        formControlName="description"
+        class="form-control">
+      </textarea>
+
+    </div>
+
+
+    <!-- Category -->
+
+    <div class="form-group">
+
+      <label>Category</label>
+
+      <select
+        formControlName="categoryId"
+        class="form-control">
+
+        <option [ngValue]="null">
+          Select Category
+        </option>
+
+        <option
+          *ngFor="let category of categories"
+          [value]="category.id">
+
+          {{ category.name }}
+
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- Brand -->
+
+    <div class="form-group">
+
+      <label>Brand</label>
+
+      <select
+        formControlName="brandId"
+        class="form-control">
+
+        <option [ngValue]="null">
+          Select Brand
+        </option>
+
+        <option
+          *ngFor="let brand of brands"
+          [value]="brand.id">
+
+          {{ brand.name }}
+
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- Vendor -->
+
+    <div
+      class="form-group"
+      *ngIf="isAdmin">
+
+      <label>Vendor</label>
+
+      <select
+        formControlName="vendorId"
+        class="form-control">
+
+        <option [ngValue]="null">
+          Select Vendor
+        </option>
+
+        <option
+          *ngFor="let vendor of vendors"
+          [value]="vendor.id">
+
+          {{ vendor.shopName }}
+
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- Status -->
+
+    <div class="form-group">
+
+      <label>Status</label>
+
+      <select
+        formControlName="status"
+        class="form-control">
+
+        <option
+          *ngFor="let status of productStatuses"
+          [value]="status">
+
+          {{ status }}
+
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- Release Date -->
+
+    <div class="form-group">
+
+      <label>Release Date</label>
+
+      <input
+        type="date"
+        formControlName="releaseDate"
+        class="form-control">
+
+    </div>
+
+
+    <!-- Images -->
+
+    <div class="form-group">
+
+      <label>Product Images</label>
+
+      <input
+        type="file"
+        multiple
+        (change)="onFileChange($event)">
+
+    </div>
+
+
+    <!-- Preview -->
+
+    <div
+      class="image-preview"
+      *ngIf="previewImages.length">
+
+      <div
+        class="image-card"
+        *ngFor="let image of previewImages; let i=index">
+
+        <img
+          [src]="image"
+          alt="Preview">
+
+        <button
+          type="button"
+          class="remove-btn"
+          (click)="removeImage(i)">
+
+          ✕
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- Submit -->
+
+    <button
+      class="submit-btn"
+      [disabled]="loading">
+
+      {{ loading
+      ? 'Saving...'
+      : (isEditMode ? 'Update Product' : 'Create Product') }}
+
+    </button>
+
+  </form>
+
+</div>

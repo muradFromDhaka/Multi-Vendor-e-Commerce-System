@@ -1,0 +1,232 @@
+<div class="vendor-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <h2 class="logo">
+      Vendor Panel
+    </h2>
+
+    <ul>
+
+      <li
+        [class.active]="activeTab === 'profile'"
+        (click)="selectTab('profile')">
+
+        👤 Profile
+
+      </li>
+
+      <li
+        [class.active]="activeTab === 'products'"
+        (click)="selectTab('products')">
+
+        📦 Products
+
+      </li>
+
+      <li
+        [class.active]="activeTab === 'orders'"
+        (click)="selectTab('orders')">
+
+        🛒 Orders
+
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ================= PROFILE ================= -->
+
+    <div *ngIf="activeTab === 'profile'" class="card">
+
+      <h2>Vendor Profile</h2>
+
+      <div *ngIf="vendor" class="profile">
+
+        <div class="banner">
+
+          <img
+            *ngIf="vendor.bannerUrl"
+            [src]="vendor.bannerUrl">
+
+        </div>
+
+        <div class="logo">
+
+          <img
+            *ngIf="vendor.logoUrl"
+            [src]="vendor.logoUrl">
+
+        </div>
+
+        <h3>{{ vendor.shopName }}</h3>
+
+        <p>
+          <strong>Owner :</strong>
+          {{ vendor.userName }}
+        </p>
+
+        <p>
+          <strong>Email :</strong>
+          {{ vendor.businessEmail }}
+        </p>
+
+        <p>
+          <strong>Phone :</strong>
+          {{ vendor.phone }}
+        </p>
+
+        <p>
+          <strong>Address :</strong>
+          {{ vendor.address }}
+        </p>
+
+        <p>
+          <strong>Description :</strong>
+          {{ vendor.description }}
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ================= PRODUCTS ================= -->
+
+    <div *ngIf="activeTab === 'products'" class="card">
+
+      <div class="table-header">
+
+        <h2>My Products</h2>
+
+        <button routerLink="/admin/adminProductForm">
+          + Add Product
+        </button>
+
+      </div>
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Name</th>
+            <th>Price</th>
+            <th>Rating</th>
+            <th>Status</th>
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let product of products">
+
+            <td>{{ product.name }}</td>
+
+            <td>
+
+              <span *ngIf="product.discountPrice">
+
+                {{ product.discountPrice | currency }}
+
+              </span>
+
+              <span
+                [class.strike]="product.discountPrice">
+
+                {{ product.price | currency }}
+
+              </span>
+
+            </td>
+
+            <td>
+
+              ⭐ {{ product.averageRating || 0 }}
+
+            </td>
+
+            <td>
+
+              {{ product.status }}
+
+            </td>
+
+            <td>
+
+              <button
+                class="edit"
+                [routerLink]="['/admin/adminEditProductForm', product.id]">
+
+                Edit
+
+              </button>
+
+              <button
+                class="delete"
+                (click)="deleteProduct(product)">
+
+                Delete
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- ================= ORDERS ================= -->
+
+    <div *ngIf="activeTab === 'orders'" class="card">
+
+      <h2>Vendor Orders</h2>
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>Total</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let order of orders">
+
+            <td>{{ order.id }}</td>
+
+            <td>{{ order.customerName }}</td>
+
+            <td>{{ order.orderStatus }}</td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

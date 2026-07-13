@@ -1,0 +1,50 @@
+<div class="category-form-container">
+  <h2>{{ editingCategory ? 'Edit Category' : 'Add Category' }}</h2>
+
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+
+    <!-- NAME -->
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" formControlName="name" />
+
+      <small class="error"
+        *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched">
+        Name is required (max 150 chars)
+      </small>
+    </div>
+
+    <!-- PARENT -->
+    <div class="form-group">
+      <label>Parent Category</label>
+      <select formControlName="parentId">
+        <option [ngValue]="null">-- None --</option>
+        <option *ngFor="let parent of parents" [ngValue]="parent.id">
+          {{ parent.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- IMAGE -->
+    <div class="form-group">
+      <label>Image</label>
+      <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+
+      <div class="image-preview" *ngIf="imagePreview">
+        <!-- <img [src]="baseImageUrl+imagePreview" alt="Preview" /> -->
+        <img
+           [src]="imagePreview?.startsWith('data:')
+                ? imagePreview
+                : baseImageUrl + imagePreview"
+                alt="Preview">
+        <button type="button" (click)="removeImage()">Remove</button>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <button type="submit" [disabled]="categoryForm.invalid || loading">
+      {{ loading ? 'Saving...' : (editingCategory ? 'Update' : 'Save') }}
+    </button>
+
+  </form>
+</div>

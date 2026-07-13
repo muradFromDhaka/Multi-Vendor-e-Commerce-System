@@ -1,0 +1,211 @@
+<div class="container py-4">
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-3">Loading product...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!loading && errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Product -->
+  <div class="row" *ngIf="!loading && product">
+
+    <!-- Images -->
+    <div class="col-lg-5">
+
+      <div class="main-image">
+
+        <img
+          [src]="displayedImage"
+          class="img-fluid">
+
+      </div>
+
+      <div class="thumbnail-list mt-3">
+
+        <img
+          *ngFor="let image of currentImages; let i=index"
+          [src]="image.startsWith('http') ? image : baseImageUrl + image"
+          (click)="selectImage(i)"
+          [class.active]="i==selectedImageIndex">
+
+      </div>
+
+    </div>
+
+
+
+    <!-- Details -->
+    <div class="col-lg-7">
+
+      <h2>{{product.name}}</h2>
+
+      <p class="text-muted">
+        {{product.brandName}}
+      </p>
+
+      <hr>
+
+      <!-- Price -->
+
+      <div class="price-section">
+
+        <span
+          class="discount-price"
+          *ngIf="hasDiscount">
+
+          {{discountPrice | currency:'BDT '}}
+
+        </span>
+
+        <span
+          class="price"
+          [class.strike]="hasDiscount">
+
+          {{price | currency:'BDT '}}
+
+        </span>
+
+        <span
+          class="badge bg-danger ms-2"
+          *ngIf="hasDiscount">
+
+          {{calculateDiscountPercentage()}}% OFF
+
+        </span>
+
+      </div>
+
+      <!-- Stock -->
+
+      <p class="mt-3">
+
+        <span
+          class="badge bg-success"
+          *ngIf="!isOutOfStock">
+
+          In Stock ({{stock}})
+
+        </span>
+
+        <span
+          class="badge bg-danger"
+          *ngIf="isOutOfStock">
+
+          Out of Stock
+
+        </span>
+
+      </p>
+
+      <!-- Description -->
+
+      <div class="mt-4">
+
+        <h5>Description</h5>
+
+        <p>
+
+          {{product.description}}
+
+        </p>
+
+      </div>
+
+      <!-- Category -->
+
+      <div class="info">
+
+        <p>
+
+          <strong>Category :</strong>
+
+          {{product.categoryName}}
+
+        </p>
+
+        <p>
+
+          <strong>Brand :</strong>
+
+          {{product.brandName}}
+
+        </p>
+
+        <p>
+
+          <strong>Vendor :</strong>
+
+          {{product.vendorName}}
+
+        </p>
+
+        <p>
+
+          <strong>Release :</strong>
+
+          {{formatDate(product.releaseDate)}}
+
+        </p>
+
+      </div>
+
+      <!-- Variants -->
+
+      <div
+        class="mt-4"
+        *ngIf="product.variants.length>1">
+
+        <h5>Select Variant</h5>
+
+        <button
+
+          *ngFor="let variant of product.variants"
+
+          class="btn btn-outline-dark me-2 mb-2"
+
+          (click)="selectVariant(variant)">
+
+             {{ getVariantName(variant) }}
+             
+        </button>
+
+      </div>
+
+      <!-- Buttons -->
+
+      <div class="mt-4">
+
+        <button
+
+          class="btn btn-warning me-2"
+
+          (click)="addToCart()"
+
+          [disabled]="isOutOfStock">
+
+          Add To Cart
+
+        </button>
+
+        <button
+
+          class="btn btn-secondary"
+
+          (click)="goBack()">
+
+          Back
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

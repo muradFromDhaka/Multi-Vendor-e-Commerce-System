@@ -1,0 +1,221 @@
+<div
+  class="admin-product-details-container"
+  *ngIf="!loading; else loadingTemplate"
+>
+  <!-- Error -->
+  <div *ngIf="errorMessage; else productDetails">
+    <p class="error-message">{{ errorMessage }}</p>
+
+    <button class="btn-back" (click)="goBack()">
+      Go Back
+    </button>
+  </div>
+
+  <ng-template #productDetails>
+
+    <div class="product-details-card">
+
+      <!-- LEFT -->
+      <div class="product-images">
+
+        <div class="main-image">
+          <img
+            [src]="displayedImage"
+            [alt]="product.name">
+        </div>
+
+        <div class="thumbnail-images">
+
+          <img
+            *ngFor="
+              let img of product.imageUrls?.length
+                ? product.imageUrls
+                : defaultImages;
+              let i = index
+            "
+            [src]="img.startsWith('http') ? img : baseImageUrl + img"
+            [class.selected]="i === selectedImageIndex"
+            (click)="selectImage(i)"
+          />
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div class="product-info">
+
+        <h2>{{ product.name }}</h2>
+
+        <p *ngIf="product.vendorName">
+          <strong>Vendor :</strong>
+          {{ product.vendorName }}
+        </p>
+
+        <p *ngIf="product.brandName">
+          <strong>Brand :</strong>
+          {{ product.brandName }}
+        </p>
+
+        <p *ngIf="product.categoryName">
+          <strong>Category :</strong>
+          {{ product.categoryName }}
+        </p>
+
+        <p>
+          <strong>Status :</strong>
+
+          <span
+            class="status"
+            [class.active]="product.status=='ACTIVE'">
+            {{ product.status }}
+          </span>
+        </p>
+
+        <p>
+          <strong>Rating :</strong>
+
+          {{ product.averageRating || 0 }}
+          ({{ product.totalReviews || 0 }} Reviews)
+        </p>
+
+        <p>
+          <strong>Sold :</strong>
+          {{ product.soldCount || 0 }}
+        </p>
+
+        <p>
+          <strong>Total Variants :</strong>
+          {{ product.totalVariants }}
+        </p>
+
+        <p>
+          <strong>Release :</strong>
+          {{ formatDate(product.releaseDate) }}
+        </p>
+
+        <p class="description">
+          {{ product.description }}
+        </p>
+
+        <hr>
+
+        <!-- Variant -->
+
+        <div *ngIf="product.variants?.length">
+
+          <h3>Select Variant</h3>
+
+          <div class="variant-list">
+
+            <button
+              *ngFor="let variant of product.variants"
+              class="variant-btn"
+              [class.selected]="variant.id==selectedVariant?.id"
+              (click)="selectVariant(variant)">
+
+              {{ variant.sku }}
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <div *ngIf="selectedVariant" class="variant-details">
+
+          <p>
+
+            <strong>SKU :</strong>
+
+            {{ selectedVariant.sku }}
+
+          </p>
+
+          <p>
+
+            <strong>Stock :</strong>
+
+            {{ selectedVariant.stock }}
+
+          </p>
+
+          <div class="price-section">
+
+            <span
+              class="discount-price"
+              *ngIf="selectedVariant.discountPrice">
+
+              ${{ selectedVariant.discountPrice }}
+
+            </span>
+
+            <span
+              class="price"
+              [class.line-through]="selectedVariant.discountPrice">
+
+              ${{ selectedVariant.price }}
+
+            </span>
+
+            <span
+              class="off"
+              *ngIf="discountPercentage">
+
+              {{ discountPercentage }}% OFF
+
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="buttons">
+
+          <button
+            class="btn-edit"
+            *ngIf="authService.hasRole('ROLE_ADMIN')"
+            (click)="editProduct()">
+
+            Edit Product
+
+          </button>
+
+          <button
+            class="btn-cart"
+            (click)="addToCart()"
+            [disabled]="!selectedVariant">
+
+            Add To Cart
+
+          </button>
+
+          <button
+            class="btn-back"
+            (click)="goBack()">
+
+            Back
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </ng-template>
+
+</div>
+
+<ng-template #loadingTemplate>
+
+<div class="loading-container">
+
+    <div class="spinner"></div>
+
+    <p>Loading Product...</p>
+
+</div>
+
+</ng-template>

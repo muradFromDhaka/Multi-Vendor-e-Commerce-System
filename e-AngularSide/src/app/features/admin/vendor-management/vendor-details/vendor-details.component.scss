@@ -1,0 +1,296 @@
+.vendor-details{
+
+    max-width:1200px;
+    margin:auto;
+    padding:25px;
+}
+
+/* Banner */
+
+.banner{
+
+    height:260px;
+    border-radius:16px;
+    overflow:hidden;
+    position:relative;
+    margin-bottom:80px;
+
+    img{
+
+        width:100%;
+        height:100%;
+        object-fit:cover;
+
+    }
+
+    .banner-overlay{
+
+        position:absolute;
+        inset:0;
+        background:rgba(0,0,0,.35);
+
+    }
+
+}
+
+/* Header */
+
+.header-card{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#fff;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    margin-top:-130px;
+    position:relative;
+    z-index:10;
+
+}
+
+.profile-section{
+
+    display:flex;
+    align-items:center;
+    gap:20px;
+
+}
+
+.logo{
+
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    overflow:hidden;
+    background:#eee;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    font-weight:bold;
+
+    img{
+
+        width:100%;
+        height:100%;
+        object-fit:cover;
+
+    }
+
+}
+
+.profile-info h2{
+
+    margin-bottom:8px;
+
+}
+
+.rating{
+
+    margin-top:10px;
+
+}
+
+.status-badge{
+
+    display:inline-block;
+    margin-top:12px;
+    padding:6px 14px;
+    border-radius:30px;
+    color:#fff;
+    font-size:13px;
+
+}
+
+.approved{background:#198754;}
+.pending{background:#ffc107;color:#000;}
+.rejected{background:#dc3545;}
+.suspended{background:#6c757d;}
+.active{background:#0d6efd;}
+
+/* Quick Buttons */
+
+.quick-actions{
+
+    display:flex;
+    gap:15px;
+
+    button{
+
+        padding:12px 20px;
+        border:none;
+        border-radius:8px;
+        cursor:pointer;
+        color:white;
+
+    }
+
+}
+
+.products{
+
+    background:#0d6efd;
+
+}
+
+.orders{
+
+    background:#198754;
+
+}
+
+.edit{
+
+    background: #232323;
+
+}
+
+/* Stats */
+
+.stats{
+
+    margin-top:35px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+
+}
+
+.stat-card{
+
+    background:#fff;
+    border-radius:12px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+    h4{
+
+        color:#777;
+        margin-bottom:10px;
+
+    }
+
+}
+
+/* Cards */
+
+.grid{
+
+    margin-top:35px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:25px;
+
+}
+
+.card{
+
+    background:#fff;
+    border-radius:12px;
+    padding:25px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+    h3{
+
+        margin-bottom:20px;
+
+    }
+
+    p{
+
+        margin:12px 0;
+
+    }
+
+}
+
+/* Admin Actions */
+
+.actions{
+
+    margin-top:35px;
+    display:flex;
+    gap:15px;
+    justify-content:flex-end;
+
+    button{
+
+        border:none;
+        padding:12px 22px;
+        border-radius:8px;
+        color:white;
+        cursor:pointer;
+
+    }
+
+}
+
+.approve{
+
+    background:#198754;
+
+}
+
+.reject{
+
+    background:#dc3545;
+
+}
+
+.suspend{
+
+    background:#fd7e14;
+
+}
+
+.activate{
+
+    background:#0d6efd;
+
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+    .header-card{
+
+        flex-direction:column;
+        gap:20px;
+        align-items:flex-start;
+
+    }
+
+    .stats{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:600px){
+
+    .stats{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .profile-section{
+
+        flex-direction:column;
+        align-items:flex-start;
+
+    }
+
+}
