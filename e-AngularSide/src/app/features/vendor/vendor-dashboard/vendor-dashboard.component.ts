@@ -9,6 +9,7 @@ import { VendorService } from '../services/vendor.service';
 import { ProductListResponse } from 'src/app/models/product.model';
 import { VendorOrderService } from '../services/vendor-order.service';
 import { VendorOrderListResponse } from '../services/vendorOrder.model';
+import { VendorProductService } from '../services/vendor-product.service';
 
 @Component({
   selector: 'app-vendor-dashboard',
@@ -33,7 +34,7 @@ export class VendorDashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private producService: ProductService,
+    private vendorProducService: VendorProductService,
     private vendorService: VendorService,
     private vendorOrderService: VendorOrderService,
   ){}
@@ -48,7 +49,7 @@ export class VendorDashboardComponent implements OnInit {
   }
 
     loadProducts() {
-    this.producService.getProductsByVendor()
+    this.vendorProducService.getMyProducts()
       .subscribe(res => this.products = res.content);
   }
 
@@ -63,22 +64,6 @@ export class VendorDashboardComponent implements OnInit {
     this.activeTab = tab;
     // this.router.navigate(['/vendor/vendorProfile'])
   }
-
-//   selectTab(tab: string) {
-//     this.activeTab = tab;
-
-//     switch(tab) {
-//       case 'profile':
-//         this.router.navigate(['/vendor/profile']);
-//         break;
-//       case 'products':
-//         this.router.navigate(['/vendor/products']);
-//         break;
-//       case 'orders':
-//         this.router.navigate(['/vendor/orders']);
-//         break;
-//     }
-// }
 
 
   openModal() {
@@ -108,7 +93,7 @@ export class VendorDashboardComponent implements OnInit {
     if (!confirm('Delete Product?')) {
         return;
     }
-    this.producService
+    this.vendorProducService
         .deleteProduct(product.id)
         .subscribe(() => {
             this.loadProducts();

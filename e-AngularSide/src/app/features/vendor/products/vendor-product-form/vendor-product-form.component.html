@@ -1,176 +1,365 @@
-<div class="product-form-container">
+<div class="container-fluid py-4">
 
-  <div class="card">
+  <div class="card shadow-sm">
 
-    <h2>Add Product</h2>
+    <div class="card-header">
 
-    <form
-      [formGroup]="productForm"
-      (ngSubmit)="submit()">
+      <h4 class="mb-0">
 
-      <!-- Name -->
+        {{ isEdit ? 'Edit Product' : 'Add Product' }}
 
-      <div class="form-group">
+      </h4>
 
-        <label>Product Name</label>
+    </div>
 
-        <input
-          type="text"
-          formControlName="name">
+    <div class="card-body">
 
-      </div>
+      <form
+        [formGroup]="productForm"
+        (ngSubmit)="submit()">
 
-      <!-- Description -->
+        <!-- Product Name -->
 
-      <div class="form-group">
+        <div class="mb-3">
 
-        <label>Description</label>
+          <label class="form-label">
 
-        <textarea
-          rows="5"
-          formControlName="description">
-        </textarea>
+            Product Name
 
-      </div>
+          </label>
 
-      <div class="row">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name">
 
-        <!-- Category -->
+          <small
+  class="text-danger"
+  *ngIf="productForm.get('name')?.touched && productForm.get('name')?.errors">
 
-        <div class="form-group">
+  <span *ngIf="productForm.get('name')?.errors?.['required']">
+    Product name is required.
+  </span>
 
-          <label>Category</label>
+  <span *ngIf="productForm.get('name')?.errors?.['minlength']">
+    Product name must be at least 3 characters.
+  </span>
 
-          <select formControlName="categoryId">
-
-            <option [ngValue]="null">
-              Select Category
-            </option>
-
-            <option
-              *ngFor="let c of categories"
-              [value]="c.id">
-
-              {{ c.name }}
-
-            </option>
-
-          </select>
+</small>
 
         </div>
 
-        <!-- Brand -->
+        <!-- Description -->
 
-        <div class="form-group">
+        <div class="mb-3">
 
-          <label>Brand</label>
+          <label class="form-label">
 
-          <select formControlName="brandId">
+            Description
 
-            <option [ngValue]="null">
-              Select Brand
-            </option>
+          </label>
 
-            <option
-              *ngFor="let b of brands"
-              [value]="b.id">
+          <textarea
+            rows="4"
+            class="form-control"
+            formControlName="description">
 
-              {{ b.name }}
-
-            </option>
-
-          </select>
+          </textarea>
 
         </div>
 
-      </div>
+        <div class="row">
 
-      <!-- Status -->
+          <!-- Category -->
 
-      <div class="form-group">
+          <div class="col-md-6 mb-3">
 
-        <label>Status</label>
+            <label class="form-label">
 
-        <select formControlName="status">
+              Category
 
-          <option
-            *ngFor="let status of statuses"
-            [value]="status">
+            </label>
 
-            {{ status }}
+            <select
+              class="form-select"
+              formControlName="categoryId">
 
-          </option>
+              <option [ngValue]="null">
 
-        </select>
+                Select Category
 
-      </div>
+              </option>
 
-      <!-- Release Date -->
+              <option
+                *ngFor="let category of categories"
+                [value]="category.id">
 
-      <div class="form-group">
+                {{ category.name }}
 
-        <label>Release Date</label>
+              </option>
 
-        <input
-          type="date"
-          formControlName="releaseDate">
-      </div>
+            </select>
 
-      <!-- Images -->
+            <small
+  class="text-danger"
+  *ngIf="
+    productForm.get('categoryId')?.touched &&
+    productForm.get('categoryId')?.errors?.['required']
+  ">
 
-      <div class="form-group">
+  Category is required.
 
-        <label>Product Images</label>
+</small>
 
-        <input
-          type="file"
-          multiple
-          (change)="onFileSelect($event)">
-      </div>
+          </div>
 
-      <!-- Preview -->
+          <!-- Brand -->
 
-      <div
-        class="preview-container"
-        *ngIf="selectedImages.length">
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+
+              Brand
+
+            </label>
+
+            <select
+              class="form-select"
+              formControlName="brandId">
+
+              <option [ngValue]="null">
+
+                Select Brand
+
+              </option>
+
+              <option
+                *ngFor="let brand of brands"
+                [value]="brand.id">
+
+                {{ brand.name }}
+
+              </option>
+
+            </select>
+
+            <small
+  class="text-danger"
+  *ngIf="
+    productForm.get('brandId')?.touched &&
+    productForm.get('brandId')?.errors?.['required']
+  ">
+
+  Brand is required.
+
+</small>
+
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <!-- Status -->
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+
+              Status
+
+            </label>
+
+            <select
+              class="form-select"
+              formControlName="status">
+
+              <option
+                *ngFor="let status of statuses"
+                [value]="status">
+
+                {{ status }}
+
+              </option>
+
+            </select>
+
+            <small
+  class="text-danger"
+  *ngIf="
+    productForm.get('status')?.touched &&
+    productForm.get('status')?.errors?.['required']
+  ">
+
+  Status is required.
+
+</small>
+
+          </div>
+
+          <!-- Release Date -->
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+
+              Release Date
+
+            </label>
+
+            <input
+              type="date"
+              class="form-control"
+              formControlName="releaseDate">
+
+          </div>
+
+          <small
+  class="text-danger"
+  *ngIf="
+    productForm.get('releaseDate')?.touched &&
+    productForm.get('releaseDate')?.errors?.['required']
+  ">
+
+  Release date is required.
+
+</small>
+
+        </div>
+
+        <!-- Upload -->
+
+        <div class="mb-4">
+
+          <label class="form-label">
+
+            Product Images
+
+          </label>
+
+          <input
+            type="file"
+            class="form-control"
+            multiple
+            accept="image/*"
+            (change)="onFileSelect($event)">
+
+        </div>
+
+        <!-- Existing Images -->
 
         <div
-          class="preview-card"
-          *ngFor="
-            let image of selectedImages;
-            let i = index
-          ">
+          *ngIf="existingImages.length > 0"
+          class="mb-4">
 
-          <span>
-            {{ image.name }}
-          </span>
+          <h6>
+
+            Existing Images
+
+          </h6>
+
+          <div class="row">
+
+            <div
+              class="col-md-3 mb-3"
+              *ngFor="
+                let image of existingImages;
+                let i=index
+              ">
+
+              <div class="card">
+
+                <img
+                  [src]="baseImageUrl+image"
+                  class="card-img-top">
+
+                <div class="card-body p-2">
+
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm w-100"
+                    (click)="removeExistingImage(i)">
+
+                    Remove
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- New Images -->
+
+        <div
+          *ngIf="newImagePreview.length > 0"
+          class="mb-4">
+
+          <h6>
+
+            New Images
+
+          </h6>
+
+          <div class="row">
+
+            <div
+              class="col-md-3 mb-3"
+              *ngFor="
+                let image of newImagePreview;
+                let i=index
+              ">
+
+              <div class="card">
+
+                <img
+                  [src]="image"
+                  class="card-img-top">
+
+                <div class="card-body p-2">
+
+                  <button
+                    type="button"
+                    class="btn btn-warning btn-sm w-100"
+                    (click)="removeNewImage(i)">
+
+                    Remove
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Buttons -->
+
+        <div class="text-end">
 
           <button
-            type="button"
-            (click)="removeImage(i)">
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading">
 
-            ✖
+            {{ isEdit ? 'Update Product' : 'Create Product' }}
 
           </button>
 
         </div>
 
-      </div>
+      </form>
 
-      <button
-        type="submit"
-        class="save-btn"
-        [disabled]="loading">
-
-        {{
-          loading
-            ? 'Saving...'
-            : 'Save Product'
-        }}
-
-      </button>
-
-    </form>
+    </div>
 
   </div>
 

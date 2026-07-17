@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AttributeService } from '../../services/variants/attribute.service';
-import { AttributeRequest, AttributeResponse } from '../../models/variants/attribute.model';
+import { AttributeRequest, AttributeResponse } from '../../../../models/variants/attribute.model';
 import { CategoryResponse } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 

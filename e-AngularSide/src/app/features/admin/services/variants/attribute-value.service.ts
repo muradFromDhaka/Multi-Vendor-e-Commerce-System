@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/app/services/environments';
 import { PageResponse } from 'src/app/models/PageResponse';
-import { AttributeValueRequest, AttributeValueResponse } from '../../models/variants/attributeValue.model';
+import { AttributeValueRequest, AttributeValueResponse } from '../../../../models/variants/attributeValue.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,13 +43,13 @@ export class AttributeValueService {
     );
   }
 
-  getById(id: number): Observable<AttributeValueResponse> {
+  getAttributeValueById(id: number): Observable<AttributeValueResponse> {
     return this.http.get<AttributeValueResponse>(
       `${this.apiUrl}/${id}`
     );
   }
 
-  getByAttribute(
+  getAttributeValuesByAttributeId(
     attributeId: number,
     page = 0,
     size = 10

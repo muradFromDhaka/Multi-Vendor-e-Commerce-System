@@ -1,0 +1,360 @@
+<div class="container-fluid py-4">
+
+    <!-- =========================
+            Header
+    ========================== -->
+
+    <div class="page-header mb-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <h2 class="page-title">
+                    <i class="fas fa-boxes me-2"></i>
+                    Product Variants
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Manage all product variants from here.
+                </p>
+
+            </div>
+
+            <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
+
+                <button
+                    type="button"
+                    routerLink="/vendor/vendorProductVariantForm"
+                    class="btn btn-primary btn-lg">
+
+                    <i class="fas fa-plus-circle me-2"></i>
+
+                    Add New Variant
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+            Summary
+    ========================== -->
+
+    <div class="row mb-4">
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+
+                    <i class="fas fa-layer-group"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>{{ totalElements }}</h3>
+
+                    <small>Total Variants</small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+            Loading
+    ========================== -->
+
+    <div
+        class="text-center py-5"
+        *ngIf="loading">
+
+        <div class="spinner-border text-primary"></div>
+
+        <h5 class="mt-3">
+            Loading Product Variants...
+        </h5>
+
+    </div>
+
+    <!-- =========================
+            Empty State
+    ========================== -->
+
+    <div
+        class="empty-state"
+        *ngIf="!loading && variants.length === 0">
+
+        <i class="fas fa-box-open"></i>
+
+        <h4>No Variant Found</h4>
+
+        <p>
+            Click the button above to create your first product variant.
+        </p>
+
+    </div>
+
+    <!-- =========================
+            Variant Cards
+    ========================== -->
+
+    <div
+        class="row"
+        *ngIf="!loading && variants.length > 0">
+
+        <div
+            class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4"
+            *ngFor="let variant of variants; trackBy: trackByVariant">
+
+            <div class="card variant-card">
+
+                <!-- Image -->
+
+                <div class="variant-image">
+
+                    <img
+                        *ngIf="variant.imageUrls?.length"
+                        [src]="baseImageUrl + variant.imageUrls[0]"
+                        [alt]="variant.productName">
+
+                    <img
+                        *ngIf="!variant.imageUrls?.length"
+                        src="assets/images/no-image.png"
+                        alt="No Image">
+
+                    <span
+                        class="image-count"
+                        *ngIf="variant.imageUrls?.length">
+
+                        <i class="fas fa-images me-1"></i>
+
+                        {{ variant.imageUrls.length }}
+
+                    </span>
+
+                </div>
+
+                <!-- Body -->
+
+                <div class="card-body">
+
+                    <h5 class="product-name">
+
+                        {{ variant.productName }}
+
+                    </h5>
+
+                    <div class="sku">
+
+                        <span>SKU</span>
+
+                        <strong>{{ variant.sku }}</strong>
+
+                    </div>
+
+                    <div
+                        class="attribute-wrapper"
+                        *ngIf="variant.attributeValues?.length">
+
+                        <span
+                            class="attribute-chip"
+                            *ngFor="let attribute of variant.attributeValues">
+
+                            <strong>{{ attribute.attributeName }}</strong>
+
+                            :
+
+                            {{ attribute.value }}
+
+                        </span>
+
+                    </div>
+
+                    <div class="price-wrapper">
+
+                        <span class="discount-price">
+
+                            ৳{{ variant.discountPrice || variant.price }}
+
+                        </span>
+
+                        <span
+                            class="original-price"
+                            *ngIf="variant.discountPrice">
+
+                            ৳{{ variant.price }}
+
+                        </span>
+
+                    </div>
+
+                    <div class="stock-wrapper">
+
+                        <span
+                            class="stock-badge bg-success"
+                            *ngIf="variant.stock > 10">
+
+                            <i class="fas fa-check-circle me-1"></i>
+
+                            In Stock
+
+                        </span>
+
+                        <span
+                            class="stock-badge bg-warning text-dark"
+                            *ngIf="variant.stock > 0 && variant.stock <= 10">
+
+                            <i class="fas fa-exclamation-circle me-1"></i>
+
+                            Low Stock
+
+                        </span>
+
+                        <span
+                            class="stock-badge bg-danger"
+                            *ngIf="variant.stock === 0">
+
+                            <i class="fas fa-times-circle me-1"></i>
+
+                            Out of Stock
+
+                        </span>
+
+                        <span class="stock-count">
+
+                            Qty :
+                            <strong>{{ variant.stock }}</strong>
+
+                        </span>
+
+                    </div>
+
+                    <hr class="my-3">
+
+                    <div class="variant-info">
+
+                        <div class="info-item">
+
+                            <span class="label">
+                                Variant ID
+                            </span>
+
+                            <span class="value">
+                                #{{ variant.id }}
+                            </span>
+
+                        </div>
+
+                        <div class="info-item">
+
+                            <span class="label">
+                                Product ID
+                            </span>
+
+                            <span class="value">
+                                #{{ variant.productId }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+
+                <div class="card-footer">
+
+                    <button
+                        type="button"
+                        class="action-btn view-btn"
+                        (click)="viewVariant(variant.id)">
+
+                        View
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="action-btn edit-btn"
+                        (click)="editVariant(variant.id)">
+
+                        Edit
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="action-btn delete-btn"
+                        (click)="deleteVariant(variant.id)">
+
+
+                        Delete
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+            Pagination
+    ========================== -->
+
+    <div
+        class="pagination-wrapper mt-4"
+        *ngIf="!loading && totalPages > 1">
+
+        <button
+            type="button"
+            class="btn btn-outline-primary"
+            [disabled]="page === 0"
+            (click)="previousPage()">
+
+            <i class="fas fa-angle-left me-2"></i>
+
+            Previous
+
+        </button>
+
+        <div class="page-number">
+
+            Page
+
+            <strong>{{ page + 1 }}</strong>
+
+            of
+
+            <strong>{{ totalPages }}</strong>
+
+        </div>
+
+        <button
+            type="button"
+            class="btn btn-outline-primary"
+            [disabled]="page >= totalPages - 1"
+            (click)="nextPage()">
+
+            Next
+
+            <i class="fas fa-angle-right ms-2"></i>
+
+        </button>
+
+    </div>
+
+</div>

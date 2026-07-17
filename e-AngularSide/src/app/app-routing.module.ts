@@ -6,6 +6,8 @@ const routes: Routes = [
 
   {path: '',loadChildren: () => import('./features/public/public.module').then(m => m.PublicModule)},
 
+  {path: 'customer',loadChildren: () =>import('./features/customer/customer.module').then(m => m.CustomerModule)},
+
   {path: 'admin',loadChildren: () =>import('./features/admin/admin.module').then(m => m.AdminModule)},
 
   {path: 'vendor',loadChildren: () =>import('./features/vendor/vendor.module').then(m => m.VendorModule)},

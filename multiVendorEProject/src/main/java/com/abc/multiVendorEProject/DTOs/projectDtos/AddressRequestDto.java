@@ -1,14 +1,29 @@
 package com.abc.multiVendorEProject.DTOs.projectDtos;
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AddressRequestDto {
-    private String userName;
-    private String street;
-    private String city;
-    private String country;
-    private String zipCode;
 
+    @NotBlank
+    private String street;
+
+    @NotBlank
+    private String city;
+
+    @NotBlank
+    private String district;
+
+    @NotBlank
+    private String country;
+
+    @NotBlank
+    private String zipCode;
 }

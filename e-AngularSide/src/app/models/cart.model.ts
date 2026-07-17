@@ -1,44 +1,36 @@
+import { CartItemResponse } from "./cart-item.model";
+
 export interface CartDto {
+
   cartId?: number;
+
   items: CartItemResponse[];
+
+  totalItems: number;
+
+  subtotal: number;
+
+  shippingFee: number;
+
+  discount: number;
+
   totalAmount: number;
 }
 
-// export interface ItemDto {
-//   itemId: number;
-//   productId: number;
-//   productName: string;
-//   quantity: number;
-//   price: number;
-//   total: number;
-// }
 
-export interface CartItemRequest {
-  variantId: number;
-  quantity: number;
-}
-export interface CartItemResponse{
+export const EMPTY_CART: CartDto = {
 
-  itemId: number;
+  items: [],
 
-  productId: number;
+  totalItems: 0,
 
-  variantId: number;
+  subtotal: 0,
 
-  productName: string;
+  shippingFee: 0,
 
-  sku: string;
+  discount: 0,
 
-  quantity: number;
+  totalAmount: 0
 
-  unitPrice: number;
+};
 
-  totalPrice: number;
-
-  imageUrl?: string;
-
-  vendorId: number;
-
-  vendorName: string;
-
-}

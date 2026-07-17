@@ -1,7 +1,6 @@
 package com.abc.multiVendorEProject.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +14,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ShippingAddress extends BaseEntity {
 
-    private String customerName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_name", nullable = false)
+    private User user;
+
     private String phone;
 
     private String street;

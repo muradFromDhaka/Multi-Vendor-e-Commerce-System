@@ -30,12 +30,15 @@ public class Cart extends BaseEntity {
 
 
     // Total amount of the cart. This should be updated whenever items are added/removed.
-    private BigDecimal totalAmount;
+    private BigDecimal totalAmount = BigDecimal.ZERO;
 
 
     public void calculateTotalAmount() {
-        this.totalAmount = this.items.stream()
-                .map(CartItem::calculateTotalPrice)
+
+        items.forEach(CartItem::calculateTotalPrice);
+
+        this.totalAmount = items.stream()
+                .map(CartItem::getTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 

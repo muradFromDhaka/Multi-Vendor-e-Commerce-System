@@ -8,9 +8,10 @@ import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 
 import {
-  ProductDetailsResponse
+  ProductDetailsResponse,
+  ProductListResponse
 } from 'src/app/models/product.model';
-import { ProductVariantResponse } from '../../admin/models/variants/productVariant.model';
+import { ProductVariantResponse } from '../../../models/productVariant.model';
 
 @Component({
   selector: 'app-public-product-view',
@@ -71,8 +72,8 @@ export class PublicProductViewComponent implements OnInit {
 
         this.product = res;
 
-        if (res.variants.length > 0) {
-          this.selectedVariant = res.variants[0];
+        if (res.productVariants.length > 0) {
+          this.selectedVariant = res.productVariants[0];
         }
 
         this.loading = false;
@@ -201,7 +202,7 @@ export class PublicProductViewComponent implements OnInit {
 
     this.cartService.addItemToCart({
 
-      variantId: this.selectedVariant.id,
+      productVariantId: this.selectedVariant.id,
 
       quantity: 1
 

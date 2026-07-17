@@ -119,7 +119,7 @@ export class HomeComponent implements OnInit,OnDestroy{
     addToCart(product: ProductListResponse): void {
           
     this.cartService.addItemToCart({
-      variantId: product.variantId,
+      productVariantId: product.productVariantId,
       quantity: 1
     });
   }

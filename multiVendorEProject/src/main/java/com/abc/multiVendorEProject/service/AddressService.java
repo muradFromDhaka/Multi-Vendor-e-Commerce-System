@@ -11,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,33 +41,74 @@ public class AddressService {
     }
 
     public AddressResponseDto create(AddressRequestDto dto){
+
+        User currentUser = getCurrentUser();
+
         Address entity = addressMapper.toEntity(dto, new Address());
-        User user = userRepository.findByUserNameAndDeletedFalse(dto.getUserName())
-                .orElseThrow(()-> new RuntimeException("User not found."));
-        entity.setUser(user);
+
+        entity.setUser(currentUser);
+
         Address saved = addressRepository.save(entity);
+
         return addressMapper.toDto(saved, new AddressResponseDto());
     }
 
-    public AddressResponseDto update(Long id, AddressRequestDto dto){
+    public AddressResponseDto update(Long id, AddressRequestDto dto) {
+
+        User currentUser = getCurrentUser();
+
         Address existing = addressRepository.findById(id)
-                .map(address -> addressMapper.toEntity(dto, address))
-                .orElseThrow(()-> new RuntimeException("Address not found."));
-        if(dto.getUserName() != null){
-            User existingUser = userRepository.findByUserNameAndDeletedFalse(dto.getUserName())
-                    .orElseThrow(()-> new RuntimeException("User not found"));
-            existing.setUser(existingUser);
-        }
-
-        Address updateAddress = addressRepository.save(existing);
-
-        return addressMapper.toDto(updateAddress,new AddressResponseDto());
-    }
-
-    public void delete(Long id){
-        Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Address not found"));
 
+        if (!existing.getUser().getUserName()
+                .equals(currentUser.getUserName())) {
+
+            throw new RuntimeException("You are not allowed to update this address.");
+        }
+
+        addressMapper.toEntity(dto, existing);
+
+        Address updated = addressRepository.save(existing);
+
+        return addressMapper.toDto(updated, new AddressResponseDto());
+    }
+
+
+    public void delete(Long id) {
+
+        User currentUser = getCurrentUser();
+
+        Address address = addressRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Address not found"));
+
+        if (!address.getUser().getUserName()
+                .equals(currentUser.getUserName())) {
+
+            throw new RuntimeException("You are not allowed to delete this address.");
+        }
+
         addressRepository.delete(address);
+    }
+
+    public List<AddressResponseDto> getMyAddresses() {
+
+        User currentUser = getCurrentUser();
+
+        return addressRepository.findByUser(currentUser)
+                .stream()
+                .map(address -> addressMapper.toDto(address, new AddressResponseDto()))
+                .toList();
+    }
+
+
+    private User getCurrentUser() {
+        String userName = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return userRepository.findById(userName)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

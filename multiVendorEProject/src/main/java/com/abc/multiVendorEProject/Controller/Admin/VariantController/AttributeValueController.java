@@ -47,12 +47,12 @@ public class AttributeValueController {
     }
 
     @GetMapping("/attribute/{attributeId}")
-    public Page<AttributeValueResponseDTO> getByAttributeId(
+    public Page<AttributeValueResponseDTO> getAttributeValuesByAttributeId(
             @PathVariable Long attributeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        return attributeValueService.getByAttributeId(
+        return attributeValueService.getAttributeValuesByAttributeId(
                 attributeId,
                 page,
                 size

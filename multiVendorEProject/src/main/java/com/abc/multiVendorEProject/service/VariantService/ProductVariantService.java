@@ -5,16 +5,22 @@ import com.abc.multiVendorEProject.DTOs.projectDtos.Variant.ProductVariantRespon
 import com.abc.multiVendorEProject.entity.Product;
 import com.abc.multiVendorEProject.entity.Variant.AttributeValue;
 import com.abc.multiVendorEProject.entity.Variant.ProductVariant;
+import com.abc.multiVendorEProject.entity.Vendor;
 import com.abc.multiVendorEProject.mapper.Variant.ProductVariantMapper;
 import com.abc.multiVendorEProject.repository.ProductRepository;
 import com.abc.multiVendorEProject.repository.VariantRepository.AttributeValueRepository;
 import com.abc.multiVendorEProject.repository.VariantRepository.ProductVariantRepository;
+import com.abc.multiVendorEProject.repository.VendorRepository;
 import com.abc.multiVendorEProject.service.FileStorageService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +38,22 @@ public class ProductVariantService {
     private final ProductVariantRepository productVariantRepository;
     private final ProductRepository productRepository;
     private final FileStorageService fileStorageService;
+    private final VendorRepository vendorRepository;
     private final AttributeValueRepository attributeValueRepository;
+
+
+//    ==================Helper Class============================
+private Vendor getCurrentVendor() {
+    Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+
+    String username = authentication.getName();
+
+    return vendorRepository.findByUserUserName(username)
+            .orElseThrow(() ->
+                    new EntityNotFoundException("Vendor account not found"));
+}
+
 
     @Transactional
     public ProductVariantResponseDTO createVariant(
@@ -45,11 +66,20 @@ public class ProductVariantService {
                     "Variant SKU already exists: " + dto.getSku());
         }
 
+
         // Product Validation
         Product product = productRepository.findById(dto.getProductId())
                 .orElseThrow(() ->
                         new RuntimeException(
                                 "Product not found with id: " + dto.getProductId()));
+
+        // vendor validation
+        Vendor currentVendor = getCurrentVendor();
+
+        if (!product.getVendor().getId().equals(currentVendor.getId())) {
+            throw new AccessDeniedException("You cannot add variants to this product.");
+        }
+
 
         // Attribute Value Validation
         Set<AttributeValue> attributeValues = new HashSet<>(
@@ -102,6 +132,12 @@ public class ProductVariantService {
         ProductVariant variant = productVariantRepository.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Variant not found with id: " + id));
+
+        Vendor currentVendor = getCurrentVendor();
+
+        if (!variant.getProduct().getVendor().getId().equals(currentVendor.getId())) {
+            throw new AccessDeniedException("You are not allowed to update this variant.");
+        }
 
         // SKU Validation (নিজের SKU হলে Allow)
         if (!variant.getSku().equals(dto.getSku())

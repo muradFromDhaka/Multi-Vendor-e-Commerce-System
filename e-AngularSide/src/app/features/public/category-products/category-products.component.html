@@ -1,47 +1,139 @@
-<div class="category-products container">
+<div class="container py-5">
 
-  <h2 class="title">
-    Products
-    <span *ngIf="categoryName">in "{{ categoryName }}"</span>
-  </h2>
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
 
-  <div class="loading" *ngIf="loading">
-    Loading products...
+    <h2 class="fw-bold mb-0">
+      Products
+      <span *ngIf="categoryName" class="text-primary">
+        in "{{ categoryName }}"
+      </span>
+    </h2>
+
+    <span class="product-count">
+     Total Products: {{ products.length }} 
+    </span>
+
+    <span class="product-count" (click)="goBack()">
+     Back to Categories
+    </span>
+
   </div>
 
-  <div class="empty" *ngIf="!loading && products.length === 0">
-    No products found.
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-5">
+
+    <div class="spinner-border text-primary"></div>
+
   </div>
 
-  <div class="product-grid" *ngIf="!loading && products.length > 0">
-    <div class="product-card" *ngFor="let p of products">
+  <!-- Empty -->
+  <div
+    *ngIf="!loading && products.length===0"
+    class="text-center py-5">
 
-      <div class="image">
-        <img
-             *ngIf="p.thumbnailUrl"
-             [src]="baseImageUrl + p.thumbnailUrl"
-             [alt]="p.name"
-           />
+    <h4>No Products Found</h4>
+
+  </div>
+
+  <!-- Products -->
+  <div class="row g-4" *ngIf="!loading && products.length>0">
+
+    <div
+      class="col-xl-3 col-lg-4 col-md-6"
+      *ngFor="let p of products">
+
+      <div class="card product-card h-100 border-0 shadow-sm">
+
+        <!-- Image -->
+        <div class="product-image">
+
+          <img
+            *ngIf="p.thumbnailUrl"
+            [src]="baseImageUrl+p.thumbnailUrl"
+            [alt]="p.name">
+
+          <span
+            class="badge bg-danger discount-badge"
+            *ngIf="p.discountPrice">
+
+            SALE
+
+          </span>
+
+        </div>
+
+        <!-- Body -->
+        <div class="card-body d-flex flex-column">
+
+          <div class="small text-muted mb-1">
+
+            {{ p.brandName }}
+
+          </div>
+
+          <h6 class="product-title">
+
+            {{ p.name }}
+
+          </h6>
+
+          <div class="mb-2">
+
+            <span class="price">
+
+              ৳ {{ p.discountPrice || p.price }}
+
+            </span>
+
+            <span
+              *ngIf="p.discountPrice"
+              class="old-price">
+
+              ৳ {{ p.price }}
+
+            </span>
+
+          </div>
+
+          <div class="rating mb-3">
+
+            ⭐ {{ p.averageRating || 0 }}
+
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-2 mt-auto">
+
+            <button
+              class="btn btn-outline-dark btn-sm flex-fill"
+              [routerLink]="['/view',p.id]">
+
+              <i class="fas fa-eye me-1"></i>
+
+              View
+
+            </button>
+
+            <button
+              class="btn btn-primary btn-sm flex-fill"
+              (click)="addToCart(p)"
+              [disabled]="!p.productVariantId">
+
+              <i class="fas fa-shopping-cart me-1"></i>
+
+              Cart
+
+            </button>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <h3 class="name">{{ p.name }}</h3>
-
-      <div class="price">
-        <span class="discount" *ngIf="p.discountPrice">
-          {{ p.discountPrice }}৳
-        </span>
-        <span class="original" [class.strike]="p.discountPrice">
-          {{ p.price }}৳
-        </span>
-      </div>
-
-      <div class="rating" *ngIf="p.averageRating">
-        ⭐ {{ p.averageRating }}
-      </div>
-
-      <button class="delete" [routerLink]="['/view',p.id]">View</button>
-  <button class="btn btn-success" (click)="addToCart(p)">Add to Cart</button>
     </div>
+
   </div>
 
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductVariantResponse } from '../../../models/variants/productVariant.model';
-import { ProductVariantService } from '../../../services/variants/product-variant.service';
+import { ProductVariantResponse } from '../../../../../models/productVariant.model';
+import { ProductVariantService } from '../../../services/product-variant.service';
 import { environment } from 'src/app/services/environments';
 import { Router } from '@angular/router';
 
@@ -98,17 +98,6 @@ export class ProductVariantListComponent implements OnInit {
     // details page
     this.router.navigate([
         '/admin/productVariantDetails',
-        id
-    ]);
-
-}
-
-
-
-editVariant(id:number){
-
-    this.router.navigate([
-        '/admin/productVariantForm',
         id
     ]);
 

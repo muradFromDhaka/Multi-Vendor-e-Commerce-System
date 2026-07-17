@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -29,5 +30,5 @@ public class AdminOrderListResponseDto {
 
     private PaymentStatus paymentStatus;
 
-    private String createdAt;
+    private LocalDateTime createdAt;
 }

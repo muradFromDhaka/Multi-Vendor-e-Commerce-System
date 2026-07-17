@@ -102,14 +102,14 @@
 
         <!-- Variant -->
 
-        <div *ngIf="product.variants?.length">
+        <div *ngIf="product.productVariants?.length">
 
           <h3>Select Variant</h3>
 
           <div class="variant-list">
 
             <button
-              *ngFor="let variant of product.variants"
+              *ngFor="let variant of product.productVariants"
               class="variant-btn"
               [class.selected]="variant.id==selectedVariant?.id"
               (click)="selectVariant(variant)">
@@ -181,14 +181,7 @@
 
           </button>
 
-          <button
-            class="btn-cart"
-            (click)="addToCart()"
-            [disabled]="!selectedVariant">
-
-            Add To Cart
-
-          </button>
+         
 
           <button
             class="btn-back"

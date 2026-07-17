@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from './environments';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { CartDto, CartItemRequest } from '../models/cart.model';
 import { Router } from '@angular/router';
+import { CartDto, EMPTY_CART } from '../models/cart.model';
+import { CartItemRequest } from '../models/cart-item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,7 @@ export class CartService {
   /* ===============================
      Global Cart State
      =============================== */
-  private cartSubject = new BehaviorSubject<CartDto>({
-    items: [],
-    totalAmount: 0
-  });
+  private cartSubject = new BehaviorSubject<CartDto>({...EMPTY_CART});
 
   cart$ = this.cartSubject.asObservable();
 
@@ -32,7 +30,7 @@ export class CartService {
       next: cart => this.cartSubject.next(cart),
       error: err => {
         console.error('Error loading cart:', err);
-        this.cartSubject.next({ items: [], totalAmount: 0 });
+        this.cartSubject.next({...EMPTY_CART});
       }
     });
   }
@@ -40,14 +38,14 @@ export class CartService {
 
 
 addItemToCart(request: CartItemRequest): void {
-  this.http.post<CartDto>(`${this.apiUrl}/add`, request).subscribe({
+  this.http.post<CartDto>(`${this.apiUrl}`, request).subscribe({
     next: cart => this.cartSubject.next(cart),
     error: err => {
       console.error('Error adding item:', err);
 
       console.log(request);
 
-      console.log("Variant ID:", request.variantId);
+      console.log("Variant ID:", request.productVariantId);
 
       // 401 Unauthorized check
       if (err.status === 401) {
@@ -60,23 +58,12 @@ addItemToCart(request: CartItemRequest): void {
   });
 }
 
-
-
-
-
-
-
-
-
-
-
-
   /* ===============================
      Update Item
      =============================== */
   updateCartItem(cartItemId: number, request: CartItemRequest): void {
     this.http
-      .put<CartDto>(`${this.apiUrl}/update/${cartItemId}`, request)
+      .put<CartDto>(`${this.apiUrl}/${cartItemId}`, request)
       .subscribe({
         next: cart => this.cartSubject.next(cart),
         error: err => console.error('Error updating item:', err)
@@ -88,7 +75,7 @@ addItemToCart(request: CartItemRequest): void {
      =============================== */
   removeCartItem(cartItemId: number): void {
     this.http
-      .delete<CartDto>(`${this.apiUrl}/remove/${cartItemId}`)
+      .delete<CartDto>(`${this.apiUrl}/${cartItemId}`)
       .subscribe({
         next: cart => {this.loadCart(); },
         error: err => console.error('Error removing item:', err)

@@ -1,0 +1,137 @@
+<div class="checkout-address-card">
+
+    <div class="card shadow-sm">
+
+        <div class="card-header">
+
+            <h4>
+                <i class="fas fa-map-marker-alt me-2"></i>
+                Shipping Address
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form [formGroup]="addressForm" (ngSubmit)="submit()">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Full Name
+                        </label>
+
+                        <input
+                                type="text"
+                                class="form-control"
+                                formControlName="customerName">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Phone Number
+                        </label>
+
+                        <input
+                                type="text"
+                                class="form-control"
+                                formControlName="phone">
+
+                    </div>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Street Address
+                    </label>
+
+                    <textarea
+                            rows="3"
+                            class="form-control"
+                            formControlName="street">
+                    </textarea>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            City
+                        </label>
+
+                        <input
+                                class="form-control"
+                                formControlName="city">
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            District
+                        </label>
+
+                        <input
+                                class="form-control"
+                                formControlName="district">
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Zip Code
+                        </label>
+
+                        <input
+                                class="form-control"
+                                formControlName="zipCode">
+
+                    </div>
+
+                </div>
+
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Country
+                    </label>
+
+                    <input
+                            class="form-control"
+                            formControlName="country">
+
+                </div>
+
+
+                <div class="text-end">
+
+                    <button
+                            class="btn btn-primary px-4"
+                            type="submit"
+                            [disabled]="addressForm.invalid">
+
+                        Continue
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

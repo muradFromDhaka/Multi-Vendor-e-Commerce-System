@@ -1,0 +1,11 @@
+<app-checkout-address
+    (addressSubmitted)="onAddressSubmitted($event)">
+</app-checkout-address>
+
+<app-checkout-payment
+    (paymentSelected)="onPaymentSelected($event)">
+</app-checkout-payment>
+
+<app-checkout-summary
+    (placeOrder)="placeOrder()">
+</app-checkout-summary>

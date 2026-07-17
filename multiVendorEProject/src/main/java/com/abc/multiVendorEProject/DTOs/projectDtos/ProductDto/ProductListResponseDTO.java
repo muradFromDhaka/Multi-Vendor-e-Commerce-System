@@ -28,11 +28,15 @@ public class ProductListResponseDTO {
 
     private Integer totalReviews;
 
-    private Long variantId;
+    private Long productVariantId;
 
     private Long categoryId;
 
     private String categoryName;
+
+    private Long brandId;
+
+    private String brandName;
 
     private Integer totalVariants;
 

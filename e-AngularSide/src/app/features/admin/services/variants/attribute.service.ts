@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/app/services/environments';
 import { PageResponse } from 'src/app/models/PageResponse';
-import { AttributeRequest, AttributeResponse } from '../../models/variants/attribute.model';
+import { AttributeRequest, AttributeResponse } from '../../../../models/variants/attribute.model';
 
 @Injectable({
   providedIn: 'root'

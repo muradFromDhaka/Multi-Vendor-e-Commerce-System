@@ -3,7 +3,6 @@ package com.abc.multiVendorEProject.Controller;
 import com.abc.multiVendorEProject.DTOs.projectDtos.CartDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.CartItemRequestDto;
 import com.abc.multiVendorEProject.service.CartService;
-import com.abc.multiVendorEProject.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartService cartService;
-    private final UserService userService;
 
     // Get the cart of the current user
     @GetMapping
@@ -28,27 +26,40 @@ public class CartController {
     }
 
     // Add an item to the cart of the current user
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<CartDto> addItemToCart(@Valid @RequestBody CartItemRequestDto request) {
-        CartDto cartDto = cartService.addItemToCart(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cartDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(cartService.addItemToCart(request));
+
     }
 
 
 
     // Update a cart item for the current user
-    @PutMapping("/update/{cartItemId}")
+    @PutMapping("/{cartItemId}")
     public ResponseEntity<CartDto> updateCartItem(
             @PathVariable Long cartItemId,
             @Valid @RequestBody CartItemRequestDto request) {
-        CartDto cartDto = cartService.updateCartItem(cartItemId, request);
-        return ResponseEntity.ok(cartDto);
+
+        return ResponseEntity.ok(cartService.updateCartItem(cartItemId, request));
+
     }
 
     // Remove a cart item for the current user
-    @DeleteMapping("/remove/{cartItemId}")
+    @DeleteMapping("/{cartItemId}")
     public ResponseEntity<Void> removeCartItem(@PathVariable Long cartItemId) {
+
         cartService.removeCartItem(cartItemId);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @DeleteMapping("/clear")
+    public ResponseEntity<Void> clearCart() {
+
+        cartService.clearCart();
+
         return ResponseEntity.noContent().build();
     }
 

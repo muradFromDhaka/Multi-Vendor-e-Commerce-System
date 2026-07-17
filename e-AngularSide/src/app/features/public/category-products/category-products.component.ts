@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/app/services/environments';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -25,7 +25,9 @@ export class CategoryProductsComponent implements OnInit {
   loading = false;
   baseImageUrl = environment.baseImageUrl;
 
+
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private cartService: CartService,
     private productService: ProductService
@@ -93,21 +95,22 @@ export class CategoryProductsComponent implements OnInit {
 
   addToCart(product: ProductListResponse): void {
 
-  if (!product.variantId) {
+  if (!product.productVariantId) {
     alert('No variant available for this product.');
     return;
   }
 
   this.cartService.addItemToCart({
-    variantId: product.variantId,
+    productVariantId: product.productVariantId,
     quantity: 1
   });
 
 }
 
 
-
-
+goBack(): void {
+  this.router.navigate(['/categories']);
+}
 
 }
 

@@ -1,1 +1,293 @@
-<p>vendor-product-details works!</p>
+<div class="container-fluid py-4">
+
+  <!-- Loading -->
+  <div
+    *ngIf="loading"
+    class="text-center py-5">
+
+    <div class="spinner-border text-primary"></div>
+
+  </div>
+
+  <!-- Product -->
+  <div
+    *ngIf="!loading && product">
+
+    <div class="row">
+
+      <!-- ===========================
+              Product Images
+      ============================ -->
+
+      <div class="col-lg-5">
+
+        <div class="card shadow-sm">
+
+          <img
+            class="card-img-top main-image"
+            [src]="baseImageUrl + product.imageUrls[selectedImage]"
+            alt="Product Image">
+
+        </div>
+
+        <div
+          class="row mt-3"
+          *ngIf="product.imageUrls.length">
+
+          <div
+            class="col-3 mb-3"
+            *ngFor="let image of product.imageUrls; let i=index">
+
+            <img
+              class="img-thumbnail thumb-image"
+              [src]="baseImageUrl + image"
+              (click)="changeImage(i)"
+              [class.active-thumb]="selectedImage===i">
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ===========================
+              Product Information
+      ============================ -->
+
+      <div class="col-lg-7">
+
+        <div class="card shadow-sm">
+
+          <div class="card-body">
+
+            <h3 class="mb-3">
+
+              {{product.name}}
+
+            </h3>
+
+            <p>
+
+              {{product.description}}
+
+            </p>
+
+            <hr>
+
+            <div class="row">
+
+              <div class="col-md-6 mb-3">
+
+                <strong>Category</strong>
+
+                <br>
+
+                {{product.categoryName}}
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <strong>Brand</strong>
+
+                <br>
+
+                {{product.brandName}}
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <strong>Status</strong>
+
+                <br>
+
+                <span class="badge bg-success">
+
+                  {{product.status}}
+
+                </span>
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <strong>Release Date</strong>
+
+                <br>
+
+                {{product.releaseDate}}
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <strong>Average Rating</strong>
+
+                <br>
+
+                {{product.averageRating || 0}}
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <strong>Total Reviews</strong>
+
+                <br>
+
+                {{product.totalReviews}}
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <strong>Sold Count</strong>
+
+                <br>
+
+                {{product.soldCount}}
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <strong>Total Variants</strong>
+
+                <br>
+
+                {{product.totalVariants}}
+
+              </div>
+
+            </div>
+
+            <hr>
+
+            <button
+              class="btn btn-primary me-2"
+              (click)="editProduct()">
+
+              <i class="fas fa-edit"></i>
+
+              Edit Product
+
+            </button>
+
+            <button
+              class="btn btn-success"
+              (click)="addVariant()">
+
+              <i class="fas fa-plus"></i>
+
+              Add Variant
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ====================================
+                Variant List
+    ===================================== -->
+
+    <div
+      class="card shadow-sm mt-4"
+      *ngIf="product.productVariants.length">
+
+      <div class="card-header">
+
+        <h5 class="mb-0">
+
+          Product Variants
+
+        </h5>
+
+      </div>
+
+      <div class="card-body table-responsive">
+
+        <table class="table table-bordered table-hover">
+
+          <thead>
+
+          <tr>
+
+            <th>#</th>
+
+            <th>SKU</th>
+
+            <th>Price</th>
+
+            <th>Discount</th>
+
+            <th>Stock</th>
+
+            <th>Status</th>
+
+          </tr>
+
+          </thead>
+
+          <tbody>
+
+          <tr
+            *ngFor="
+            let variant of product.productVariants;
+            let i=index
+          ">
+
+            <td>
+
+              {{i+1}}
+
+            </td>
+
+            <td>
+
+              {{variant.sku}}
+
+            </td>
+
+            <td>
+
+              {{variant.price}}
+
+            </td>
+
+            <td>
+
+              {{variant.discountPrice || '-'}}
+
+            </td>
+
+            <td>
+
+              {{variant.stock}}
+
+            </td>
+
+            <td>
+
+              <!-- {{variant.status}} -->
+
+            </td>
+
+          </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -5,9 +5,12 @@ import com.abc.multiVendorEProject.DTOs.projectDtos.ProductDto.ProductListRespon
 import com.abc.multiVendorEProject.DTOs.projectDtos.ProductDto.ProductRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.Variant.ProductVariantResponseDTO;
 import com.abc.multiVendorEProject.entity.Product;
+import com.abc.multiVendorEProject.entity.Variant.ProductVariant;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class ProductMapper {
 
@@ -51,7 +54,7 @@ public class ProductMapper {
 
                 .imageUrls(product.getImageUrls())
 
-                .variants(variants)
+                .productVariants(variants)
                 .totalVariants(totalVariants)
 
                 .categoryId(product.getCategory().getId())
@@ -68,12 +71,8 @@ public class ProductMapper {
                 .build();
     }
 
-    public static ProductListResponseDTO toListDto(
-            Product product,
-            BigDecimal price,
-            BigDecimal discountPrice,
-            String thumbnail,
-            Integer totalVariants) {
+
+    public static ProductListResponseDTO toListDto(Product product) {
 
         if (product == null) {
             return null;
@@ -84,25 +83,54 @@ public class ProductMapper {
         dto.setId(product.getId());
         dto.setName(product.getName());
 
-        dto.setThumbnailUrl(thumbnail);
-
-        dto.setPrice(price);
-        dto.setDiscountPrice(discountPrice);
-
         dto.setAverageRating(product.getAverageRating());
         dto.setTotalReviews(product.getTotalReviews());
-
-        product.getVariants()
-                .stream()
-                .findFirst()
-                .ifPresent(v -> dto.setVariantId(v.getId()));
-
-        dto.setTotalVariants(totalVariants);
 
         dto.setCategoryId(product.getCategory().getId());
         dto.setCategoryName(product.getCategory().getName());
 
+        dto.setBrandId(product.getBrand().getId());
+        dto.setBrandName(product.getBrand().getName());
+
         dto.setStatus(product.getStatus());
+
+        Set<ProductVariant> variants = product.getVariants();
+
+        if (variants == null) {
+            variants = Collections.emptySet();
+        }
+
+        dto.setTotalVariants(variants.size());
+
+        ProductVariant firstVariant = variants.stream()
+                .findFirst()
+                .orElse(null);
+
+        // Product Image
+        if (product.getImageUrls() != null && !product.getImageUrls().isEmpty()) {
+            dto.setThumbnailUrl(product.getImageUrls().get(0));
+        }
+
+        if (firstVariant != null) {
+
+            dto.setProductVariantId(firstVariant.getId());
+            dto.setPrice(firstVariant.getPrice());
+            dto.setDiscountPrice(firstVariant.getDiscountPrice());
+
+            // যদি Product Image না থাকে, তখন Variant Image ব্যবহার করো
+            if (dto.getThumbnailUrl() == null
+                    && firstVariant.getImageUrls() != null
+                    && !firstVariant.getImageUrls().isEmpty()) {
+
+                dto.setThumbnailUrl(firstVariant.getImageUrls().get(0));
+            }
+        }
+
+        System.out.println("==========================");
+        System.out.println("Product ID: " + product.getId());
+        System.out.println("Images: " + product.getImageUrls());
+        System.out.println("Variants: " + product.getVariants().size());
+        System.out.println("==========================");
 
         return dto;
     }

@@ -128,13 +128,13 @@ previousPage() {
 
 getPrice(product: ProductDetailsResponse): number {
 
-  return product.variants?.[0]?.price ?? 0;
+  return product.productVariants?.[0]?.price ?? 0;
 
 }
 
 getStock(product: ProductDetailsResponse): number {
 
-  return product.variants?.[0]?.stock ?? 0;
+  return product.productVariants?.[0]?.stock ?? 0;
 
 }
 
@@ -143,13 +143,14 @@ getStock(product: ProductDetailsResponse): number {
 getProductImage(product: ProductDetailsResponse): string {
 
   const image =
-    product.variants?.[0]?.imageUrls?.[0] ||
+    product.productVariants?.[0]?.imageUrls?.[0] ||
     product.imageUrls?.[0];
 
   const finalUrl = image?.startsWith('http')
     ? image
     : `${environment.baseImageUrl}${image}`;
 
+    // console.log("image:------------", finalUrl)
   console.log("Final URL =", finalUrl);
 
   return finalUrl;

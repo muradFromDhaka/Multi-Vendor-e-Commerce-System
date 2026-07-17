@@ -26,7 +26,6 @@ import { OrderDetailsComponent } from './Order-management/order-details/order-de
 import { AttributeComponent } from './variants-management/attribute/attribute.component';
 import { AttributeValueComponent } from './variants-management/attribute-value/attribute-value.component';
 import { ProductVariantListComponent } from './variants-management/product-variant/product-variant-list/product-variant-list.component';
-import { ProductVariantFormComponent } from './variants-management/product-variant/product-variant-form/product-variant-form.component';
 import { ProductVariantDetailsComponent } from './variants-management/product-variant/product-variant-details/product-variant-details.component';
 
 
@@ -56,7 +55,6 @@ import { ProductVariantDetailsComponent } from './variants-management/product-va
   AttributeComponent,
   AttributeValueComponent,
   ProductVariantListComponent,
-  ProductVariantFormComponent,
   ProductVariantDetailsComponent,
   ],
   imports: [

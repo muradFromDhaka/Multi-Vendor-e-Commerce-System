@@ -1,0 +1,88 @@
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold mb-0">
+
+            All Brands
+
+        </h2>
+
+        <span class="badge bg-primary fs-6">
+
+            {{brands.length}} Brands
+
+        </span>
+
+    </div>
+
+    <!-- Loading -->
+
+    <div
+            *ngIf="loading"
+            class="text-center py-5">
+
+        <div class="spinner-border text-primary"></div>
+
+    </div>
+
+    <!-- Empty -->
+
+    <div
+            *ngIf="!loading && brands.length==0"
+            class="text-center py-5">
+
+        <h4>No Brand Found</h4>
+
+    </div>
+
+    <!-- Grid -->
+
+    <div
+            class="row g-4"
+            *ngIf="!loading && brands.length">
+
+        <div
+                class="col-xl-2 col-lg-3 col-md-4 col-sm-6"
+                *ngFor="let brand of brands">
+
+            <div
+                    class="card brand-card h-100 shadow-sm border-0"
+                    (click)="openBrand(brand)">
+
+                <div class="brand-logo">
+
+                    <img
+                            *ngIf="brand.logoUrl"
+                            [src]="baseImageUrl + brand.logoUrl"
+                            [alt]="brand.name">
+
+                    <img
+                            *ngIf="!brand.logoUrl"
+                            src="assets/images/no-image.png">
+
+                </div>
+
+                <div class="card-body text-center">
+
+                    <h6 class="mb-2">
+
+                        {{brand.name}}
+
+                    </h6>
+
+                    <small class="text-muted">
+
+                        {{brand.description || 'No Description'}}
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

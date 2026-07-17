@@ -7,7 +7,7 @@ import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorResponseDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorStatsDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorSummaryDto;
 import com.abc.multiVendorEProject.enums.VendorStatus;
-import com.abc.multiVendorEProject.service.Customer.CustomerProductService;
+import com.abc.multiVendorEProject.service.Public.PublicProductService;
 import com.abc.multiVendorEProject.service.VendorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import java.util.List;
 public class AdminVendorController {
 
     private final VendorService vendorService;
-    private final CustomerProductService productService;
+    private final PublicProductService productService;
 
     // Get All Vendors
     @GetMapping

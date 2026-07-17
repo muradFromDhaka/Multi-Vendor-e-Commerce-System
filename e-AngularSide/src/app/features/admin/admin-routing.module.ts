@@ -21,7 +21,6 @@ import { OrderDetailsComponent } from './Order-management/order-details/order-de
 import { AdminComponent } from './admin.component';
 import { AttributeComponent } from './variants-management/attribute/attribute.component';
 import { AttributeValueComponent } from './variants-management/attribute-value/attribute-value.component';
-import { ProductVariantFormComponent } from './variants-management/product-variant/product-variant-form/product-variant-form.component';
 import { ProductVariantDetailsComponent } from './variants-management/product-variant/product-variant-details/product-variant-details.component';
 import { ProductVariantListComponent } from './variants-management/product-variant/product-variant-list/product-variant-list.component';
 
@@ -59,8 +58,6 @@ const routes: Routes = [
 
       {path: 'attribute',component: AttributeComponent},
       {path: 'attributeValue',component: AttributeValueComponent},
-      {path: 'productVariantForm',component: ProductVariantFormComponent},
-      {path: 'productVariantForm/:id',component: ProductVariantFormComponent},
       {path: 'productVariantList',component: ProductVariantListComponent},
       {path: 'productVariantDetails/:id',component: ProductVariantDetailsComponent},
       

@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 
 @Data
 public class CartItemResponseDTO {
-    private Long itemId;
+    private Long cartItemId;
     private Long productId;
-    private Long variantId;
+    private Long productVariantId;
 
     private String productName;
     private String sku;

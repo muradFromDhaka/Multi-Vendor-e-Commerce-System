@@ -42,6 +42,8 @@ export class AdminProductlistComponent implements OnInit {
 
         this.products = res.content;
 
+        console.log(this.products);
+
         this.page = res.number;
         this.totalPages = res.totalPages;
 

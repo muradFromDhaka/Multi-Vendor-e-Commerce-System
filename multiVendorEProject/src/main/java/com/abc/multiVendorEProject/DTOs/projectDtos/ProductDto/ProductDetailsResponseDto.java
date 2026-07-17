@@ -25,7 +25,7 @@ public class ProductDetailsResponseDto {
     private List<String> imageUrls;
     private Integer totalVariants;
 
-    private List<ProductVariantResponseDTO> variants;
+    private List<ProductVariantResponseDTO> productVariants;
 
     // Flattened relationships
     private Long categoryId;

@@ -9,8 +9,16 @@ import java.util.List;
 public class CartDto {
 
     private Long cartId;
+
     private List<CartItemResponseDTO> items;
+
+    private Integer totalItems;
+
+    private BigDecimal subtotal;
+
+    private BigDecimal shippingFee;
+
+    private BigDecimal discount;
+
     private BigDecimal totalAmount;
-
-
 }

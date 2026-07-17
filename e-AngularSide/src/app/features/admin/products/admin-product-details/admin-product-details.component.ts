@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductDetailsResponse } from 'src/app/models/product.model';
 import { AdminProductService } from '../../services/admin-product.service';
-import { ProductVariantResponse } from '../../models/variants/productVariant.model';
+import { ProductVariantResponse } from '../../../../models/productVariant.model';
 
 @Component({
   selector: 'app-admin-product-details',
@@ -43,8 +43,8 @@ export class AdminProductDetailsComponent implements OnInit {
         .subscribe({
           next: (res) => {
           this.product = res;
-          if (res.variants?.length) {
-              this.selectedVariant = res.variants[0];
+          if (res.productVariants?.length) {
+              this.selectedVariant = res.productVariants[0];
             }
             this.loading = false;
         },
@@ -88,18 +88,6 @@ export class AdminProductDetailsComponent implements OnInit {
       this.router.navigate(['/admin/adminEditProductForm', this.productId]);
     }
   }
-
-   addToCart() {
-
-  if (!this.selectedVariant) {
-    return;
-  }
-
-  this.cartService.addItemToCart({
-    variantId: this.selectedVariant.id,
-    quantity: 1
-  });
- }
 
 
  selectVariant(variant: ProductVariantResponse) {

@@ -63,7 +63,7 @@ public class AttributeValueService {
         return AttributeValueMapper.toResponse(attributeValue);
     }
 
-    public Page<AttributeValueResponseDTO> getByAttributeId(
+    public Page<AttributeValueResponseDTO> getAttributeValuesByAttributeId(
             Long attributeId,
             int page,
             int size) {

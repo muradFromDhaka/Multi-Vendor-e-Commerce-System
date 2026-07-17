@@ -16,7 +16,6 @@ public class ShippingAddressMapper {
 
         ShippingAddress shippingAddress = new ShippingAddress();
 
-        shippingAddress.setCustomerName(dto.getCustomerName());
         shippingAddress.setPhone(dto.getPhone());
         shippingAddress.setStreet(dto.getStreet());
         shippingAddress.setCity(dto.getCity());
@@ -35,7 +34,7 @@ public class ShippingAddressMapper {
 
         return new ShippingAddressResponseDto(
                 entity.getId(),
-                entity.getCustomerName(),
+                entity.getUser().getUserName(),
                 entity.getPhone(),
                 entity.getStreet(),
                 entity.getCity(),
@@ -51,7 +50,7 @@ public class ShippingAddressMapper {
             return;
         }
 
-        entity.setCustomerName(dto.getCustomerName());
+//        entity.setUser(dto.getUsername());
         entity.setPhone(dto.getPhone());
         entity.setStreet(dto.getStreet());
         entity.setCity(dto.getCity());

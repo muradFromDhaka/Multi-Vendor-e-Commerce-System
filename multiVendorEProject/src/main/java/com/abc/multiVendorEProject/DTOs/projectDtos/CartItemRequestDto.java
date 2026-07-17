@@ -8,8 +8,9 @@ import lombok.Data;
 public class CartItemRequestDto {
 
     @NotNull
-    private Long variantId;
+    private Long productVariantId;
 
+    @NotNull
     @Min(1)
     private Integer quantity;
 }

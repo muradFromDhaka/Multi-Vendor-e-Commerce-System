@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -43,6 +45,6 @@ public class OrderResponseDto {
 
     private List<OrderItemResponseDTO> items;
 
-    private String createdAt;
+    private LocalDateTime createdAt;
 }
 

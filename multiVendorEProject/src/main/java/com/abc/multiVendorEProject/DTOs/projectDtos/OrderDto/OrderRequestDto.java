@@ -17,12 +17,11 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderRequestDto {
 
-    @NotNull
-    private ShippingAddressRequestDto shippingAddress;
+    private Long shippingAddressId; // Existing Address হলে
+
+    private ShippingAddressRequestDto shippingAddress; // New Address হলে
 
     @NotNull
     private PaymentMethod paymentMethod;
 
-    @NotNull
-    private List<OrderItemRequestDTO> items;
 }

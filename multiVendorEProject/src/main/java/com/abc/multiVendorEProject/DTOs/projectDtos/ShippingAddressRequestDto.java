@@ -14,7 +14,7 @@ import lombok.Setter;
 public class ShippingAddressRequestDto {
 
     @NotBlank(message = "Receiver name is required")
-    private String customerName;
+    private String username;
 
     @NotBlank(message = "Phone number is required")
     private String phone;

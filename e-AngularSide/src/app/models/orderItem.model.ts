@@ -1,4 +1,4 @@
-import { AttributeValueResponse } from "../features/admin/models/variants/attributeValue.model";
+import { AttributeValueResponse } from "./variants/attributeValue.model";
 
 export interface OrderItemRequest {
   productVariantId: number;

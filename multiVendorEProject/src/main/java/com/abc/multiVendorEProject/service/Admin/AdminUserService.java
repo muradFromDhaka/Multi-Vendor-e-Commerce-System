@@ -1,6 +1,6 @@
 package com.abc.multiVendorEProject.service.Admin;
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.Customer.CustomerStatisticsDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.AdminDashboard.CustomerStatisticsDto;
 import com.abc.multiVendorEProject.DTOs.securityDtos.UserResponseDto;
 import com.abc.multiVendorEProject.Util.NotFoundException;
 import com.abc.multiVendorEProject.Util.RoleConstants;

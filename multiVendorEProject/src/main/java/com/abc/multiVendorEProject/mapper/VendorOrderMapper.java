@@ -27,7 +27,7 @@ public class VendorOrderMapper {
                 vendorOrder.getVendorOrderNumber(),
                 vendorOrder.getOrder()
                         .getShippingAddress()
-                        .getCustomerName(),
+                        .getUser().getUserName(),
                 vendorOrder.getOrderItems().size(),
                 vendorOrder.getTotalPrice(),
                 vendorOrder.getOrderStatus(),
@@ -50,7 +50,7 @@ public class VendorOrderMapper {
                 vendorOrder.getVendorOrderNumber(),
                 vendorOrder.getOrder()
                         .getShippingAddress()
-                        .getCustomerName(),
+                        .getUser().getUserName(),
                 ShippingAddressMapper.toResponseDto(
                         vendorOrder.getOrder().getShippingAddress()
                 ),

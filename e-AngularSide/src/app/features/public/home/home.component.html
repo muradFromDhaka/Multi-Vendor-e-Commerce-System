@@ -208,6 +208,14 @@
 
             </p>
 
+            <a
+              routerLink="/publicProductList"
+              class="btn btn-outline-primary">
+ 
+               View All →
+
+           </a>
+
         </div>
 
         <div class="row">
@@ -311,10 +319,9 @@
                         </button>
 
                         <button
-
                             class="btn btn-warning"
-
-                            (click)="addToCart(product)">
+                            (click)="addToCart(product)"
+                            [disabled]="!product.productVariantId">
 
                             Add Cart
 
@@ -445,10 +452,9 @@
                         </button>
 
                         <button
-
                             class="btn btn-warning"
-
-                            (click)="addToCart(product)">
+                            (click)="addToCart(product)"
+                            [disabled]="!product.productVariantId">
 
                             Add Cart
 

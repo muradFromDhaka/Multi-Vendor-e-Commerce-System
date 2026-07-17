@@ -96,4 +96,6 @@ public interface ProductVariantRepository
             Pageable pageable
     );
 
-}
+    Page<ProductVariant> findByProductVendorId(
+            Long vendorId,
+            Pageable pageable);}

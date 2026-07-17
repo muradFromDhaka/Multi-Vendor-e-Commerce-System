@@ -81,39 +81,9 @@ public class AdminProductService {
         return productRepository.save(product);
     }
 
-    private ProductListResponseDTO mapToProductListDto(Product product) {
-
-        ProductVariant variant = product.getVariants()
-                .stream()
-                .findFirst()
-                .orElse(null);
-
-        BigDecimal price = BigDecimal.ZERO;
-        BigDecimal discountPrice = null;
-
-        if (variant != null) {
-            price = variant.getPrice();
-            discountPrice = variant.getDiscountPrice();
-        }
-
-        String thumbnail = null;
-        if (product.getImageUrls() != null && !product.getImageUrls().isEmpty()) {
-            thumbnail = product.getImageUrls().get(0);
-        }
-
-        return ProductMapper.toListDto(
-                product,
-                price,
-                discountPrice,
-                thumbnail,
-                product.getVariants().size()
-        );
-    }
-
 
     private Page<ProductListResponseDTO> mapToProductList(Page<Product> products) {
-
-        return products.map(this::mapToProductListDto);
+        return products.map(ProductMapper::toListDto);
     }
 
 

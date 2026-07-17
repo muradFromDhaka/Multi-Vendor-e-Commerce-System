@@ -273,7 +273,7 @@
           routerLinkActive="active"
           class="nav-link"
         >
-          <span class="nav-link-icon">📦</span>
+          <span class="nav-link-icon">🚚</span>
           <span class="nav-link-text">Orders</span>
           <span class="order-badge" *ngIf="pendingOrders > 0">{{
             pendingOrders
@@ -285,7 +285,7 @@
 
   <div class="nav-link more-dropdown">
 
-    <span class="nav-link-icon">📦</span>
+    <span class="nav-link-icon">🧊</span>
 
     <span class="nav-link-text">Variants</span>
 
@@ -300,11 +300,11 @@
     </a>
 
     <a routerLink="/admin/attributeValue" class="dropdown-item">
-      📋 Attribute Value
+      📝 Attribute Value
     </a>
 
     <a routerLink="/admin/productVariantList" class="dropdown-item">
-      📦 Product Variant
+      🧩Product Variant
     </a>
 
   </div>
@@ -603,6 +603,15 @@
           <span class="nav-link-text">Products</span>
         </a>
 
+         <a
+          routerLink="/vendor/vendorProductVariantList"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">🧩</span>
+          <span class="nav-link-text">ProductVariants</span>
+        </a>
+
         <a
           routerLink="/admin/orders"
           routerLinkActive="active"
@@ -625,15 +634,6 @@
           <span class="nav-link-text">Inventory</span>
         </a>
 
-        <a
-          routerLink="/vendor/customer"
-          routerLinkActive="active"
-          class="nav-link"
-        >
-          <span class="nav-link-icon">👥</span>
-          <span class="nav-link-text">Customer</span>
-        </a>
-
 
         <a
           routerLink="/vendor/reviews"
@@ -642,6 +642,15 @@
         >
           <span class="nav-link-icon">⭐</span>
           <span class="nav-link-text">Reviews</span>
+        </a>
+
+        <a
+          routerLink="/vendor/vendorCustomer"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">⭐</span>
+          <span class="nav-link-text">Customer</span>
         </a>
 
         <!-- More Dropdown -->
@@ -909,21 +918,8 @@
           <span class="nav-link-text">Home</span>
         </a>
 
-
         <a
-          routerLink="/orderList"
-          routerLinkActive="active"
-          class="nav-link"
-        >
-          <span class="nav-link-icon">📦</span>
-          <span class="nav-link-text">My Orders</span>
-          <span class="order-badge" *ngIf="totalOrders > 0">{{
-            totalOrders
-          }}</span>
-        </a>
-
-        <a
-          routerLink="/adminLayout/adminProductList"
+          routerLink="/publicProductList"
           routerLinkActive="active"
           class="nav-link"
         >
@@ -932,7 +928,7 @@
         </a>
 
         <a
-          routerLink="/adminLayout/adminCategoryList"
+          routerLink="/categories"
           routerLinkActive="active"
           class="nav-link"
           *ngIf="currentUser$"
@@ -942,7 +938,7 @@
         </a>
         
         <a
-          routerLink="/adminLayout/brand"
+          routerLink="/brands"
           routerLinkActive="active"
           class="nav-link"
         >
@@ -951,7 +947,8 @@
         </a>
 
          <!-- Cart -->
-          <a class="nav-link position-relative" routerLink="/cart">
+          <a class="nav-link position-relative" 
+          routerLink="/customer/cart">
             <i class="bi bi-cart3 fs-5"></i>
             <span
               *ngIf="cartItemCount > 0"
@@ -959,6 +956,18 @@
               {{ cartItemCount }}
             </span>
           </a>
+
+          <a
+          routerLink="/customer/orders"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">📦</span>
+          <span class="nav-link-text">My Orders</span>
+          <span class="order-badge" *ngIf="totalOrders > 0">{{
+            totalOrders
+          }}</span>
+        </a>
 
 
         <a

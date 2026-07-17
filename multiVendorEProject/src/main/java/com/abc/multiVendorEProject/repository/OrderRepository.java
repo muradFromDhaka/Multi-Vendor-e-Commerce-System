@@ -1,6 +1,7 @@
 package com.abc.multiVendorEProject.repository;
 
 
+import com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.VendorCustomerResponseDTO;
 import com.abc.multiVendorEProject.entity.Order;
 import com.abc.multiVendorEProject.entity.User;
 import com.abc.multiVendorEProject.enums.OrderStatus;
@@ -85,6 +86,36 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             @Param("paymentStatus") PaymentStatus paymentStatus
     );
 
+    List<Order> findByUserUserName(String userName);
 
+
+    @Query("""
+SELECT new com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.VendorCustomerResponseDTO(
+    u.userName,
+    CONCAT(
+        COALESCE(u.userFirstName,''),
+        ' ',
+        COALESCE(u.userLastName,'')
+    ),
+    u.email,
+    MAX(sa.phone),
+    COUNT(DISTINCT o.id),
+    COALESCE(SUM(oi.totalPrice),0),
+    MAX(o.createdAt)
+)
+FROM Order o
+JOIN o.user u
+JOIN o.orderItems oi
+LEFT JOIN o.shippingAddress sa
+WHERE oi.vendor.id = :vendorId
+GROUP BY
+    u.userName,
+    u.userFirstName,
+    u.userLastName,
+    u.email
+""")
+    Page<VendorCustomerResponseDTO> findCustomerSummaries(
+            @Param("vendorId") Long vendorId,
+            Pageable pageable);
 
 }

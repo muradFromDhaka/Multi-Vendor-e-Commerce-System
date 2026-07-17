@@ -19,6 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
 
         Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
 
+        System.out.println("Upload Path ============ " + uploadPath.toAbsolutePath());
+
         registry.addResourceHandler("/uploadDir/**")
                 .addResourceLocations("file:" + uploadPath + "/")
                 .setCachePeriod(3600);

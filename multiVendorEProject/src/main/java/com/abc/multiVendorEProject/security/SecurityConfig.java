@@ -42,8 +42,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authz -> authz
-                                .requestMatchers("/uploadDir/**").permitAll()
-                                .requestMatchers("/api/auth/**").permitAll()
+                              .requestMatchers(
+                                "/api/auth/**",
+                                         "/api/products/**",
+                                         "/api/categories/**",
+                                         "/api/brands/**",
+                                         "/api/attributes/**",
+                                         "/uploadDir/**",
+                                         "/swagger-ui/**",
+                                         "/v3/api-docs/**"
+                                   ).permitAll()
+                                .requestMatchers("/test").permitAll()
+                                .requestMatchers("/error").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers("/api/vendor/**").hasAnyRole("VENDOR", "ADMIN")

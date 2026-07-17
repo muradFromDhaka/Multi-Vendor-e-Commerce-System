@@ -1,4 +1,4 @@
-import { ProductVariantResponse } from "../features/admin/models/variants/productVariant.model";
+import { ProductVariantResponse } from "./productVariant.model";
 
 export enum ProductStatus {
   ACTIVE = 'ACTIVE',
@@ -47,7 +47,7 @@ export interface ProductDetailsResponse {
 
   totalVariants: number;
 
-  variants: ProductVariantResponse[];
+  productVariants: ProductVariantResponse[];
 
   categoryId: number;
   categoryName: string;
@@ -81,11 +81,15 @@ export interface ProductListResponse {
 
   totalReviews?: number;
 
-  variantId: number;
+  productVariantId: number;
 
   categoryId: number;
 
   categoryName: string;
+
+  brandId: number;
+
+  brandName: string;
 
   totalVariants: number;
 

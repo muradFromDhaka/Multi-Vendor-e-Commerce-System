@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AttributeService } from '../../services/variants/attribute.service';
 import { AttributeValueService } from '../../services/variants/attribute-value.service';
-import { AttributeResponse } from '../../models/variants/attribute.model';
-import { AttributeValueRequest, AttributeValueResponse } from '../../models/variants/attributeValue.model';
+import { AttributeResponse } from '../../../../models/variants/attribute.model';
+import { AttributeValueRequest, AttributeValueResponse } from '../../../../models/variants/attributeValue.model';
 
 @Component({
   selector: 'app-attribute-value',

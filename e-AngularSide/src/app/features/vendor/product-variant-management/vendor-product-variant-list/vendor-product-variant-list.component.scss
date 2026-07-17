@@ -1,0 +1,373 @@
+/* ===========================
+        Page
+=========================== */
+
+.container-fluid {
+    background: #f8f9fa;
+}
+
+
+/* ===========================
+        Header
+=========================== */
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.page-header .btn {
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+
+/* ===========================
+        Summary Card
+=========================== */
+
+.summary-card {
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 20px;
+
+    background: #fff;
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+.summary-icon {
+
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e9f2ff;
+    color: #0d6efd;
+
+    font-size: 22px;
+}
+
+
+/* ===========================
+        Card
+=========================== */
+
+.variant-card {
+
+    border: none;
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+
+    transition: .3s;
+}
+
+.variant-card:hover {
+
+    transform: translateY(-4px);
+}
+
+
+/* ===========================
+        Image
+=========================== */
+
+.variant-image {
+
+    height: 170px;
+    position: relative;
+}
+
+.variant-image img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.image-count {
+
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    padding: 4px 10px;
+
+    border-radius: 20px;
+
+    background: rgba(0,0,0,.6);
+    color: white;
+
+    font-size: 12px;
+}
+
+
+/* ===========================
+        Card Body
+=========================== */
+
+.card-body {
+
+    padding: 15px;
+}
+
+.product-name {
+
+    font-size: 18px;
+    font-weight: 600;
+
+    margin-bottom: 12px;
+}
+
+.sku {
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 8px 10px;
+
+    margin-bottom: 10px;
+
+    background: #f5f5f5;
+
+    border-radius: 6px;
+}
+
+.attribute-wrapper {
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-bottom: 10px;
+}
+
+.attribute-chip {
+
+    padding: 4px 10px;
+
+    border-radius: 20px;
+
+    background: #e9ecef;
+
+    font-size: 12px;
+}
+
+.price-wrapper {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+}
+
+.discount-price {
+
+    color: #198754;
+
+    font-size: 20px;
+
+    font-weight: bold;
+}
+
+.original-price {
+
+    color: gray;
+
+    text-decoration: line-through;
+}
+
+
+/* ===========================
+        Stock
+=========================== */
+
+.stock-wrapper {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.stock-badge {
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+}
+
+.stock-count {
+
+    font-size: 13px;
+}
+
+
+/* ===========================
+        Variant Info
+=========================== */
+
+.info-item {
+
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 6px;
+}
+
+.label {
+
+    color: #6c757d;
+}
+
+.value {
+
+    font-weight: 600;
+}
+
+
+/* ===========================
+        Footer
+=========================== */
+
+.card-footer {
+
+    display: flex;
+    justify-content: space-between;
+
+    gap: 8px;
+
+    padding: 10px;
+
+    background: #fff;
+}
+
+.action-btn {
+
+    flex: 1;
+
+    border: none;
+
+    padding: 8px;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.action-btn:hover {
+
+    opacity: .9;
+}
+
+.view-btn {
+
+    background: #0dcaf0;
+    color: white;
+}
+
+.edit-btn {
+
+    background: #ffc107;
+    color: black;
+}
+
+.delete-btn {
+
+    background: #dc3545;
+    color: white;
+}
+
+
+/* ===========================
+        Empty State
+=========================== */
+
+.empty-state {
+
+    text-align: center;
+
+    padding: 60px 20px;
+
+    color: gray;
+}
+
+.empty-state i {
+
+    font-size: 60px;
+
+    margin-bottom: 15px;
+}
+
+
+/* ===========================
+        Pagination
+=========================== */
+
+.pagination-wrapper {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+/* ===========================
+        Responsive
+=========================== */
+
+@media (max-width:768px) {
+
+    .page-header {
+        text-align: center;
+    }
+
+    .page-header .btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .variant-image {
+        height: 190px;
+    }
+
+    .stock-wrapper {
+
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 8px;
+    }
+
+    .pagination-wrapper {
+
+        flex-direction: column;
+    }
+
+}

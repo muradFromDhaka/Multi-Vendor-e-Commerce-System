@@ -1,6 +1,6 @@
 export interface ShippingAddressRequest {
 
-  customerName: string;
+  username: string;
 
   phone: string;
 
@@ -20,7 +20,7 @@ export interface ShippingAddressResponse {
 
   id: number;
 
-  customerName: string;
+  username: string;
 
   phone: string;
 

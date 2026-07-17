@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProductDetailsResponse } from 'src/app/models/product.model';
+import { ProductDetailsResponse, ProductListResponse } from 'src/app/models/product.model';
 import { VendorProductService } from '../../services/vendor-product.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { VendorProductService } from '../../services/vendor-product.service';
 })
 export class VendorProductListComponent implements OnInit {
 
-  products: ProductDetailsResponse[] = [];
+  products: ProductListResponse[] = [];
 
   loading = false;
 

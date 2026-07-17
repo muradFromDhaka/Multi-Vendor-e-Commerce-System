@@ -3,52 +3,68 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProductDetailsResponse, ProductListResponse, ProductRequest, } from '../models/product.model';
 import { PageResponse } from '../models/PageResponse';
+import { environment } from './environments';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private baseUrl = 'http://localhost:8080/api/products';
+  private baseUrl = `${environment.apiUrl}/products`;
 
   constructor(private http: HttpClient) {}
 
-  /** CREATE PRODUCT */
-  createProduct(dto: ProductRequest, images?: File[]): Observable<ProductDetailsResponse> {
-    const formData = new FormData();
-    formData.append('product', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+  // /** CREATE PRODUCT */
+  // createProduct(dto: ProductRequest, images?: File[]): Observable<ProductDetailsResponse> {
+  //   const formData = new FormData();
+  //   formData.append('product', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
 
-    if (images) {
-      for (const file of images) {
-        formData.append('images', file);
-      }
-    }
+  //   if (images) {
+  //     for (const file of images) {
+  //       formData.append('images', file);
+  //     }
+  //   }
 
-    return this.http.post<ProductDetailsResponse>(this.baseUrl, formData);
-  }
+  //   return this.http.post<ProductDetailsResponse>(this.baseUrl, formData);
+  // }
 
-  /** UPDATE PRODUCT */
-  updateProduct(id: number, dto: ProductRequest, images?: File[]): Observable<ProductDetailsResponse> {
+  // /** UPDATE PRODUCT */
+  // updateProduct(id: number, dto: ProductRequest, images?: File[]): Observable<ProductDetailsResponse> {
 
-    console.log("ProductService.updateProduct called");
+  //   console.log("ProductService.updateProduct called");
 
-    const formData = new FormData();
-    formData.append('product', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+  //   const formData = new FormData();
+  //   formData.append('product', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
 
-    if (images) {
-      for (const file of images) {
-        formData.append('images', file);
-      }
-    }
+  //   if (images) {
+  //     for (const file of images) {
+  //       formData.append('images', file);
+  //     }
+  //   }
 
-    console.log("Sending PUT Request");
+  //   console.log("Sending PUT Request");
 
-    return this.http.put<ProductDetailsResponse>(`${this.baseUrl}/${id}`, formData);
-  }
+  //   return this.http.put<ProductDetailsResponse>(`${this.baseUrl}/${id}`, formData);
+  // }
+
 
   /** LIST ALL PRODUCTS */
-  getAllProducts(): Observable<PageResponse<ProductListResponse>> {
-    return this.http.get<PageResponse<ProductListResponse>>(this.baseUrl);
-  }
+ getAllProducts(
+  page = 0,
+  size = 10,
+  sort = 'id,desc'
+): Observable<PageResponse<ProductListResponse>> {
+
+  return this.http.get<PageResponse<ProductListResponse>>(
+    this.baseUrl,
+    {
+      params: {
+        page,
+        size,
+        sort
+      }
+    }
+  );
+}
 
 
   /** GET PRODUCT BY ID */
@@ -57,25 +73,76 @@ export class ProductService {
   }
 
 
-  getProductsByCategoryId(categoryId: number):Observable<PageResponse<ProductListResponse>>{
-  return this.http.get<PageResponse<ProductListResponse>>(`${this.baseUrl}/category/${categoryId}`);
+  getProductsByCategoryId(
+  categoryId: number,
+  page = 0,
+  size = 10,
+  sort = 'id,desc'
+  ):Observable<PageResponse<ProductListResponse>>{
+  return this.http.get<PageResponse<ProductListResponse>>(
+  `${this.baseUrl}/category/${categoryId}`,
+  {
+    params: {
+      page,
+      size,
+      sort
+    }
+  }
+);
+}
+
+searchProducts(
+  keyword: string,
+  page = 0,
+  size = 10,
+  sort = 'id,desc'
+) {
+  return this.http.get<PageResponse<ProductListResponse>>(`${this.baseUrl}/search`,{ params: {
+  keyword,
+  page,
+  size,
+  sort
+} });
 }
 
 
 
-searchProducts(keyword: string) {
-  return this.http.get<PageResponse<ProductListResponse>>(`${this.baseUrl}/search`,{ params: { keyword } });
+getProductsByBrand(
+  brandId: number,
+  page = 0,
+  size = 10,
+  sort = 'id,desc'
+): Observable<PageResponse<ProductListResponse>> {
+  return this.http.get<PageResponse<ProductListResponse>>(
+  `${this.baseUrl}/brand/${brandId}`,
+  {
+    params: {
+      page,
+      size,
+      sort
+    }
+  }
+);
 }
 
 
+getProductsByVendor(
+  vendorId: number,
+  page = 0,
+  size = 10,
+  sort = 'id,desc'
+): Observable<PageResponse<ProductDetailsResponse>> {
 
-getProductsByBrand(brandId: number): Observable<PageResponse<ProductListResponse>> {
-  return this.http.get<PageResponse<ProductListResponse>>(`${this.baseUrl}/brand/${brandId}`);
-}
-
-
-getProductsByVendor(): Observable<PageResponse<ProductListResponse>> {
-  return this.http.get<PageResponse<ProductListResponse>>(`${this.baseUrl}/my/product`);
+  return this.http.get<PageResponse<ProductDetailsResponse>>(
+    `${this.baseUrl}/vendor/${vendorId}`,
+    {
+      params: {
+        page,
+        size,
+        sort
+      }
+    }
+  );
 }
 
 
@@ -90,24 +157,57 @@ getProductsByVendor(): Observable<PageResponse<ProductListResponse>> {
 
 
   /** POPULAR / LATEST / DISCOUNTED / TRENDING */
-  getMostPopular(limit = 10): Observable<PageResponse<ProductListResponse>> {
-    return this.http.get<PageResponse<ProductListResponse>>(`${this.baseUrl}/popular?limit=${limit}`);
+getMostPopular(
+  page = 0,
+  size = 10,
+  sort = 'id,desc'
+  ): Observable<PageResponse<ProductListResponse>> {
+    return this.http.get<PageResponse<ProductListResponse>>(
+  `${this.baseUrl}/popular`,
+  {
+    params: {
+      page,
+      size,
+      sort
+    }
+  }
+);
   }
 
-  getLatest(limit = 10): Observable<PageResponse<ProductListResponse>> {
-    return this.http.get<PageResponse<ProductListResponse>>(`${this.baseUrl}/latest?limit=${limit}`);
+  getLatest(
+   page = 0,
+  size = 10,
+  sort = 'id,desc'
+): Observable<PageResponse<ProductListResponse>> {
+    return this.http.get<PageResponse<ProductListResponse>>(
+  `${this.baseUrl}/latest`,
+  {
+    params: {
+      page,
+      size,
+      sort
+    }
+  }
+);
   }
 
 
-  getTrending(limit = 10): Observable<PageResponse<ProductListResponse>> {
-    return this.http.get<PageResponse<ProductListResponse>>(`${this.baseUrl}/trending?limit=${limit}`);
+  getTrending(
+    limit = 10,
+   page = 0,
+  size = 10,
+  sort = 'id,desc'
+): Observable<PageResponse<ProductListResponse>> {
+    return this.http.get<PageResponse<ProductListResponse>>(
+  `${this.baseUrl}/trending`,
+  {
+    params: {
+      page,
+      size,
+      sort
+    }
   }
-
-
-  getMyProducts(): Observable<PageResponse<ProductDetailsResponse>> {
-  return this.http.get<PageResponse<ProductDetailsResponse>>(
-    `${this.baseUrl}/my/product`
-  );
-}
+);
+  }
 
 }

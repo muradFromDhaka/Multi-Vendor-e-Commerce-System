@@ -13,7 +13,7 @@ public class ShippingAddressResponseDto {
 
     private Long id;
 
-    private String customerName;
+    private String username;
 
     private String phone;
 

@@ -1,4 +1,4 @@
-import { OrderItemRequest, OrderItemResponse } from "./orderItem.model";
+import { OrderItemResponse } from "./orderItem.model";
 import { PageResponse } from "./PageResponse";
 import { ShippingAddressRequest, ShippingAddressResponse } from "./shippingAddress.model";
 
@@ -33,11 +33,12 @@ export enum PaymentMethod {
 
 export interface OrderRequest {
 
-  shippingAddress: ShippingAddressRequest;
+  shippingAddressId?: number | undefined;
+
+  shippingAddress?: ShippingAddressRequest;
 
   paymentMethod: PaymentMethod;
 
-  items: OrderItemRequest[];
 }
 
 export interface OrderResponse {

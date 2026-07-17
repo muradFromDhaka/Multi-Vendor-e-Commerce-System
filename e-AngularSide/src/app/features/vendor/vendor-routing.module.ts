@@ -8,6 +8,11 @@ import { VendorComponent } from './vendor.component';
 import { VendorProductListComponent } from './products/vendor-product-list/vendor-product-list.component';
 import { VendorProductDetailsComponent } from './products/vendor-product-details/vendor-product-details.component';
 import { VendorProductFormComponent } from './products/vendor-product-form/vendor-product-form.component';
+import { VendorProductVariantListComponent } from './product-variant-management/vendor-product-variant-list/vendor-product-variant-list.component';
+import { VendorProductVariantDetailsComponent } from './product-variant-management/vendor-product-variant-details/vendor-product-variant-details.component';
+import { VendorProductVariantFormComponent } from './product-variant-management/vendor-product-variant-form/vendor-product-variant-form.component';
+import { VendorCustomerListComponent } from './customers/vendor-customer-list/vendor-customer-list.component';
+import { VendorCustomerDetailsComponent } from './customers/vendor-customer-details/vendor-customer-details.component';
 
 const routes: Routes = [
 
@@ -28,7 +33,14 @@ const routes: Routes = [
         {path:'productForm',component:VendorProductFormComponent},
         {path:'productForm/:id',component:VendorProductFormComponent},
 
+        {path:'vendorProductVariantList',component:VendorProductVariantListComponent},
+        {path:'vendorProductVariantDetails/:id',component:VendorProductVariantDetailsComponent},
+        {path:'vendorProductVariantForm',component:VendorProductVariantFormComponent},
+        {path:'vendorProductVariantForm/:id',component:VendorProductVariantFormComponent},
+        
 
+        {path:'vendorCustomer',component:VendorCustomerListComponent},
+        {path:'vendorCustomer/:userName',component:VendorCustomerDetailsComponent}
     ]
 
 }

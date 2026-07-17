@@ -1,0 +1,43 @@
+<div class="payment-card">
+
+    <div class="card shadow-sm">
+
+        <div class="card-header">
+
+            <h4>
+                <i class="fas fa-credit-card me-2"></i>
+                Payment Method
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <div
+                    class="payment-option"
+                    *ngFor="let method of paymentMethods">
+
+                <label class="payment-label">
+
+                    <input
+                            type="radio"
+                            name="paymentMethod"
+                            [value]="method"
+                            [checked]="selectedPaymentMethod === method"
+                            (change)="selectPayment(method)">
+
+                    <span class="payment-name">
+
+                        {{ method.replaceAll('_',' ') }}
+
+                    </span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -13,6 +13,7 @@ public class AddressMapper {
         if(dto == null || entity == null) return null;
         entity.setCity(dto.getCity());
         entity.setCountry(dto.getCountry());
+        entity.setDistrict(dto.getDistrict());
         entity.setStreet(dto.getStreet());
         entity.setZipCode(dto.getZipCode());
 

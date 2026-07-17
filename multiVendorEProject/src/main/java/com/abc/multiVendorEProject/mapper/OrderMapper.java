@@ -11,8 +11,8 @@ import java.util.List;
 public class OrderMapper {
 
     private OrderMapper() {}
-    private static final DateTimeFormatter FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//    private static final DateTimeFormatter FORMATTER =
+//            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public static OrderResponseDto toResponseDto(Order order) {
 
@@ -32,7 +32,7 @@ public class OrderMapper {
                         .stream()
                         .map(OrderItemMapper::toResponseDto)
                         .toList(),
-                order.getCreatedAt().format(FORMATTER)
+                order.getCreatedAt()
         );
     }
 
@@ -46,7 +46,7 @@ public class OrderMapper {
                 order.getTotalPrice(),
                 order.getOrderStatus(),
                 order.getPaymentStatus(),
-                order.getCreatedAt().format(FORMATTER)
+                order.getCreatedAt()
         );
     }
 
@@ -70,8 +70,8 @@ public class OrderMapper {
                         .stream()
                         .map(OrderItemMapper::toResponseDto)
                         .toList(),
-                order.getCreatedAt().format(FORMATTER),
-                order.getUpdatedAt().format(FORMATTER)
+                order.getCreatedAt(),
+                order.getUpdatedAt()
         );
     }
 

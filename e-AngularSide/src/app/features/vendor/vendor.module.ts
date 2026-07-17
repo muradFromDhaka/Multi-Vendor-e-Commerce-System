@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
 import { VendorRoutingModule } from './vendor-routing.module';
 import { VendorComponent } from './vendor.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +18,11 @@ import { VendorOrderDetailsComponent } from './orders/vendor-order-details/vendo
 import { VendorReviewListComponent } from './reviews/vendor-review-list/vendor-review-list.component';
 import { VendorSettingsComponent } from './settings/vendor-settings/vendor-settings.component';
 import { ChangePasswordComponent } from './settings/change-password/change-password.component';
+import { VendorProductVariantListComponent } from './product-variant-management/vendor-product-variant-list/vendor-product-variant-list.component';
+import { VendorProductVariantFormComponent } from './product-variant-management/vendor-product-variant-form/vendor-product-variant-form.component';
+import { VendorProductVariantDetailsComponent } from './product-variant-management/vendor-product-variant-details/vendor-product-variant-details.component';
+import { VendorCustomerListComponent } from './customers/vendor-customer-list/vendor-customer-list.component';
+import { VendorCustomerDetailsComponent } from './customers/vendor-customer-details/vendor-customer-details.component';
 
 
 @NgModule({
@@ -34,13 +40,18 @@ import { ChangePasswordComponent } from './settings/change-password/change-passw
     VendorOrderDetailsComponent,
     VendorReviewListComponent,
     VendorSettingsComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    VendorProductVariantListComponent,
+    VendorProductVariantFormComponent,
+    VendorProductVariantDetailsComponent,
+    VendorCustomerListComponent,
+    VendorCustomerDetailsComponent
   ],
   imports: [
     CommonModule,
     VendorRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
   ]
 })
 export class VendorModule { }

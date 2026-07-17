@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/addresses")
@@ -29,6 +31,12 @@ public class AddressController {
         AddressResponseDto responseDto = addressService.getById(id);
 
         return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<List<AddressResponseDto>> getMyAddresses() {
+
+        return ResponseEntity.ok(addressService.getMyAddresses());
     }
 
     @PostMapping

@@ -1,10 +1,8 @@
 package com.abc.multiVendorEProject.Controller;
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.OrderRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.OrderResponseDto;
 import com.abc.multiVendorEProject.enums.OrderStatus;
 import com.abc.multiVendorEProject.service.OrderService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,13 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService orderService;
-
-    @PostMapping
-    public OrderResponseDto createOrder(
-            @Valid @RequestBody OrderRequestDto request) {
-
-        return orderService.createOrder(request);
-    }
 
     @GetMapping
     public Page<OrderResponseDto> getMyOrders(

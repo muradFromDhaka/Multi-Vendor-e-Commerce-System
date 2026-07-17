@@ -1,6 +1,7 @@
 package com.abc.multiVendorEProject.Controller.Vendor;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.ProductDto.ProductDetailsResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.ProductDto.ProductListResponseDTO;
 import com.abc.multiVendorEProject.DTOs.projectDtos.ProductDto.ProductRequestDto;
 import com.abc.multiVendorEProject.service.Vendor.VendorProductService;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class VendorProductController {
     // =====================================================
 
     @GetMapping
-    public Page<ProductDetailsResponseDto> getMyProducts(
+    public Page<ProductListResponseDTO> getMyProducts(
             Pageable pageable) {
 
         return vendorProductService.getMyProducts(pageable);

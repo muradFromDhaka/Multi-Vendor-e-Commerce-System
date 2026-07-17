@@ -22,20 +22,19 @@ public class CartItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "variant_id", nullable = false)
-    private ProductVariant variant;
+    private ProductVariant productVariant;
 
     @Column(nullable = false)
     private int quantity;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal unitPrice;
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal unitPrice = BigDecimal.ZERO;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal totalPrice;
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 
 
-    // Calculate total price for this cart item
-    public BigDecimal calculateTotalPrice() {
-        return unitPrice.multiply(new BigDecimal(quantity));
+    public void calculateTotalPrice() {
+        this.totalPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
     }
 }

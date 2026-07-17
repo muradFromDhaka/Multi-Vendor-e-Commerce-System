@@ -6,6 +6,7 @@ import com.abc.multiVendorEProject.DTOs.projectDtos.CartItemResponseDTO;
 import com.abc.multiVendorEProject.Util.NotFoundException;
 import com.abc.multiVendorEProject.entity.Cart;
 import com.abc.multiVendorEProject.entity.CartItem;
+import com.abc.multiVendorEProject.entity.Product;
 import com.abc.multiVendorEProject.entity.User;
 import com.abc.multiVendorEProject.entity.Variant.ProductVariant;
 import com.abc.multiVendorEProject.repository.CartRepository;
@@ -72,24 +73,24 @@ public class CartService {
                 .orElseGet(() -> createNewCartForUser(currentUser));
 
         ProductVariant variant =
-                productVariantRepository.findById(request.getVariantId())
+                productVariantRepository.findById(request.getProductVariantId())
                         .orElseThrow(() -> new RuntimeException("Product not found"));
 
         Optional<CartItem> existingItem = cart.getItems().stream()
-                .filter(item -> item.getVariant().getId().equals(variant.getId()))
+                .filter(item -> item.getProductVariant().getId().equals(variant.getId()))
                 .findFirst();
 
         CartItem cartItem;
 
         if (existingItem.isEmpty()) {
             cartItem = new CartItem();
-            cartItem.setVariant(variant);
+            cartItem.setProductVariant(variant);
             cartItem.setQuantity(request.getQuantity());
             cartItem.setCart(cart);
 
             // Set price & totalPrice
             cartItem.setUnitPrice(variant.getPrice());
-            cartItem.setTotalPrice(variant.getPrice().multiply(new BigDecimal(request.getQuantity())));
+            cartItem.calculateTotalPrice();
 
             cart.getItems().add(cartItem);
         } else {
@@ -99,7 +100,7 @@ public class CartService {
 
             // Update price & totalPrice
             cartItem.setUnitPrice(variant.getPrice());
-            cartItem.setTotalPrice(variant.getPrice().multiply(new BigDecimal(newQuantity)));
+            cartItem.calculateTotalPrice();
         }
 
         cart.calculateTotalAmount(); // Update cart total
@@ -119,9 +120,8 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Cart item not found"));
 
         cartItem.setQuantity(request.getQuantity());
-        cartItem.setUnitPrice(cartItem.getVariant().getPrice());
-        cartItem.setTotalPrice(cartItem.getVariant().getPrice()
-                .multiply(new BigDecimal(request.getQuantity())));
+        cartItem.setUnitPrice(cartItem.getProductVariant().getPrice());
+        cartItem.calculateTotalPrice();
 
         cart.calculateTotalAmount();
         cartRepository.save(cart);
@@ -158,33 +158,68 @@ public class CartService {
 
 
     private CartDto mapCartToDto(Cart cart) {
+
+        cart.calculateTotalAmount();
+
         CartDto cartDto = new CartDto();
         cartDto.setCartId(cart.getId());
         cartDto.setTotalAmount(cart.getTotalAmount());
 
+        cartDto.setTotalItems(
+                cart.getItems()
+                        .stream()
+                        .mapToInt(CartItem::getQuantity)
+                        .sum()
+        );
+
+        cartDto.setSubtotal(cart.getTotalAmount());
+
+        cartDto.setShippingFee(BigDecimal.ZERO);
+
+        cartDto.setDiscount(BigDecimal.ZERO);
+
+        cartDto.setTotalAmount(
+                cart.getTotalAmount()
+                        .add(BigDecimal.ZERO)
+                        .subtract(BigDecimal.ZERO)
+        );
+
         List<CartItemResponseDTO> itemDtos = cart.getItems().stream().map(item -> {
             CartItemResponseDTO itemDto = new CartItemResponseDTO();
-            itemDto.setItemId(item.getId());
-            itemDto.setProductId(item.getVariant().getId());
-            itemDto.setProductName(item.getVariant().getProduct().getName());
+            itemDto.setCartItemId(item.getId());
+            itemDto.setProductId(item.getProductVariant().getProduct().getId());
+            itemDto.setProductVariantId(item.getProductVariant().getId());
+            itemDto.setProductName(item.getProductVariant().getProduct().getName());
+            itemDto.setSku(item.getProductVariant().getSku());
             itemDto.setQuantity(item.getQuantity());
             itemDto.setUnitPrice(item.getUnitPrice());
-            itemDto.setTotalPrice(item.calculateTotalPrice());
+            itemDto.setTotalPrice(item.getTotalPrice());
 
             // ---------------- Images ----------------
-            try {
-                List<String> images = item.getVariant().getProduct().getImageUrls();
-                if (images != null && !images.isEmpty()) {
-                    itemDto.setImageUrl(images.get(0));
-                }
-            } catch (Exception e) {
-                System.out.println("Error accessing image: " + e.getMessage());
+            ProductVariant variant = item.getProductVariant();
+
+            Product product = variant.getProduct();
+
+            if (product.getImageUrls() != null &&
+                    !product.getImageUrls().isEmpty()) {
+
+                itemDto.setImageUrl(
+                        product.getImageUrls().get(0)
+                );
+
+            }
+            else if (variant.getImageUrls() != null &&
+                    !variant.getImageUrls().isEmpty()) {
+
+                itemDto.setImageUrl(
+                        variant.getImageUrls().get(0)
+                );
             }
 
             // ---------------- Vendor Info ----------------
-            if (item.getVariant().getProduct().getVendor() != null) {
-                itemDto.setVendorId(item.getVariant().getProduct().getVendor().getId().intValue());
-                itemDto.setVendorName(item.getVariant().getProduct().getVendor().getShopName());
+            if (item.getProductVariant().getProduct().getVendor() != null) {
+                itemDto.setVendorId(item.getProductVariant().getProduct().getVendor().getId().intValue());
+                itemDto.setVendorName(item.getProductVariant().getProduct().getVendor().getShopName());
             } else {
                 itemDto.setVendorId(0); // fallback
                 itemDto.setVendorName("Unknown");
@@ -205,4 +240,17 @@ public class CartService {
         return cartRepository.findByUser(currentUser)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
     }
+
+
+    public void clearCart() {
+
+        Cart cart = getCartEntity();
+
+        cart.getItems().clear();
+
+        cart.setTotalAmount(BigDecimal.ZERO);
+
+        cartRepository.save(cart);
+    }
+
 }

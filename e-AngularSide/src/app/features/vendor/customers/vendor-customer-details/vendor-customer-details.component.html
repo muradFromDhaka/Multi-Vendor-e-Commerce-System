@@ -1,0 +1,289 @@
+<div class="container-fluid py-4">
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+
+        <div class="spinner-border text-primary"></div>
+
+        <p class="mt-3 mb-0">Loading customer details...</p>
+
+    </div>
+
+    <!-- Error -->
+    <div
+        *ngIf="!loading && errorMessage"
+        class="alert alert-danger">
+
+        {{ errorMessage }}
+
+    </div>
+
+    <!-- Content -->
+    <ng-container *ngIf="!loading && customer">
+
+        <!-- Header -->
+
+        <div class="page-header mb-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <h2 class="page-title">
+
+                        {{ customer.fullName }}
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        {{ customer.email }}
+
+                    </p>
+
+                </div>
+
+                <button
+                    class="btn btn-outline-primary"
+                    (click)="refresh()">
+
+                    <i class="fas fa-sync-alt me-2"></i>
+
+                    Refresh
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Summary -->
+
+        <div class="row g-4 mb-4">
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="summary-card">
+
+                    <div class="label">
+
+                        Total Orders
+
+                    </div>
+
+                    <div class="value">
+
+                        {{ customer.totalOrders }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="summary-card">
+
+                    <div class="label">
+
+                        Total Spent
+
+                    </div>
+
+                    <div class="value">
+
+                        ৳ {{ customer.totalSpent | number:'1.2-2' }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="summary-card">
+
+                    <div class="label">
+
+                        Phone
+
+                    </div>
+
+                    <div class="value small">
+
+                        {{ customer.phone }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="summary-card">
+
+                    <div class="label">
+
+                        Last Order
+
+                    </div>
+
+                    <div class="value small">
+
+                        {{ customer.lastOrderDate | date:'medium' }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Orders -->
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    Order History
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div
+                    class="order-card"
+                    *ngFor="let order of customer.orders">
+
+                    <div class="order-header">
+
+                        <div>
+
+                            <h6>
+
+                                {{ order.orderNumber }}
+
+                            </h6>
+
+                            <small>
+
+                                {{ order.orderDate | date:'medium' }}
+
+                            </small>
+
+                        </div>
+
+                        <div class="text-end">
+
+                            <span class="badge bg-primary">
+
+                                {{ order.orderStatus }}
+
+                            </span>
+
+                            <br>
+
+                            <span class="badge bg-success mt-2">
+
+                                {{ order.paymentStatus }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="table-responsive mt-3">
+
+                        <table class="table table-hover align-middle">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Product</th>
+
+                                    <th>SKU</th>
+
+                                    <th>Qty</th>
+
+                                    <th>Unit Price</th>
+
+                                    <th>Total</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr
+                                    *ngFor="let item of order.items">
+
+                                    <td>
+
+                                        {{ item.productName }}
+
+                                    </td>
+
+                                    <td>
+
+                                        {{ item.sku }}
+
+                                    </td>
+
+                                    <td>
+
+                                        {{ item.quantity }}
+
+                                    </td>
+
+                                    <td>
+
+                                        ৳ {{ item.unitPrice }}
+
+                                    </td>
+
+                                    <td>
+
+                                        ৳ {{ item.totalPrice }}
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <div class="order-total">
+
+                        Vendor Total :
+
+                        <strong>
+
+                            ৳ {{ order.vendorTotalPrice }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </ng-container>
+
+</div>

@@ -1,0 +1,347 @@
+<div class="container py-4">
+
+    <!-- ===========================
+            Header
+    ============================ -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h3 class="mb-1">
+
+                {{ isEditMode ? 'Update Product Variant' : 'Create Product Variant' }}
+
+            </h3>
+
+            <p class="text-muted mb-0">
+
+                Fill all required information.
+
+            </p>
+
+        </div>
+
+        <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="cancel()">
+
+            Back
+
+        </button>
+
+    </div>
+
+    <!-- ===========================
+            Form
+    ============================ -->
+
+    <form
+        [formGroup]="form"
+        (ngSubmit)="save()">
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <!-- Product -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Product
+
+                        </label>
+
+                        <select
+                            class="form-select"
+                            formControlName="productId"
+                            (change)="onProductChange()">
+
+                            <option value="">
+
+                                Select Product
+
+                            </option>
+
+                            <option
+                                *ngFor="let product of products"
+                                [value]="product.id">
+
+                                {{ product.name }}
+
+                            </option>
+
+                        </select>
+
+                        <small
+                            class="text-danger"
+                            *ngIf="f['productId'].touched && f['productId'].invalid">
+
+                            Product is required.
+
+                        </small>
+
+                    </div>
+
+                    <!-- SKU -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            SKU
+
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="sku"
+                            placeholder="Enter SKU">
+
+                        <small
+                            class="text-danger"
+                            *ngIf="f['sku'].touched && f['sku'].invalid">
+
+                            SKU is required.
+
+                        </small>
+
+                    </div>
+
+                    <!-- Price -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Price
+
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            formControlName="price"
+                            placeholder="0.00">
+
+                        <small
+                            class="text-danger"
+                            *ngIf="f['price'].touched && f['price'].invalid">
+
+                            Price is required.
+
+                        </small>
+
+                    </div>
+
+                    <!-- Discount Price -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Discount Price
+
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            formControlName="discountPrice"
+                            placeholder="Optional">
+
+                    </div>
+
+                    <!-- Stock -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Stock
+
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            formControlName="stock"
+                            placeholder="0">
+
+                        <small
+                            class="text-danger"
+                            *ngIf="f['stock'].touched && f['stock'].invalid">
+
+                            Stock is required.
+
+                        </small>
+
+                    </div>
+
+
+                    <!-- =========================================
+     Variant Attributes
+========================================== -->
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+        <h5 class="mb-0">
+            Variant Attributes
+        </h5>
+    </div>
+
+    <div class="card-body">
+
+        <div
+            class="row"
+            *ngIf="dynamicAttributes.length > 0">
+
+            <div
+                class="col-md-6 mb-3"
+                *ngFor="let attribute of dynamicAttributes">
+
+                <label class="form-label">
+
+                    {{ attribute.attributeName }}
+
+                </label>
+
+                <select
+                    class="form-select"
+                    [(ngModel)]="attribute.selectedValueId"
+                    [ngModelOptions]="{standalone:true}">
+
+                    <option [ngValue]="null">
+                        Select {{ attribute.attributeName }}
+                    </option>
+
+                    <option
+                        *ngFor="let value of attribute.values"
+                        [ngValue]="value.id">
+
+                        {{ value.value }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div
+            class="text-muted"
+            *ngIf="dynamicAttributes.length==0">
+
+            No attributes available.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     Images
+========================================== -->
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+
+        <h5 class="mb-0">
+
+            Variant Images
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <input
+            type="file"
+            class="form-control"
+            multiple
+            accept="image/*"
+            (change)="onImageSelected($event)">
+
+        <small class="text-muted">
+
+            Maximum 5 Images
+
+        </small>
+
+        <div class="row mt-3">
+
+            <div
+                class="col-md-3 col-6 mb-3"
+                *ngFor="
+                    let image of imagePreviews;
+                    let i=index
+                ">
+
+                <div class="image-box">
+
+                    <img
+                        [src]="image"
+                        class="img-fluid rounded">
+
+                    <button
+                        type="button"
+                        class="btn btn-danger btn-sm remove-btn"
+                        (click)="removeImage(i)">
+
+                        <i class="fas fa-times"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     Submit
+========================================== -->
+
+<div class="text-end mb-4">
+
+    <button
+        type="button"
+        class="btn btn-secondary me-2"
+        routerLink="/vendor/vendorProductVariantList">
+
+        Cancel
+
+    </button>
+
+    <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="loading">
+
+        <span
+            *ngIf="loading"
+            class="spinner-border spinner-border-sm me-2">
+        </span>
+
+        {{ isEditMode ? 'Update Variant' : 'Create Variant' }}
+
+    </button>
+
+</div>

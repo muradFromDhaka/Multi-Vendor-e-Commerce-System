@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class Order extends BaseEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItems= new ArrayList<>();
 
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal subtotal;  // সব OrderItem.totalPrice-এর যোগফল

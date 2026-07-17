@@ -130,13 +130,7 @@ public class VendorProductService {
             thumbnail = product.getImageUrls().get(0);
         }
 
-        return ProductMapper.toListDto(
-                product,
-                price,
-                discountPrice,
-                thumbnail,
-                product.getVariants().size()
-        );
+        return ProductMapper.toListDto(product);
     }
 
 
@@ -270,12 +264,12 @@ public class VendorProductService {
 
 
     @Transactional
-    public Page<ProductDetailsResponseDto> getMyProducts(Pageable pageable) {
+    public Page<ProductListResponseDTO> getMyProducts(Pageable pageable) {
 
         Vendor currentVendor = getCurrentVendor();
 
         return productRepository
-                .findByVendorId(currentVendor.getId(), pageable)
-                .map(product -> getProductById(product.getId()));
+                .findByVendorIdAndDeletedFalse(currentVendor.getId(), pageable)
+                .map(ProductMapper::toListDto);
     }
 }

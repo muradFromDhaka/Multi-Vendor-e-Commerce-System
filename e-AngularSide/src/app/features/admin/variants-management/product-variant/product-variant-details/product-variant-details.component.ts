@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ProductVariantResponse } from '../../../models/variants/productVariant.model';
-import { ProductVariantService } from '../../../services/variants/product-variant.service';
+import { ProductVariantResponse } from '../../../../../models/productVariant.model';
+import { ProductVariantService } from '../../../services/product-variant.service';
 
 import { environment } from 'src/app/services/environments';
 
