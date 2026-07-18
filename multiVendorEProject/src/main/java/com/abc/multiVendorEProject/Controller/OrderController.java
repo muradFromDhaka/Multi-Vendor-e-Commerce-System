@@ -2,10 +2,14 @@ package com.abc.multiVendorEProject.Controller;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.OrderResponseDto;
 import com.abc.multiVendorEProject.enums.OrderStatus;
+import com.abc.multiVendorEProject.service.Customer.InvoiceService;
 import com.abc.multiVendorEProject.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService orderService;
+    private final InvoiceService invoiceService;
 
     @GetMapping
     public Page<OrderResponseDto> getMyOrders(
@@ -52,6 +57,19 @@ public class OrderController {
             @PathVariable Long productId) {
 
         return orderService.hasPurchasedProduct(productId);
+    }
+
+
+    @GetMapping("/invoice/{orderId}")
+    public ResponseEntity<byte[]> downloadInvoice(@PathVariable Long orderId) {
+
+        byte[] pdf = invoiceService.generateInvoice(orderId);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=Invoice-" + orderId + ".pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 
 }

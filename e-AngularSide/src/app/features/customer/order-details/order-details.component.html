@@ -1,31 +1,337 @@
-<div class="order-popup" *ngIf="order">
+<div class="container py-4" *ngIf="order">
 
-  <div class="order-header">
-    <h2>Order ID: {{ order.id }}</h2>
+  <!-- Header -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body d-flex justify-content-between align-items-center">
 
-    <span class="status" [ngClass]="order.orderStatus.toLowerCase()">
-      {{ order.orderStatus }}
-    </span>
-  </div>
+      <div>
+        <h3>Order #{{order.orderNumber}}</h3>
 
-  <div class="order-summary">
-    <p><strong>Total:</strong> {{ order.totalPrice | currency }}</p>
-  </div>
+        <small>
+          {{order.createdAt | date:'medium'}}
+        </small>
+      </div>
 
-  <div class="order-items">
-    <h3>Items:</h3>
+      <span
+        class="badge fs-6"
+        [ngClass]="{
+        'bg-warning': order.orderStatus=='PENDING',
+        'bg-info': order.orderStatus=='PROCESSING',
+        'bg-primary': order.orderStatus=='SHIPPED',
+        'bg-success': order.orderStatus=='DELIVERED',
+        'bg-danger': order.orderStatus=='CANCELLED'
+      }">
 
-    <div class="item" *ngFor="let item of order.items">
-      <span class="item-name">{{ item.productName }}</span>
-      <span class="item-qty">x {{ item.quantity }}</span>
-      <span class="item-total">
-        {{ item.unitPrice * item.quantity | currency }}
+        {{order.orderStatus}}
+
       </span>
+
     </div>
   </div>
 
-  <div class="order-actions">
-    <button class="btn btn-primary" (click)="close()">Okay</button>
-  </div>
+
+  <!-- =====================================Ordered Items============================= -->
+
+<div class="card mb-4">
+
+    <div class="card-header">
+
+        Ordered Items
+
+    </div>
+
+    <div class="card-body">
+
+        <div
+                class="row border-bottom py-3"
+                *ngFor="let item of order.items">
+
+            <div class="col-md-2">
+
+                <img
+                        [src]="baseImageUrl + item.imageUrl"
+                        class="img-fluid rounded">
+
+            </div>
+
+            <div class="col-md-10">
+
+                <h5>
+
+                    {{item.productName}}
+
+                </h5>
+
+                <p>
+
+                    Variant :
+
+                    {{item.variantName}}
+
+                </p>
+
+                <p>
+
+                    SKU :
+
+                    {{item.sku}}
+
+                </p>
+
+                <p>
+
+                    Qty :
+
+                    {{item.quantity}}
+
+                </p>
+
+                <p>
+
+                    Unit Price :
+
+                    {{item.unitPrice|currency}}
+
+                </p>
+
+                <p>
+
+                    Total :
+
+                    {{item.totalPrice|currency}}
+
+                </p>
+
+                <div *ngIf="item.attributes.length">
+
+                    <span
+                            *ngFor="let attr of item.attributes"
+                            class="badge bg-light text-dark me-2">
+
+                        {{attr.attributeName}} :
+                        {{attr.value}}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =============================Shipping Address========================= -->
+
+  <div class="card mb-4">
+
+    <div class="card-header">
+
+        Shipping Address
+
+    </div>
+
+    <div class="card-body">
+
+        <h6>{{order.shippingAddress.username}}</h6>
+
+        <p>{{order.shippingAddress.phone}}</p>
+
+        <p>
+
+            {{order.shippingAddress.street}}<br>
+
+            {{order.shippingAddress.city}},
+            {{order.shippingAddress.district}}<br>
+
+            {{order.shippingAddress.country}}
+
+            {{order.shippingAddress.zipCode}}
+
+        </p>
+
+    </div>
+
+</div>
+
+<!-- ============================Payment Information============================== -->
+
+<div class="card mb-4">
+
+    <div class="card-header">
+
+        Payment Information
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+
+            Payment Method
+
+            <strong>
+
+                {{order.paymentMethod}}
+
+            </strong>
+
+        </p>
+
+        <p>
+
+            Payment Status
+
+            <strong>
+
+                {{order.paymentStatus}}
+
+            </strong>
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =================================Order Summary================================== -->
+
+<div class="card mb-4">
+
+    <div class="card-header">
+
+        Order Summary
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between">
+
+            <span>Subtotal</span>
+
+            <span>{{order.subtotal|currency}}</span>
+
+        </div>
+
+        <div class="d-flex justify-content-between">
+
+            <span>Shipping</span>
+
+            <span>{{order.shippingFee|currency}}</span>
+
+        </div>
+
+        <div class="d-flex justify-content-between">
+
+            <span>Discount</span>
+
+            <span>-{{order.discount|currency}}</span>
+
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-between fw-bold">
+
+            <span>Total</span>
+
+            <span>{{order.totalPrice|currency}}</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =============================Order timeline==================================== -->
+
+<div class="card mt-4">
+
+    <div class="card-header fw-bold">
+        Order Timeline
+    </div>
+
+    <div class="card-body">
+
+        <div class="timeline">
+
+            <div
+                    *ngFor="let step of timelineSteps; let i=index"
+                    class="timeline-step">
+
+                <div
+                        class="circle"
+
+                        [ngClass]="{
+
+                        'completed': i < getCurrentStep(),
+
+                        'active': i === getCurrentStep(),
+
+                        'pending': i > getCurrentStep()
+
+                    }">
+
+                    <i
+                            *ngIf="i < getCurrentStep()"
+                            class="fas fa-check">
+
+                    </i>
+
+                    <span *ngIf="i >= getCurrentStep()">
+
+                        {{i+1}}
+
+                    </span>
+
+                </div>
+
+                <div class="label">
+
+                    {{step}}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===========================Button============================ -->
+
+<div class="text-end">
+
+    <button
+            class="btn btn-outline-primary me-2"
+            (click)="downloadInvoice()">
+
+        Download Invoice
+
+    </button>
+
+    <button
+            *ngIf="order.orderStatus=='PENDING'"
+            class="btn btn-danger me-2"
+            (click)="cancelOrder()">
+
+        Cancel Order
+
+    </button>
+
+    <button
+            class="btn btn-secondary"
+            (click)="close()">
+
+        Back
+
+    </button>
 
 </div>

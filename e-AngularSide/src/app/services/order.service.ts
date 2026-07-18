@@ -69,4 +69,14 @@ export class OrderService {
     );
   }
 
+
+  downloadInvoice(orderId: number) {
+  return this.http.get(
+    `${this.apiUrl}/invoice/${orderId}`,
+    {
+      responseType: 'blob'
+    }
+  );
+}
+
 }
