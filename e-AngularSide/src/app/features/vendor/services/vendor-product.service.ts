@@ -155,4 +155,30 @@ export class VendorProductService {
 
   }
 
+
+  // ======================================
+// Search My Products
+// ======================================
+
+searchProducts(
+  keyword: string,
+  page = 0,
+  size = 10,
+  sort = 'id,desc'
+): Observable<PageResponse<ProductListResponse>> {
+
+  return this.http.get<PageResponse<ProductListResponse>>(
+    `${this.baseUrl}/search`,
+    {
+      params: {
+        keyword,
+        page,
+        size,
+        sort
+      }
+    }
+  );
+
+}
+
 }

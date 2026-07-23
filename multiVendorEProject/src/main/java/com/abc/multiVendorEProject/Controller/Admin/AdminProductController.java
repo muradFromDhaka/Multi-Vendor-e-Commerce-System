@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,4 +99,24 @@ public class AdminProductController {
                 productId,
                 dto.getStatus());
     }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<ProductListResponseDTO>> searchProducts(
+
+            @RequestParam String keyword,
+
+            @PageableDefault(size = 10)
+            Pageable pageable
+    ) {
+
+        return ResponseEntity.ok(
+                adminProductService.searchProducts(
+                        keyword,
+                        pageable
+                )
+        );
+    }
+
+
 }

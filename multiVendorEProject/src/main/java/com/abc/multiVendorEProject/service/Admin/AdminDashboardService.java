@@ -2,18 +2,23 @@ package com.abc.multiVendorEProject.service.Admin;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.AdminDashboard.AdminDashboardResponseDto;
 import com.abc.multiVendorEProject.enums.OrderStatus;
+import com.abc.multiVendorEProject.enums.PaymentMethod;
 import com.abc.multiVendorEProject.enums.PaymentStatus;
 import com.abc.multiVendorEProject.enums.VendorStatus;
 import com.abc.multiVendorEProject.repository.*;
 import com.abc.multiVendorEProject.repository.VariantRepository.ProductVariantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AdminDashboardService {
 
     private static final int LOW_STOCK_LIMIT = 10;
@@ -28,6 +33,7 @@ public class AdminDashboardService {
     private final ReviewRepository reviewRepository;
     private final WishlistRepository wishlistRepository;
     private final CartRepository cartRepository;
+    private final PaymentRepository paymentRepository;
 
     private LocalDateTime todayStart;
     private LocalDateTime todayEnd;
@@ -74,29 +80,142 @@ public class AdminDashboardService {
     private void loadRevenue(AdminDashboardResponseDto dto) {
 
         dto.setTotalRevenue(
-                orderRepository.getTotalRevenue());
+                paymentRepository.getGrossRevenue());
 
         dto.setTodayRevenue(
-                orderRepository.getRevenueBetween(
+                paymentRepository.getGrossRevenueBetween(
                         todayStart,
                         todayEnd));
 
         dto.setMonthlyRevenue(
-                orderRepository.getRevenueBetween(
+                paymentRepository.getRevenueBetween(
                         monthStart,
                         todayEnd));
 
         dto.setYearlyRevenue(
-                orderRepository.getRevenueBetween(
+                paymentRepository.getRevenueBetween(
                         yearStart,
                         todayEnd));
 
-        dto.setAverageOrderValue(
-                orderRepository.getAverageOrderValue(PaymentStatus.PAID));
+        dto.setAveragePaymentAmount(
+                paymentRepository.getAveragePaymentAmount(PaymentStatus.PAID));
 
-        dto.setHighestOrderValue(
-                orderRepository.getHighestOrderValue(PaymentStatus.PAID));
+        dto.setHighestPaymentAmount(
+                paymentRepository.getHighestPaymentAmount(PaymentStatus.PAID));
+
+        dto.setLowestPaymentAmount(
+                paymentRepository.getLowestPaymentAmount(PaymentStatus.PAID));
+
+
     }
+
+//    ==============Refund Analytics=============
+
+    private void loadRefundAnalytics(AdminDashboardResponseDto dto) {
+
+        dto.setTotalRefundAmount(
+                paymentRepository.getTotalRefundAmount());
+
+        dto.setTodayRefundAmount(
+                paymentRepository.getRefundAmountBetween(
+                        todayStart,
+                        todayEnd));
+
+        dto.setMonthlyRefundAmount(
+                paymentRepository.getRefundAmountBetween(
+                        monthStart,
+                        todayEnd));
+
+        dto.setYearlyRefundAmount(
+                paymentRepository.getRefundAmountBetween(
+                        yearStart,
+                        todayEnd));
+
+        dto.setAverageRefundAmount(
+                paymentRepository.getAverageRefundAmount(PaymentStatus.REFUNDED));
+
+        dto.setHighestRefundAmount(
+                paymentRepository.getHighestRefundAmount());
+    }
+
+
+    // ================Payment Method Analytics===============
+
+    private void loadPaymentMethodAnalytics(AdminDashboardResponseDto dto) {
+
+        // Revenue
+
+        dto.setCardRevenue(
+                paymentRepository.getRevenueByPaymentMethod(
+                        PaymentMethod.CARD));
+
+        dto.setCashOnDeliveryRevenue(
+                paymentRepository.getRevenueByPaymentMethod(
+                        PaymentMethod.CASH_ON_DELIVERY));
+
+        dto.setMobileBankingRevenue(
+                paymentRepository.getRevenueByPaymentMethod(
+                        PaymentMethod.MOBILE_BANKING));
+
+        dto.setBankTransferRevenue(
+                paymentRepository.getRevenueByPaymentMethod(
+                        PaymentMethod.BANK_TRANSFER));
+
+
+        // Transaction Count
+
+        dto.setCardPayments(
+                paymentRepository.countByPaymentMethod(
+                        PaymentMethod.CARD));
+
+        dto.setCodPayments(
+                paymentRepository.countByPaymentMethod(
+                        PaymentMethod.CASH_ON_DELIVERY));
+
+        dto.setBkashPayments(
+                paymentRepository.countByPaymentMethod(
+                        PaymentMethod.MOBILE_BANKING));
+
+        dto.setNagadPayments(
+                paymentRepository.countByPaymentMethod(
+                        PaymentMethod.BANK_TRANSFER));
+
+
+        // Average Payment
+
+        dto.setAverageBkashPayment(
+                paymentRepository.getAveragePaymentByMethod(
+                        PaymentMethod.CARD));
+
+        dto.setAverageCodPayment(
+                paymentRepository.getAveragePaymentByMethod(
+                        PaymentMethod.CASH_ON_DELIVERY));
+
+        dto.setAverageNagadPayment(
+                paymentRepository.getAveragePaymentByMethod(
+                        PaymentMethod.MOBILE_BANKING));
+
+        dto.setAverageCardPayment(
+                paymentRepository.getAveragePaymentByMethod(
+                        PaymentMethod.BANK_TRANSFER));
+
+    }
+
+
+    // ====================Finance Analytics===================
+
+    private void loadFinanceAnalytics(AdminDashboardResponseDto dto) {
+
+        dto.setPendingPaymentAmount(
+                paymentRepository.getPendingPaymentAmount());
+
+        dto.setFailedPaymentAmount(
+                paymentRepository.getFailedPaymentAmount());
+
+        dto.setCancelledPaymentAmount(
+                paymentRepository.getCancelledPaymentAmount());
+    }
+
 
     // =====================================================
     // Orders
@@ -124,13 +243,14 @@ public class AdminDashboardService {
         dto.setReturnedOrders(
                 orderRepository.countByOrderStatus(OrderStatus.RETURNED));
 
-        dto.setPaidOrders(
-                orderRepository.countByOrderStatus(OrderStatus.PAID));
-
         dto.setTodayOrders(
                 orderRepository.countByCreatedAtBetween(
                         todayStart,
                         todayEnd));
+
+        dto.setPaidOrders(
+                orderRepository.countByPayment_PaymentStatus(
+                        PaymentStatus.PAID));
     }
 
     // =====================================================
@@ -140,24 +260,27 @@ public class AdminDashboardService {
     private void loadPayments(AdminDashboardResponseDto dto) {
 
         dto.setPendingPayments(
-                orderRepository.countByPaymentStatus(
+                paymentRepository.countByPaymentStatus(
                         PaymentStatus.PENDING));
 
         dto.setPaidPayments(
-                orderRepository.countByPaymentStatus(
+                paymentRepository.countByPaymentStatus(
                         PaymentStatus.PAID));
 
         dto.setFailedPayments(
-                orderRepository.countByPaymentStatus(
+                paymentRepository.countByPaymentStatus(
                         PaymentStatus.FAILED));
 
         dto.setRefundedPayments(
-                orderRepository.countByPaymentStatus(
+                paymentRepository.countByPaymentStatus(
                         PaymentStatus.REFUNDED));
 
         dto.setCancelledPayments(
-                orderRepository.countByPaymentStatus(
+                paymentRepository.countByPaymentStatus(
                         PaymentStatus.CANCELLED));
+
+        dto.setTotalPayments(
+                paymentRepository.count());
     }
 
     // =====================================================

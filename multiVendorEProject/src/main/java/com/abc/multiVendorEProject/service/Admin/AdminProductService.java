@@ -40,7 +40,6 @@ public class AdminProductService {
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
     private final VendorRepository vendorRepository;
-    private final ProductVariantService productVariantService;
     private final FileStorageService fileStorageService;
 
     // ================= Helper =================
@@ -227,6 +226,20 @@ public class AdminProductService {
         save(product);
 
         return getProductById(productId);
+    }
+
+
+    @Transactional
+    public Page<ProductListResponseDTO> searchProducts(
+            String keyword,
+            Pageable pageable) {
+
+        return mapToProductList(
+                productRepository.searchProducts(
+                        keyword,
+                        pageable
+                )
+        );
     }
 
 }

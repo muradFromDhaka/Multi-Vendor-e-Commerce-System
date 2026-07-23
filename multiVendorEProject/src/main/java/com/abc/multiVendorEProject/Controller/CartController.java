@@ -2,7 +2,7 @@ package com.abc.multiVendorEProject.Controller;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.CartDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.CartItemRequestDto;
-import com.abc.multiVendorEProject.service.CartService;
+import com.abc.multiVendorEProject.service.Customer.CartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

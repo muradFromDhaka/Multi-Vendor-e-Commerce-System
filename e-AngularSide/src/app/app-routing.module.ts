@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TestComponent } from './test/test.component';
 
 
 const routes: Routes = [
+
+  {path:'test',component: TestComponent},
 
   {path: '',loadChildren: () => import('./features/public/public.module').then(m => m.PublicModule)},
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductListResponse } from 'src/app/models/product.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
@@ -18,6 +18,8 @@ products: ProductListResponse[] = [];
 loading = false;
 baseImageUrl = environment.baseImageUrl;
 
+keyword = '';
+
 page = 0;
 size = 12;
 
@@ -29,14 +31,32 @@ totalPages = 0;
       private productService: ProductService,
       private cartService: CartService,
       public authService: AuthService,
+      private acRoute: ActivatedRoute,
       private router: Router
     ) {}
   
+
     ngOnInit(): void {
+
+
+      this.acRoute.queryParams.subscribe(params => {
+
+    this.keyword = params['keyword'] || '';
+
+    this.page = 0;
+
+    if (this.keyword) {
+      this.searchProducts();
+    } else {
       this.loadProducts();
     }
+
+  });
+
+}
   
-    loadProducts(): void {
+
+loadProducts(): void {
 
   this.loading = true;
 
@@ -62,25 +82,88 @@ totalPages = 0;
 }
 
 
-previousPage(): void {
-  if (this.page > 0) {
-    this.page--;
+searchProducts(): void {
+
+  const keyword = this.keyword.trim();
+
+  if (!keyword) {
     this.loadProducts();
+    return;
   }
+
+  this.loading = true;
+
+  this.productService.searchProducts(
+    keyword,
+    this.page,
+    this.size
+  ).subscribe({
+
+    next: (res) => {
+
+      this.products = res.content;
+      this.totalElements = res.totalElements;
+      this.totalPages = res.totalPages;
+      this.loading = false;
+
+    },
+
+    error: (err) => {
+
+      console.error(err);
+      this.loading = false;
+
+    }
+
+  });
+
+}
+
+
+
+
+previousPage(): void {
+
+  if (this.page > 0) {
+
+    this.page--;
+
+    if (this.keyword) {
+      this.searchProducts();
+    } else {
+      this.loadProducts();
+    }
+
+  }
+
 }
 
 nextPage(): void {
+
   if (this.page < this.totalPages - 1) {
+
     this.page++;
-    this.loadProducts();
+
+    if (this.keyword) {
+      this.searchProducts();
+    } else {
+      this.loadProducts();
+    }
+
   }
+
 }
 
 goToPage(page: number): void {
-  if (page >= 0 && page < this.totalPages) {
-    this.page = page;
+
+  this.page = page;
+
+  if (this.keyword) {
+    this.searchProducts();
+  } else {
     this.loadProducts();
   }
+
 }
   
   

@@ -1,1 +1,159 @@
-<p>vendor-order-list works!</p>
+<div class="order-container">
+
+  <!-- Header -->
+  <div class="page-header d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Vendor Orders</h2>
+  </div>
+
+  <!-- Loading -->
+  <div class="alert alert-info text-center" *ngIf="loading">
+    Loading orders...
+  </div>
+
+  <!-- Error -->
+  <div class="alert alert-danger text-center" *ngIf="!loading && error">
+    {{ error }}
+  </div>
+
+  <!-- Empty -->
+  <div class="alert alert-warning text-center"
+       *ngIf="!loading && !error && orders.length === 0">
+
+    No orders found.
+
+  </div>
+
+  <!-- Table -->
+
+  <div class="table-responsive"
+       *ngIf="!loading && orders.length > 0">
+
+    <table class="table table-bordered table-hover align-middle">
+
+      <thead class="table-dark">
+
+      <tr>
+
+        <th>Order No</th>
+
+        <th>Customer</th>
+
+        <th class="text-center">Items</th>
+
+        <th class="text-end">Amount</th>
+
+        <th class="text-center">Status</th>
+
+        <th>Order Date</th>
+
+        <th class="text-center">Action</th>
+
+      </tr>
+
+      </thead>
+
+      <tbody>
+
+      <tr *ngFor="let order of orders">
+
+        <td>
+
+          <strong>{{ order.orderNumber }}</strong>
+
+        </td>
+
+        <td>
+
+          {{ order.customerName }}
+
+        </td>
+
+        <td class="text-center">
+
+          {{ order.totalItems }}
+
+        </td>
+
+        <td class="text-end">
+
+          ৳ {{ order.vendorOrderAmount | number:'1.2-2' }}
+
+        </td>
+
+        <td class="text-center">
+
+          <span
+            class="status-badge"
+            [ngClass]="getStatusClass(order.vendorOrderStatus)">
+
+            {{ order.vendorOrderStatus }}
+
+          </span>
+
+        </td>
+
+        <td class="text-end">
+
+          ৳ {{ order.paymentStatus }}
+
+        </td>
+
+        <td>
+
+          {{ order.createdAt | date:'medium' }}
+
+        </td>
+
+        <td class="text-center">
+
+          <a
+            class="btn btn-primary btn-sm"
+            [routerLink]="['/vendor/orders', order.id]">
+
+            View Details
+
+          </a>
+
+        </td>
+
+      </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- Pagination -->
+
+  <div
+    class="pagination-container d-flex justify-content-between align-items-center mt-3"
+    *ngIf="orders.length > 0">
+
+    <button
+      class="btn btn-outline-primary"
+      (click)="previousPage()"
+      [disabled]="page === 0">
+
+      Previous
+
+    </button>
+
+    <span>
+
+      Page <strong>{{ page + 1 }}</strong>
+
+    </span>
+
+    <button
+      class="btn btn-outline-primary"
+      (click)="nextPage()"
+      [disabled]="(page + 1) * size >= totalElements">
+
+      Next
+
+    </button>
+
+  </div>
+
+</div>

@@ -8,7 +8,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { VendorService } from '../services/vendor.service';
 import { ProductListResponse } from 'src/app/models/product.model';
 import { VendorOrderService } from '../services/vendor-order.service';
-import { VendorOrderListResponse } from '../services/vendorOrder.model';
+import { VendorOrderListResponse } from '../models/vendorOrder.model';
 import { VendorProductService } from '../services/vendor-product.service';
 
 @Component({

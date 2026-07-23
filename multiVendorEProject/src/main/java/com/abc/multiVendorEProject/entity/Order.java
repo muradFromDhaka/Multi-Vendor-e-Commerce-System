@@ -2,8 +2,6 @@ package com.abc.multiVendorEProject.entity;
 
 
 import com.abc.multiVendorEProject.enums.OrderStatus;
-import com.abc.multiVendorEProject.enums.PaymentMethod;
-import com.abc.multiVendorEProject.enums.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +30,11 @@ public class Order extends BaseEntity {
     @JsonIgnoreProperties
     private List<OrderItem> orderItems= new ArrayList<>();
 
+    @OneToMany(mappedBy = "order",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<VendorOrder> vendorOrders = new ArrayList<>();
+
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal subtotal;  // সব OrderItem.totalPrice-এর যোগফল
 
@@ -47,19 +51,18 @@ public class Order extends BaseEntity {
     private String orderNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "order_status", nullable = false)
     private OrderStatus orderStatus;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "shipping_address_id", nullable = false)
     private ShippingAddress shippingAddress;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PaymentStatus paymentStatus;
+    @OneToOne(mappedBy = "order",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private Payment payment;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PaymentMethod paymentMethod;
 
 }

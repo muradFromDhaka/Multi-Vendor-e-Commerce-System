@@ -1,5 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { PaymentMethod } from 'src/app/models/order.model';
+import {
+  PaymentMethod,
+  PaymentProvider
+} from 'src/app/models/order.model';
+
+export interface CheckoutPaymentSelection {
+
+  paymentMethod: PaymentMethod;
+  provider: PaymentProvider;
+
+}
 
 @Component({
   selector: 'app-checkout-payment',
@@ -9,20 +19,65 @@ import { PaymentMethod } from 'src/app/models/order.model';
 export class CheckoutPaymentComponent implements OnInit {
 
   @Output()
-  paymentSelected = new EventEmitter<PaymentMethod>();
+  paymentSelected =
+    new EventEmitter<CheckoutPaymentSelection>();
 
-  paymentMethods = Object.values(PaymentMethod);
+  paymentOptions = [
+    {
+      label: 'Cash On Delivery',
+      description: 'Pay when your order is delivered.',
+      method: PaymentMethod.CASH_ON_DELIVERY,
+      provider: PaymentProvider.MANUAL,
+      icon: 'fa-money-bill-wave'
+    },
+   
+    {
+      label: 'Card',
+      description: 'Visa / MasterCard / Amex',
+      method: PaymentMethod.CARD,
+      provider: PaymentProvider.STRIPE,
+      icon: 'fa-credit-card'
+    },
+    {
+      label: 'Bank Transfer',
+      description: 'Transfer directly from your bank.',
+      method: PaymentMethod.BANK_TRANSFER,
+      provider: PaymentProvider.MANUAL,
+      icon: 'fa-building-columns'
+    },
+    {
+      label: 'Mobile Banking',
+      description: 'Other mobile banking services.',
+      method: PaymentMethod.MOBILE_BANKING,
+      provider: PaymentProvider.MANUAL,
+      icon: 'fa-mobile-screen-button'
+    }
+  ];
 
   selectedPaymentMethod!: PaymentMethod;
 
   ngOnInit(): void {
-    this.selectedPaymentMethod = PaymentMethod.CASH_ON_DELIVERY;
-    this.paymentSelected.emit(this.selectedPaymentMethod);
+
+    const defaultPayment = this.paymentOptions[0];
+
+    this.selectedPaymentMethod = defaultPayment.method;
+
+    this.paymentSelected.emit({
+      paymentMethod: defaultPayment.method,
+      provider: defaultPayment.provider
+    });
+
   }
 
-  selectPayment(method: PaymentMethod): void {
-    this.selectedPaymentMethod = method;
-    this.paymentSelected.emit(method);
+  selectPayment(option: any): void {
+
+    this.selectedPaymentMethod = option.method;
+
+    this.paymentSelected.emit({
+      paymentMethod: option.method,
+      provider: option.provider
+    });
+
   }
 
 }

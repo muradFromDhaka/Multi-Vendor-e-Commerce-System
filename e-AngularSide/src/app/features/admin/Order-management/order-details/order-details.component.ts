@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrderResponse, OrderStatus } from 'src/app/models/order.model';
+import { OrderResponse, OrderStatus, PaymentStatus } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/services/order.service';
 
 @Component({
@@ -83,6 +83,54 @@ export class OrderDetailsComponent implements OnInit {
     });
 
   }
+
+  getOrderStatusClass(status: OrderStatus): string {
+    switch (status) {
+    case OrderStatus.PENDING:
+      return 'bg-warning';
+    case OrderStatus.PROCESSING:
+      return 'bg-info';
+    case OrderStatus.SHIPPED:
+      return 'bg-primary';
+    case OrderStatus.DELIVERED:
+      return 'bg-success';
+    case OrderStatus.CANCELLED:
+      return 'bg-danger';
+    case OrderStatus.PARTIALLY_DELIVERED:
+      return 'bg-dark';
+    case OrderStatus.PARTIALLY_CANCELLED:
+      return 'bg-secondary';
+    case OrderStatus.RETURNED:
+      return 'text-bg-light border';
+    default:
+      return 'bg-secondary';
+  }
+}
+
+getPaymentStatusClass(status: PaymentStatus): string {
+
+  switch (status) {
+
+    case PaymentStatus.PENDING:
+      return 'pending';
+
+    case PaymentStatus.PAID:
+      return 'paid';
+
+    case PaymentStatus.FAILED:
+      return 'failed';
+
+    case PaymentStatus.CANCELLED:
+      return 'cancelled';
+
+    case PaymentStatus.REFUNDED:
+      return 'refunded';
+
+    default:
+      return '';
+  }
+
+}
 
   goBack(): void {
     this.router.navigate(['/orders']);

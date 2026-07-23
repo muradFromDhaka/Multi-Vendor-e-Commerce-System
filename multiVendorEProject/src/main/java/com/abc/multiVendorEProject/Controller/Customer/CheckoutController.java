@@ -3,7 +3,7 @@ package com.abc.multiVendorEProject.Controller.Customer;
 import com.abc.multiVendorEProject.DTOs.projectDtos.CartDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.OrderRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.OrderResponseDto;
-import com.abc.multiVendorEProject.service.CheckoutService;
+import com.abc.multiVendorEProject.service.Customer.CheckoutService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

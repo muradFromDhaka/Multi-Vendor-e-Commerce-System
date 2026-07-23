@@ -85,4 +85,16 @@ public class VendorProductController {
         return "Product deleted successfully.";
     }
 
+
+    @GetMapping("/search")
+    public Page<ProductListResponseDTO> searchProducts(
+            @RequestParam(required = false) String keyword,
+            Pageable pageable) {
+
+        return vendorProductService.searchProducts(
+                keyword,
+                pageable
+        );
+    }
+
 }

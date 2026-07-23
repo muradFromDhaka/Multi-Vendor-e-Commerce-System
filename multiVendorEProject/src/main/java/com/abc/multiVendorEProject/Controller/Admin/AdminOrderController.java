@@ -2,7 +2,7 @@ package com.abc.multiVendorEProject.Controller.Admin;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.AdminOrderDetailsResponseDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.AdminOrderListResponseDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.UpdateOrderStatusRequestDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.PaymentDto.UpdatePaymentStatusRequestDto;
 import com.abc.multiVendorEProject.enums.OrderStatus;
 import com.abc.multiVendorEProject.enums.PaymentStatus;
 import com.abc.multiVendorEProject.service.Admin.AdminOrderService;
@@ -39,13 +39,23 @@ public class AdminOrderController {
         return adminOrderService.getOrderDetails(orderId);
     }
 
-    @PatchMapping("/{orderId}/status")
-    public AdminOrderDetailsResponseDto updateOrderStatus(
+    @PatchMapping("/{orderId}/payment-status")
+    public AdminOrderDetailsResponseDto updatePaymentStatus(
             @PathVariable Long orderId,
-            @Valid @RequestBody UpdateOrderStatusRequestDto request) {
+            @Valid @RequestBody UpdatePaymentStatusRequestDto request) {
 
-        return adminOrderService.updateOrderStatus(orderId, request);
+        return adminOrderService.updatePaymentStatus(
+                orderId,
+                request);
     }
+
+    @PatchMapping("/{orderId}/cancel")
+    public AdminOrderDetailsResponseDto cancelOrder(
+            @PathVariable Long orderId) {
+
+        return adminOrderService.cancelOrder(orderId);
+    }
+
 
     // =====================================================
     // Search

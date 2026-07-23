@@ -1,0 +1,833 @@
+<div class="vendor-order-details container-fluid py-4">
+
+    <div class="details-header">
+
+        <div class="header-left">
+
+            <button
+                class="btn btn-light back-btn"
+                routerLink="/vendor/orders">
+
+                <i class="bi bi-arrow-left"></i>
+
+                Back to Orders
+
+            </button>
+
+            <div class="order-title">
+
+                <h2>
+
+                    Vendor Order
+
+                    <span>
+
+                        #{{ vendorOrder?.orderNumber }}
+
+                    </span>
+
+                </h2>
+
+                <p>
+
+                    Created
+
+                    {{ vendorOrder?.createdAt | date:'medium' }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="header-right">
+
+            <!-- <span
+                class="badge vendor-status"> -->
+                <span
+    class="badge"
+    [ngClass]="getVendorStatusClass(vendorOrder?.vendorOrderStatus)">
+
+                {{ vendorOrder?.vendorOrderStatus }}
+
+            </span>
+
+            <span
+                class="badge payment-status">
+
+                {{ vendorOrder?.payment?.paymentStatus }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================
+     Summary Section
+================================ -->
+
+<div class="row g-4 mb-4">
+
+    <!-- Order Summary -->
+
+    <div class="col-lg-6">
+
+        <div class="details-card">
+
+            <div class="card-title">
+
+                <i class="bi bi-receipt"></i>
+
+                <span>Order Summary</span>
+
+            </div>
+
+            <div class="info-list">
+
+                <div class="info-item">
+
+                    <span class="label">
+
+                        Order Number
+
+                    </span>
+
+                    <span class="value">
+
+                        {{ vendorOrder?.orderNumber }}
+
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span class="label">
+
+                        Vendor
+
+                    </span>
+
+                    <span class="value">
+
+                        {{ vendorOrder?.vendorName }}
+
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span class="label">
+
+                        Created
+
+                    </span>
+
+                    <span class="value">
+
+                        {{ vendorOrder?.createdAt | date:'medium' }}
+
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span class="label">
+
+                        Vendor Status
+
+                    </span>
+
+                    <span
+                        class="badge"
+                        [ngClass]="getVendorStatusClass(vendorOrder?.vendorOrderStatus)">
+
+                        {{ vendorOrder?.vendorOrderStatus }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Customer -->
+
+    <div class="col-lg-6">
+
+        <div class="details-card">
+
+            <div class="card-title">
+
+                <i class="bi bi-person-circle"></i>
+
+                <span>Customer Information</span>
+
+            </div>
+
+            <div class="info-list">
+
+                <div class="info-item">
+
+                    <span class="label">
+
+                        Customer
+
+                    </span>
+
+                    <span class="value">
+
+                        {{ vendorOrder?.customerName }}
+
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span class="label">
+
+                        Receiver
+
+                    </span>
+
+                    <span class="value">
+
+                        {{ vendorOrder?.shippingAddress?.username }}
+
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span class="label">
+
+                        Phone
+
+                    </span>
+
+                    <span class="value">
+
+                        {{ vendorOrder?.shippingAddress?.phone }}
+
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span class="label">
+
+                        City
+
+                    </span>
+
+                    <span class="value">
+
+                        {{ vendorOrder?.shippingAddress?.city }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ============================Shipping Address + Payment Information===================== -->
+
+<!-- ===========================================
+     Shipping & Payment
+============================================ -->
+
+<div class="row g-4 mb-4">
+
+  <!-- Shipping Address -->
+
+  <div class="col-lg-6">
+
+    <div class="details-card">
+
+      <div class="card-title">
+
+        <i class="bi bi-truck"></i>
+
+        <span>Shipping Address</span>
+
+      </div>
+
+      <div class="info-list">
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Receiver
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.shippingAddress?.username }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Phone
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.shippingAddress?.phone }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Street
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.shippingAddress?.street }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            City
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.shippingAddress?.city }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            District
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.shippingAddress?.district }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Country
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.shippingAddress?.country }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Zip Code
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.shippingAddress?.zipCode }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Payment Information -->
+
+  <div class="col-lg-6">
+
+    <div class="details-card">
+
+      <div class="card-title">
+
+        <i class="bi bi-credit-card"></i>
+
+        <span>Payment Information</span>
+
+      </div>
+
+      <div class="info-list">
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Payment Status
+
+          </span>
+
+          <span
+            class="badge"
+            [ngClass]="getPaymentStatusClass(vendorOrder?.payment?.paymentStatus)">
+
+            {{ vendorOrder?.payment?.paymentStatus }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Payment Method
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.payment?.paymentMethod }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Transaction ID
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.payment?.transactionId || 'N/A' }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Paid At
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.payment?.paidAt | date:'medium' }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ===========================================
+     Order Items
+============================================ -->
+
+<div class="details-card mb-4">
+
+    <div class="card-title d-flex justify-content-between align-items-center">
+
+        <div>
+
+            <i class="bi bi-box-seam"></i>
+
+            <span>Order Items</span>
+
+        </div>
+
+        <span class="badge bg-primary">
+
+            {{ vendorOrder?.items?.length }} Items
+
+        </span>
+
+    </div>
+
+    <div
+        class="table-responsive"
+        *ngIf="vendorOrder?.items?.length">
+
+        <table class="table align-middle order-items-table">
+
+            <thead>
+
+            <tr>
+
+                <th style="width:90px">
+
+                    Image
+
+                </th>
+
+                <th>
+
+                    Product
+
+                </th>
+
+                <th>
+
+                    SKU
+
+                </th>
+
+                <th class="text-center">
+
+                    Qty
+
+                </th>
+
+                <th class="text-end">
+
+                    Unit Price
+
+                </th>
+
+                <th class="text-end">
+
+                    Total
+
+                </th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr
+                *ngFor="let item of vendorOrder?.items">
+
+                <!-- Product Image -->
+
+                <td>
+
+                    <img
+                        [src]="item.imageUrl"
+                        [alt]="item.productName"
+                        class="product-image">
+
+                </td>
+
+                <!-- Product -->
+
+                <td>
+
+                    <div class="fw-semibold">
+
+                        {{ item.productName }}
+
+                    </div>
+
+                    <small
+                        class="text-muted"
+                        *ngIf="item.variantName">
+
+                        {{ item.variantName }}
+
+                    </small>
+
+                </td>
+
+                <!-- SKU -->
+
+                <td>
+
+                    {{ item.sku }}
+
+                </td>
+
+                <!-- Qty -->
+
+                <td class="text-center">
+
+                    {{ item.quantity }}
+
+                </td>
+
+                <!-- Unit Price -->
+
+                <td class="text-end">
+
+                    {{ item.unitPrice | currency }}
+
+                </td>
+
+                <!-- Total -->
+
+                <td class="text-end fw-bold">
+
+                    {{ item.totalPrice | currency }}
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- Empty -->
+
+    <div
+        *ngIf="!vendorOrder?.items?.length"
+        class="empty-items">
+
+        <i class="bi bi-box"></i>
+
+        <h5>
+
+            No Items Found
+
+        </h5>
+
+        <p>
+
+            This vendor order does not contain any products.
+
+        </p>
+
+    </div>
+
+</div>
+
+<!-- ================================Action Panel =============================== -->
+
+<!-- ===========================================
+     Order Total & Update Status
+============================================ -->
+
+<div class="row g-4">
+
+  <!-- Order Total -->
+
+  <div class="col-lg-6">
+
+    <div class="details-card">
+
+      <div class="card-title">
+
+        <i class="bi bi-cash-stack"></i>
+
+        <span>Order Total</span>
+
+      </div>
+
+      <div class="info-list">
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Subtotal
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.subtotal | currency:'BDT':'symbol':'1.2-2' }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Shipping Fee
+
+          </span>
+
+          <span class="value">
+
+            {{ vendorOrder?.shippingFee | currency:'BDT':'symbol':'1.2-2' }}
+
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+
+            Discount
+
+          </span>
+
+          <span class="value text-danger">
+
+            - {{ vendorOrder?.discount | currency:'BDT':'symbol':'1.2-2' }}
+
+          </span>
+
+        </div>
+
+        <hr>
+
+        <div class="info-item total-price">
+
+          <span>
+
+            Total
+
+          </span>
+
+          <span>
+
+            {{ vendorOrder?.totalPrice | currency:'BDT':'symbol':'1.2-2' }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Update Status -->
+
+  <div class="col-lg-6">
+
+    <div class="details-card">
+
+      <div class="card-title">
+
+        <i class="bi bi-arrow-repeat"></i>
+
+        <span>
+
+          Update Vendor Order
+
+        </span>
+
+      </div>
+
+      <div class="mb-3">
+
+        <label class="form-label">
+
+          Vendor Order Status
+
+        </label>
+
+        <select
+
+          class="form-select"
+
+          [(ngModel)]="selectedStatus">
+
+          <option
+
+            *ngFor="let status of vendorOrderStatuses"
+
+            [ngValue]="status">
+
+            {{ status }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="d-grid">
+
+        <button
+
+          class="btn btn-primary btn-lg"
+
+          [disabled]="updating ||
+
+                      selectedStatus === vendorOrder?.vendorOrderStatus"
+
+          (click)="updateVendorOrderStatus(selectedStatus)">
+
+          <span *ngIf="!updating">
+
+            Update Status
+
+          </span>
+
+          <span *ngIf="updating">
+
+            Updating...
+
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

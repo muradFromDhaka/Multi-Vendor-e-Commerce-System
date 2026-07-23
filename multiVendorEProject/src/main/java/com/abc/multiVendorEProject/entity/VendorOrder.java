@@ -44,14 +44,9 @@ public class VendorOrder extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private VendorOrderStatus status = VendorOrderStatus.PENDING;
+    private VendorOrderStatus vendorOrderStatus = VendorOrderStatus.PENDING;
 
     private String vendorOrderNumber;
 
-    private OrderStatus orderStatus;
-
-    private PaymentStatus paymentStatus;
-
-    private PaymentMethod paymentMethod;
 }
 

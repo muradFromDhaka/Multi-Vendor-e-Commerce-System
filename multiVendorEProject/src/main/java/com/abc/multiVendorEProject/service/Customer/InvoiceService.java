@@ -525,12 +525,12 @@ public class InvoiceService {
 
         table.addCell(createInfoCell(
                 "Payment Method",
-                order.getPaymentMethod().name()
+                order.getPayment().getPaymentMethod().name()
         ));
 
         table.addCell(createInfoCell(
                 "Payment Status",
-                order.getPaymentStatus().name()
+                order.getPayment().getPaymentStatus().name()
         ));
 
         document.add(table);

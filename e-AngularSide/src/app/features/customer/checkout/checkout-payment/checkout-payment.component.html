@@ -1,43 +1,52 @@
 <div class="payment-card">
 
-    <div class="card shadow-sm">
+  <div class="card shadow-sm">
 
-        <div class="card-header">
+    <div class="card-header">
+      <h4>
+        <i class="fas fa-credit-card me-2"></i>
+        Payment Method
+      </h4>
+    </div>
 
-            <h4>
-                <i class="fas fa-credit-card me-2"></i>
-                Payment Method
-            </h4>
+    <div class="card-body">
 
-        </div>
+      <div
+        class="payment-option"
+        *ngFor="let option of paymentOptions">
 
-        <div class="card-body">
+        <label class="payment-label">
 
-            <div
-                    class="payment-option"
-                    *ngFor="let method of paymentMethods">
+          <input
+            type="radio"
+            name="paymentMethod"
+            [checked]="selectedPaymentMethod === option.method"
+            (change)="selectPayment(option)">
 
-                <label class="payment-label">
+          <div class="payment-info">
 
-                    <input
-                            type="radio"
-                            name="paymentMethod"
-                            [value]="method"
-                            [checked]="selectedPaymentMethod === method"
-                            (change)="selectPayment(method)">
+            <div class="payment-title">
 
-                    <span class="payment-name">
+              <i class="fas {{option.icon}} me-2"></i>
 
-                        {{ method.replaceAll('_',' ') }}
-
-                    </span>
-
-                </label>
+              {{ option.label }}
 
             </div>
 
-        </div>
+            <small class="text-muted">
+
+              {{ option.description }}
+
+            </small>
+
+          </div>
+
+        </label>
+
+      </div>
 
     </div>
+
+  </div>
 
 </div>

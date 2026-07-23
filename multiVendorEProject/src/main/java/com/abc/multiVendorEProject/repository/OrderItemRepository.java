@@ -80,4 +80,20 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     """)
     Long getTotalProductsSold(
             @Param("vendorId") Long vendorId);
+
+    @Query("""
+SELECT COALESCE(SUM(oi.totalPrice),0)
+FROM OrderItem oi
+WHERE oi.variant.product.id = :productId
+""")
+    BigDecimal getProductRevenue(
+            @Param("productId") Long productId);
+
+    @Query("""
+SELECT COALESCE(SUM(oi.totalPrice),0)
+FROM OrderItem oi
+WHERE oi.variant.product.category.id = :categoryId
+""")
+    BigDecimal getCategoryRevenue(
+            @Param("categoryId") Long categoryId);
 }

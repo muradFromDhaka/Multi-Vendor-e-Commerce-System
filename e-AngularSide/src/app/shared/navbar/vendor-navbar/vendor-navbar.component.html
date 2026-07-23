@@ -1,0 +1,337 @@
+<!-- Vendor Navbar -->
+
+<nav
+  class="admin-navbar"
+  *ngIf="currentUser$ && authService.hasRole('ROLE_VENDOR')"
+>
+  <div class="navbar-top">
+    <div class="navbar-container">
+      <div class="nav-left">
+        <a routerLink="" class="brand-logo">
+          <div class="logo-wrapper">
+            <span class="logo-icon">V</span>
+            <span class="logo-text">SunShine</span>
+          </div>
+        </a>
+
+        <div class="search-container">
+          <div class="search-box">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search products by category..."
+              [formControl]="searchControl"
+              (keyup.enter)="searchProduct()"
+            />
+            <button
+              class="search-button"
+              (click)="searchProduct()"
+              aria-label="Search"
+            >
+              <span class="search-icon">🔍</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Section -->
+      <div class="nav-right">
+        <!-- Language Selector -->
+        <div class="nav-item dropdown">
+          <button class="nav-button" (click)="toggleDropdown('language')">
+            <span class="nav-icon">🌐</span>
+            <span class="nav-label">EN</span>
+            <span class="dropdown-arrow">▼</span>
+          </button>
+          <div class="dropdown-menu" [class.show]="dropdowns.language">
+            <div class="dropdown-header">Select Language</div>
+            <a href="#" class="dropdown-item">English (US)</a>
+            <a href="#" class="dropdown-item">English (UK)</a>
+            <a href="#" class="dropdown-item">Español</a>
+            <a href="#" class="dropdown-item">Français</a>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="nav-item dropdown">
+          <button class="nav-button" (click)="toggleDropdown('notifications')">
+            <span class="nav-icon">🔔</span>
+            <span class="nav-label">Notifications</span>
+            <span class="badge" *ngIf="notificationCount > 0">{{
+              notificationCount
+            }}</span>
+            <span class="dropdown-arrow">▼</span>
+          </button>
+          <div
+            class="dropdown-menu notification-dropdown"
+            [class.show]="dropdowns.notifications"
+          >
+            <div class="dropdown-header">
+              <span>Notifications</span>
+              <button class="mark-read" (click)="markAllAsRead()">
+                Mark all as read
+              </button>
+            </div>
+            <div class="notification-list">
+              <div
+                class="notification-item"
+                *ngFor="let notification of notifications"
+              >
+                <div class="notification-icon" [class]="notification.type">
+                  <span>{{ notification.icon }}</span>
+                </div>
+                <div class="notification-content">
+                  <div class="notification-title">{{ notification.title }}</div>
+                  <div class="notification-desc">
+                    {{ notification.description }}
+                  </div>
+                  <div class="notification-time">{{ notification.time }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown-footer">
+              <a href="/admin/notifications" class="view-all"
+                >View all notifications</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Help -->
+        <div class="nav-item dropdown">
+          <button class="nav-button" (click)="toggleDropdown('help')">
+            <span class="nav-icon">❓</span>
+            <span class="nav-label">Help</span>
+            <span class="dropdown-arrow">▼</span>
+          </button>
+          <div class="dropdown-menu" [class.show]="dropdowns.help">
+            <a href="#" class="dropdown-item">
+              <span class="dropdown-icon">📖</span>
+              Help & Support
+            </a>
+            <a href="#" class="dropdown-item">
+              <span class="dropdown-icon">🎓</span>
+              Training
+            </a>
+            <a href="#" class="dropdown-item">
+              <span class="dropdown-icon">📚</span>
+              Documentation
+            </a>
+            <a href="#" class="dropdown-item">
+              <span class="dropdown-icon">💬</span>
+              Send Feedback
+            </a>
+          </div>
+        </div>
+
+        <!-- User Profile -->
+        <div class="nav-item dropdown">
+          <div class="user-profile" (click)="toggleDropdown('user')">
+            <div class="user-avatar">
+              <img
+                src="https://ui-avatars.com/api/?name=Admin+User&background=146EB4&color=fff"
+                alt="User Avatar"
+              />
+            </div>
+            <div class="user-info">
+              <div class="user-name">Vendor User</div>
+              <div class="user-role">Administrator</div>
+            </div>
+            <span class="dropdown-arrow">▼</span>
+          </div>
+          <div
+            class="dropdown-menu user-dropdown"
+            [class.show]="dropdowns.user"
+          >
+            <div class="user-dropdown-header">
+              <div class="user-avatar-large">
+                <img
+                  src="https://ui-avatars.com/api/?name=Admin+User&background=146EB4&color=fff&size=64"
+                  alt="User Avatar"
+                />
+              </div>
+              <div class="user-details">
+                <div class="user-name">Vendor User</div>
+                <div class="user-email">vendor@example.com</div>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="/vendor/vendorProfile" class="dropdown-item">
+              <span class="dropdown-icon">👤</span>
+              Your Profile
+            </a>
+            <a href="/admin/settings" class="dropdown-item">
+              <span class="dropdown-icon">⚙️</span>
+              Settings
+            </a>
+            <a href="/admin/security" class="dropdown-item">
+              <span class="dropdown-icon">🔒</span>
+              Security
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="/admin/billing" class="dropdown-item">
+              <span class="dropdown-icon">💳</span>
+              Billing
+            </a>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item logout" (click)="logOut()">
+              <span class="dropdown-icon">🚪</span>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secondary Bar (Light Gray) -->
+  <div class="navbar-secondary">
+    <div class="navbar-container">
+      <div class="secondary-nav">
+
+        <a routerLink="/" routerLinkActive="active" class="nav-link">
+          <span class="nav-link-icon">🏠</span>
+          <span class="nav-link-text">Home</span>
+        </a>
+
+
+        <a
+          routerLink="/vendor/dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">📊</span>
+          <span class="nav-link-text">Dashboard</span>
+        </a>
+
+        <a
+          routerLink="/vendor/profile"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">🏪</span>
+          <span class="nav-link-text">Shop Profile</span>
+        </a>
+
+        <a
+          routerLink="/vendor/productList"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">📦</span>
+          <span class="nav-link-text">Products</span>
+        </a>
+
+         <a
+          routerLink="/vendor/vendorProductVariantList"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">🧩</span>
+          <span class="nav-link-text">ProductVariants</span>
+        </a>
+
+        <a
+          routerLink="/vendor/orders"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">📋</span>
+          <span class="nav-link-text">Orders</span>
+          <span class="order-badge" *ngIf="pendingOrders > 0">{{
+            pendingOrders
+          }}</span>
+        </a>
+
+        <a
+          routerLink="/vendor/inventory"
+          routerLinkActive="active"
+          class="nav-link"
+          *ngIf="currentUser$"
+        >
+          <span class="nav-link-icon">📦</span>
+          <span class="nav-link-text">Inventory</span>
+        </a>
+
+
+        <a
+          routerLink="/vendor/reviews"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">⭐</span>
+          <span class="nav-link-text">Reviews</span>
+        </a>
+
+        <a
+          routerLink="/vendor/vendorCustomer"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">⭐</span>
+          <span class="nav-link-text">Customer</span>
+        </a>
+
+        <!-- More Dropdown -->
+        <div class="nav-item dropdown">
+          <button
+            class="nav-link more-dropdown"
+            (click)="toggleDropdown('more')"
+          >
+            <span class="nav-link-icon">⋯</span>
+            <span class="nav-link-text">More</span>
+            <span class="dropdown-arrow">▼</span>
+          </button>
+          <div
+            class="dropdown-menu more-dropdown-menu"
+            [class.show]="dropdowns.more"
+          >
+            <a href="/admin/promotions" class="dropdown-item">
+              <span class="dropdown-icon">🎯</span>
+              Promotions
+            </a>
+            <a href="/admin/promotions" class="dropdown-item">
+              <span class="dropdown-icon">📋</span>
+              Reports
+            </a><a href="/admin/promotions" class="dropdown-item">
+              <span class="dropdown-icon">📈</span>
+              Analytics
+            </a><a href="/admin/promotions" class="dropdown-item">
+              <span class="dropdown-icon">📦</span>
+              Inventory
+            </a>
+            <a href="/admin/shipping" class="dropdown-item">
+              <span class="dropdown-icon">🚚</span>
+              Shipping
+            </a>
+            <a href="/admin/tax" class="dropdown-item">
+              <span class="dropdown-icon">💰</span>
+              Tax Settings
+            </a>
+            <a href="/admin/returns" class="dropdown-item">
+              <span class="dropdown-icon">↩️</span>
+              Returns
+            </a>
+            <a href="/admin/support" class="dropdown-item">
+              <span class="dropdown-icon">🛟</span>
+              Customer Support
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="secondary-actions">
+        <button
+          class="action-button primary"
+          *ngIf="currentUser$"
+          (click)="logOut()"
+        >
+          <span class="action-icon">+</span>
+          <span class="action-text">Sign Out</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+

@@ -32,4 +32,12 @@ public interface WishlistRepository extends JpaRepository<Wishlist, Long>{
        """)
     long countProductsInWishlist( @Param("user") User user );
 
+
+    @Query("""
+SELECT COUNT(p)
+FROM Wishlist w
+JOIN w.products p
+""")
+    Long getTotalWishlistItems();
+
 }

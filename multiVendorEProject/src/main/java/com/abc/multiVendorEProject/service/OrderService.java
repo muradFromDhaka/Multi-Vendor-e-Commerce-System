@@ -1,13 +1,12 @@
 package com.abc.multiVendorEProject.service;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.OrderResponseDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.OrderItemRequestDTO;
-import com.abc.multiVendorEProject.DTOs.projectDtos.ShippingAddressRequestDto;
 import com.abc.multiVendorEProject.entity.*;
 import com.abc.multiVendorEProject.entity.Variant.ProductVariant;
 import com.abc.multiVendorEProject.enums.OrderStatus;
+import com.abc.multiVendorEProject.enums.PaymentStatus;
+import com.abc.multiVendorEProject.enums.VendorOrderStatus;
 import com.abc.multiVendorEProject.mapper.OrderMapper;
-import com.abc.multiVendorEProject.mapper.ShippingAddressMapper;
 import com.abc.multiVendorEProject.repository.OrderItemRepository;
 import com.abc.multiVendorEProject.repository.OrderRepository;
 import com.abc.multiVendorEProject.repository.ProductRepository;
@@ -20,18 +19,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final VendorService vendorService;
+//    private final VendorService vendorService;
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
@@ -53,86 +48,35 @@ public class OrderService {
                         new RuntimeException("User not found"));
     }
 
-//    private Vendor getLoggedInVendor() {
-//        return vendorService.getLoggedInVendor();
-//    }
+    private Order getOrderOrThrow(Long orderId){
 
-
-private Order getOrderOrThrow(Long orderId) {
-
-    System.out.println("Searching Order ID = " + orderId);
-
-    boolean exists = orderRepository.existsById(orderId);
-    System.out.println("Exists = " + exists);
-
-    Optional<Order> optional = orderRepository.findById(orderId);
-
-    System.out.println("Optional Present = " + optional.isPresent());
-
-    if (optional.isPresent()) {
-        Order order = optional.get();
-        System.out.println("Loaded Order Id = " + order.getId());
-        System.out.println("Order Number = " + order.getOrderNumber());
-        return order;
+        return orderRepository.findById(orderId)
+                .orElseThrow(() ->
+                        new RuntimeException("Order not found"));
     }
 
-    throw new RuntimeException("Order not found");
-}
+    private boolean areAllVendorOrdersPending(Order order) {
+
+        if (order.getVendorOrders().isEmpty()) {
+            throw new IllegalStateException(
+                    "Order has no vendor orders.");
+        }
+
+        return order.getVendorOrders()
+                .stream()
+                .allMatch(v ->
+                        v.getVendorOrderStatus() == VendorOrderStatus.PENDING);
+    }
 
 
-//    private List<OrderItem> buildOrderItems(
-//            Order order,
-//            List<OrderItemRequestDTO> requests) {
-//
-//        List<ProductVariant> variants = productVariantRepository.findAllById(
-//                requests.stream()
-//                        .map(OrderItemRequestDTO::getVariantId)
-//                        .toList()
-//        );
-//
-//        Map<Long, ProductVariant> variantMap = variants.stream()
-//                .collect(Collectors.toMap(
-//                        ProductVariant::getId,
-//                        Function.identity()
-//                ));
-//
-//        return requests.stream()
-//                .map(item -> {
-//
-//                    ProductVariant variant = variantMap.get(item.getVariantId());
-//
-//                    if (variant == null) {
-//                        throw new RuntimeException(
-//                                "Variant not found : " + item.getVariantId());
-//                    }
-//
-//                    if (variant.getStock() < item.getQuantity()) {
-//                        throw new RuntimeException(
-//                                "Insufficient stock for SKU : "
-//                                        + variant.getSku());
-//                    }
-//
-//                    BigDecimal unitPrice =
-//                            variant.getDiscountPrice() != null
-//                                    ? variant.getDiscountPrice()
-//                                    : variant.getPrice();
-//
-//                    BigDecimal totalPrice = unitPrice.multiply(
-//                            BigDecimal.valueOf(item.getQuantity()));
-//
-//                    OrderItem orderItem = new OrderItem();
-//
-//                    orderItem.setOrder(order);
-//                    orderItem.setVariant(variant);
-//                    orderItem.setVendor(variant.getProduct().getVendor());
-//                    orderItem.setQuantity(item.getQuantity());
-//                    orderItem.setUnitPrice(unitPrice);
-//                    orderItem.setTotalPrice(totalPrice);
-//
-//                    return orderItem;
-//                })
-//                .toList();
-//    }
+    private void cancelVendorOrders(Order order) {
+
+        order.getVendorOrders()
+                .forEach(vendorOrder ->
+                        vendorOrder.setVendorOrderStatus(
+                                VendorOrderStatus.CANCELLED));
+    }
+
 
 //    ============================ Original Method============================
 
@@ -147,8 +91,9 @@ private Order getOrderOrThrow(Long orderId) {
             throw new RuntimeException("You are not authorized to cancel this order.");
         }
 
-        if (order.getOrderStatus() != OrderStatus.PENDING) {
-            throw new RuntimeException("Only pending orders can be cancelled.");
+        if (!areAllVendorOrdersPending(order)) {
+            throw new RuntimeException(
+                    "Order cannot be cancelled because one or more vendors have already started processing it.");
         }
 
         // Restore Stock
@@ -161,6 +106,8 @@ private Order getOrderOrThrow(Long orderId) {
             );
         }
 
+        cancelVendorOrders(order);
+
         productVariantRepository.saveAll(
                 order.getOrderItems()
                         .stream()
@@ -169,6 +116,17 @@ private Order getOrderOrThrow(Long orderId) {
         );
 
         order.setOrderStatus(OrderStatus.CANCELLED);
+
+        Payment payment = order.getPayment();
+
+        if (payment != null) {
+
+            if (payment.getPaymentStatus() == PaymentStatus.PENDING
+                    || payment.getPaymentStatus() == PaymentStatus.FAILED) {
+
+                payment.setPaymentStatus(PaymentStatus.CANCELLED);
+            }
+        }
 
         orderRepository.save(order);
 
@@ -231,6 +189,120 @@ private Order getOrderOrThrow(Long orderId) {
                         new RuntimeException("Product not found."));
 
         return orderItemRepository.hasPurchasedProduct(user, product);
+    }
+
+
+    @Transactional
+    public void updateParentOrderStatus(Long orderId) {
+
+        Order order = getOrderOrThrow(orderId);
+
+        List<VendorOrder> vendorOrders = order.getVendorOrders();
+
+        if (vendorOrders.isEmpty()) {
+
+            throw new IllegalStateException(
+                    "No vendor orders found.");
+        }
+
+        int total = vendorOrders.size();
+
+        int pendingCount = 0;
+        int confirmedCount = 0;
+        int processingCount = 0;
+        int packedCount = 0;
+        int shippedCount = 0;
+        int deliveredCount = 0;
+        int cancelledCount = 0;
+        int returnedCount = 0;
+
+        for (VendorOrder vendorOrder : vendorOrders) {
+
+            switch (vendorOrder.getVendorOrderStatus()) {
+
+                case PENDING -> pendingCount++;
+
+                case CONFIRMED -> confirmedCount++;
+
+                case PROCESSING -> processingCount++;
+
+                case PACKED -> packedCount++;
+
+                case SHIPPED -> shippedCount++;
+
+                case DELIVERED -> deliveredCount++;
+
+                case CANCELLED -> cancelledCount++;
+
+                case RETURNED -> returnedCount++;
+            }
+        }
+
+        // এখান থেকে Parent Status Calculate হবে
+
+        OrderStatus newStatus;
+
+        if (cancelledCount == total) {
+
+            newStatus = OrderStatus.CANCELLED;
+
+            if (newStatus == OrderStatus.CANCELLED) {
+
+                Payment payment = order.getPayment();
+
+                if (payment != null &&
+                        (payment.getPaymentStatus() == PaymentStatus.PENDING
+                                || payment.getPaymentStatus() == PaymentStatus.FAILED)) {
+
+                    payment.setPaymentStatus(PaymentStatus.CANCELLED);
+                }
+            }
+
+        }else if (deliveredCount == total) {
+
+            newStatus = OrderStatus.DELIVERED;
+
+        }else if (returnedCount == total) {
+
+            newStatus = OrderStatus.RETURNED;
+
+        }else if (deliveredCount > 0) {
+
+            newStatus = OrderStatus.PARTIALLY_DELIVERED;
+
+        }else if (shippedCount > 0) {
+
+            newStatus = OrderStatus.SHIPPED;
+
+        }else if (confirmedCount > 0
+                || processingCount > 0
+                || packedCount > 0) {
+
+            newStatus = OrderStatus.PROCESSING;
+
+        }else if (cancelledCount > 0) {
+
+            newStatus = OrderStatus.PARTIALLY_CANCELLED;
+
+        }else {
+
+            newStatus = OrderStatus.PENDING;
+        }
+
+
+        // Save Only If Changed
+        if (order.getOrderStatus() != newStatus) {
+
+            order.setOrderStatus(newStatus);
+
+            System.out.println("New Status ============================= " + newStatus);
+
+            orderRepository.save(order);
+        }
+
+
+
+
     }
 
 

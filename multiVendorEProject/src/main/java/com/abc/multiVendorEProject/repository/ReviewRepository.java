@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,13 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
        WHERE r.product = :product
        """)
     Double getAverageRatingByProduct( @Param("product") Product product);
+
+
+    @Query("""
+SELECT COALESCE(AVG(r.rating),0)
+FROM Review r
+""")
+    BigDecimal getAverageRating();
 
 
 }

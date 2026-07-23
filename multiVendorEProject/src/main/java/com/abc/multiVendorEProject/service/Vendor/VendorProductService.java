@@ -272,4 +272,31 @@ public class VendorProductService {
                 .findByVendorIdAndDeletedFalse(currentVendor.getId(), pageable)
                 .map(ProductMapper::toListDto);
     }
+
+    @Transactional
+    public Page<ProductListResponseDTO> searchProducts(
+            String keyword,
+            Pageable pageable) {
+
+        Vendor currentVendor = getCurrentVendor();
+
+        if (keyword == null || keyword.isBlank()) {
+
+            return productRepository
+                    .findByVendorIdAndDeletedFalse(
+                            currentVendor.getId(),
+                            pageable
+                    )
+                    .map(ProductMapper::toListDto);
+        }
+
+        return productRepository
+                .searchVendorProducts(
+                        currentVendor.getId(),
+                        keyword.trim(),
+                        pageable
+                )
+                .map(ProductMapper::toListDto);
+    }
+
 }

@@ -4,17 +4,17 @@ import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.AdminOrderDetailsRe
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.AdminOrderListResponseDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.OrderResponseDto;
 import com.abc.multiVendorEProject.entity.Order;
-
-import java.time.format.DateTimeFormatter;
+import com.abc.multiVendorEProject.entity.Payment;
+import com.abc.multiVendorEProject.mapper.Customer.CustomerVendorOrderMapper;
 import java.util.List;
 
 public class OrderMapper {
 
     private OrderMapper() {}
-//    private static final DateTimeFormatter FORMATTER =
-//            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public static OrderResponseDto toResponseDto(Order order) {
+
+        Payment payment = order.getPayment();
 
         return new OrderResponseDto(
                 order.getId(),
@@ -25,18 +25,24 @@ public class OrderMapper {
                 order.getDiscount(),
                 order.getTotalPrice(),
                 order.getOrderStatus(),
-                order.getPaymentStatus(),
-                order.getPaymentMethod(),
+                payment != null ? payment.getPaymentStatus() : null,
+                payment != null ? payment.getPaymentMethod() : null,
                 ShippingAddressMapper.toResponseDto(order.getShippingAddress()),
                 order.getOrderItems()
                         .stream()
                         .map(OrderItemMapper::toResponseDto)
+                        .toList(),
+                order.getVendorOrders()
+                        .stream()
+                        .map(CustomerVendorOrderMapper::toCustomerDto)
                         .toList(),
                 order.getCreatedAt()
         );
     }
 
     public static AdminOrderListResponseDto toAdminListDto(Order order) {
+
+        Payment payment = order.getPayment();
 
         return new AdminOrderListResponseDto(
                 order.getId(),
@@ -45,12 +51,14 @@ public class OrderMapper {
                 order.getOrderItems().size(),
                 order.getTotalPrice(),
                 order.getOrderStatus(),
-                order.getPaymentStatus(),
+                payment != null ? payment.getPaymentStatus() : null,
                 order.getCreatedAt()
         );
     }
 
     public static AdminOrderDetailsResponseDto toAdminDetailsDto(Order order) {
+
+        Payment payment = order.getPayment();
 
         return new AdminOrderDetailsResponseDto(
                 order.getId(),
@@ -63,8 +71,8 @@ public class OrderMapper {
                 order.getDiscount(),
                 order.getTotalPrice(),
                 order.getOrderStatus(),
-                order.getPaymentStatus(),
-                order.getPaymentMethod(),
+                payment != null ? payment.getPaymentStatus() : null,
+                payment != null ? payment.getPaymentMethod() : null,
                 ShippingAddressMapper.toResponseDto(order.getShippingAddress()),
                 order.getOrderItems()
                         .stream()

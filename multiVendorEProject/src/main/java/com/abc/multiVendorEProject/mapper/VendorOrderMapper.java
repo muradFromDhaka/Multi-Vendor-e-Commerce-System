@@ -1,8 +1,9 @@
 package com.abc.multiVendorEProject.mapper;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderItemResponseDTO;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorOrderDetailsResponseDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorOrderListResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderDetailsResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderListResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderPaymentInfoDto;
 import com.abc.multiVendorEProject.entity.VendorOrder;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,6 @@ import org.springframework.stereotype.Component;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Component
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class VendorOrderMapper {
 
     private static final DateTimeFormatter FORMATTER =
@@ -30,9 +29,9 @@ public class VendorOrderMapper {
                         .getUser().getUserName(),
                 vendorOrder.getOrderItems().size(),
                 vendorOrder.getTotalPrice(),
-                vendorOrder.getOrderStatus(),
-                vendorOrder.getPaymentStatus(),
-                vendorOrder.getCreatedAt().format(FORMATTER)
+                vendorOrder.getVendorOrderStatus(),
+                vendorOrder.getOrder().getPayment().getPaymentStatus(),
+                vendorOrder.getCreatedAt()
         );
     }
 
@@ -45,9 +44,17 @@ public class VendorOrderMapper {
                 .map(OrderItemMapper::toResponseDto)
                 .toList();
 
+        VendorOrderPaymentInfoDto paymentInfoDto = new VendorOrderPaymentInfoDto(
+                vendorOrder.getOrder().getPayment().getPaymentStatus(),
+                vendorOrder.getOrder().getPayment().getPaymentMethod(),
+                vendorOrder.getOrder().getPayment().getTransactionId(),
+                vendorOrder.getOrder().getPayment().getPaidAt()
+        );
+
         return new VendorOrderDetailsResponseDto(
                 vendorOrder.getId(),
                 vendorOrder.getVendorOrderNumber(),
+                vendorOrder.getVendor().getShopName(),
                 vendorOrder.getOrder()
                         .getShippingAddress()
                         .getUser().getUserName(),
@@ -58,11 +65,10 @@ public class VendorOrderMapper {
                 vendorOrder.getShippingFee(),
                 vendorOrder.getDiscount(),
                 vendorOrder.getTotalPrice(),
-                vendorOrder.getOrderStatus(),
-                vendorOrder.getPaymentStatus(),
-                vendorOrder.getPaymentMethod(),
+                vendorOrder.getVendorOrderStatus(),
+                paymentInfoDto,
                 items,
-                vendorOrder.getCreatedAt().format(FORMATTER)
+                vendorOrder.getCreatedAt()
         );
     }
 

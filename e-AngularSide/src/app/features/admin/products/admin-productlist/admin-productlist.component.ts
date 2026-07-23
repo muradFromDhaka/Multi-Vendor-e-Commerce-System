@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductListResponse } from 'src/app/models/product.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -17,18 +17,37 @@ export class AdminProductlistComponent implements OnInit {
   totalPages = 0;
   pageNumbers: number[] = [];
 
+  searchKeyword = '';
+
   products: ProductListResponse[] = [];
   loading = false;
 
   constructor(
     private adminProductService: AdminProductService,
     public authService: AuthService,
+    private acRoute: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+
+  this.acRoute.queryParams.subscribe(params => {
+
+  this.page = 0;
+
+  const keyword = params['keyword']?.trim() || '';
+
+  this.searchKeyword = keyword;
+
+  if (keyword) {
+    this.search();
+  } else {
     this.loadProducts();
   }
+
+});
+
+}
 
   loadProducts(): void {
 
@@ -61,6 +80,71 @@ export class AdminProductlistComponent implements OnInit {
 
 }
 
+
+changePage(page: number): void {
+
+  if (
+    page < 0 ||
+    page >= this.totalPages ||
+    page === this.page
+  ) {
+    return;
+  }
+
+  this.page = page;
+
+  if (this.searchKeyword.trim()) {
+    this.search();
+  } else {
+    this.loadProducts();
+  }
+
+}
+
+
+search(): void {
+
+  this.loading = true;
+
+  this.adminProductService
+    .searchProducts(
+      this.searchKeyword,
+      this.page,
+      this.size
+    )
+    .subscribe({
+
+      next: res => {
+
+        this.products = res.content;
+
+        this.page = res.number;
+        this.totalPages = res.totalPages;
+
+        this.pageNumbers = Array.from(
+          { length: this.totalPages },
+          (_, i) => i
+        );
+
+        this.loading = false;
+
+      },
+
+      error: err => {
+
+        console.error(err);
+
+        this.loading = false;
+
+      }
+
+    });
+
+}
+
+
+
+
   editProduct(id: number): void {
     this.router.navigate(['/admin/adminEditProductForm', id]);
   }
@@ -69,17 +153,23 @@ export class AdminProductlistComponent implements OnInit {
     this.router.navigate(['/admin/adminProductView', id]);
   }
 
-  deleteProduct(id: number): void {
+ deleteProduct(id: number): void {
 
-    if (!confirm('Are you sure to delete this product?')) {
-      return;
+  if (!confirm('Are you sure to delete this product?')) {
+    return;
+  }
+
+  this.adminProductService.deleteProduct(id).subscribe(() => {
+
+    if (this.searchKeyword.trim()) {
+      this.search();
+    } else {
+      this.loadProducts();
     }
 
-    this.adminProductService.deleteProduct(id).subscribe(() => {
-      this.loadProducts();
-    });
+  });
 
-  }
+}
   
 
 get pages(): (number | string)[] {
@@ -133,15 +223,6 @@ get pages(): (number | string)[] {
   return pages;
 }
 
-changePage(page: number): void {
-
-  if (page < 0 || page >= this.totalPages || page === this.page) {
-    return;
-  }
-
-  this.page = page;
-  this.loadProducts();
-}
 
 nextPage(): void {
 

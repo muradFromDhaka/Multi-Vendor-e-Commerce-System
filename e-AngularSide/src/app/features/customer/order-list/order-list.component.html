@@ -32,14 +32,22 @@
             Order ID#: {{ order.orderNumber }}
           </h5>
 
+          <p>
+            Order Status : 
           <span [class]="getStatusClass(order.orderStatus)">
-            {{ order.orderStatus }}
+             {{ order.orderStatus }}
           </span>
+          </p>
 
           <p class="mt-2 mb-0">
             Total:
-            <strong>{{ order.totalPrice | currency }}</strong>
+            <strong>{{ order.totalPrice | currency:'BDT':'symbol':'1.2-2' }}</strong>
           </p>
+
+          <p class="mb-0 text-muted">
+             {{ order.createdAt | date:'mediumDate' }}
+          </p>
+
         </div>
 
         <div>

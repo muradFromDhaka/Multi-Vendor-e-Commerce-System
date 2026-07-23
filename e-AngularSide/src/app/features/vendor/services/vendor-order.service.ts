@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/app/services/environments';
-import { UpdateVendorOrderStatusRequest, VendorOrderDetailsResponse, VendorOrderPage } from './vendorOrder.model';
+import { UpdateVendorOrderStatusRequest, VendorOrderDetailsResponse, VendorOrderPage } from '../models/vendorOrder.model';
 
 
 

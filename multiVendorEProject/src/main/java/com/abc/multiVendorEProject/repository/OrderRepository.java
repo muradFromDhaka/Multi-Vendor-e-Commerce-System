@@ -37,7 +37,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     boolean existsByOrderNumber(String orderNumber);
 
-    long countByPaymentStatus(PaymentStatus paymentStatus);
+    long countByPayment_PaymentStatus(PaymentStatus paymentStatus);
 
     Long countByOrderStatus(OrderStatus orderStatus);
 
@@ -45,48 +45,23 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Page<Order> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
+    List<Order> findByUser_UserName(String userName);
+
+    List<Order> findByPayment_PaymentStatus(PaymentStatus paymentStatus);
+
 
     @Query("""
-    SELECT COALESCE(SUM(o.totalPrice), 0)
-    FROM Order o
-    WHERE o.orderStatus = 'DELIVERED'
-    AND o.createdAt BETWEEN :startDate AND :endDate
-    """)
-    BigDecimal getRevenueBetween(
-            @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate);
-
-    @Query("""
-    SELECT COALESCE(SUM(o.totalPrice), 0)
-    FROM Order o
-    WHERE o.orderStatus = 'DELIVERED'
-    """)
-    BigDecimal getTotalRevenue();
-
-    List<Order> findByPaymentStatus(PaymentStatus paymentStatus);
-
-
-//    =====================================================
-
-    @Query("""
-    SELECT COALESCE(AVG(o.totalPrice), 0)
-    FROM Order o
-    WHERE o.paymentStatus = :paymentStatus
+select count(o)
+from Order o
+where o.orderStatus = :status
+and o.createdAt between :start and :end
 """)
-    BigDecimal getAverageOrderValue(
-            @Param("paymentStatus") PaymentStatus paymentStatus
-    );
+    Long countSalesBetween(
+            @Param("status") OrderStatus status,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end);
 
-    @Query("""
-    SELECT COALESCE(MAX(o.totalPrice), 0)
-    FROM Order o
-    WHERE o.paymentStatus = :paymentStatus
-""")
-    BigDecimal getHighestOrderValue(
-            @Param("paymentStatus") PaymentStatus paymentStatus
-    );
 
-    List<Order> findByUserUserName(String userName);
 
 
     @Query("""
@@ -117,5 +92,24 @@ GROUP BY
     Page<VendorCustomerResponseDTO> findCustomerSummaries(
             @Param("vendorId") Long vendorId,
             Pageable pageable);
+
+
+    @Query("""
+select count(distinct o.user.userName)
+from Order o
+""")
+    Long countActiveCustomers();
+
+
+    @Query(value = """
+SELECT COUNT(*)
+FROM (
+    SELECT user_user_name
+    FROM orders
+    GROUP BY user_user_name
+    HAVING COUNT(id) >= 2
+) t
+""", nativeQuery = true)
+    Long countRepeatCustomers();
 
 }

@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -27,11 +30,14 @@ public class Vendor extends BaseEntity {
 
     @OneToOne
     @JoinColumn(
-            name = "username",               // FK column in vendors table
+            name = "username",
             referencedColumnName = "userName",
             nullable = false
     )
     private User user;
+
+    @OneToMany(mappedBy = "vendor")
+    private List<VendorOrder> vendorOrders = new ArrayList<>();
 
     // ---------------- Profile Fields ----------------
     private String businessEmail;

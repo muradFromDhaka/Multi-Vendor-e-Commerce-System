@@ -40,14 +40,37 @@ export class OrderListComponent {
   }
 
   getStatusClass(status: string): string {
-    switch (status) {
-      case 'PENDING': return 'badge bg-warning text-dark';
-      case 'PAID': return 'badge bg-info';
-      case 'SHIPPED': return 'badge bg-primary';
-      case 'DELIVERED': return 'badge bg-success';
-      case 'CANCELLED': return 'badge bg-danger';
-      default: return 'badge bg-secondary';
-    }
+
+  switch (status) {
+
+    case 'PENDING':
+      return 'badge bg-warning text-dark';
+
+    case 'PROCESSING':
+      return 'badge bg-info';
+
+    case 'SHIPPED':
+      return 'badge bg-primary';
+
+    case 'PARTIALLY_DELIVERED':
+      return 'badge bg-info';
+
+    case 'DELIVERED':
+      return 'badge bg-success';
+
+    case 'PARTIALLY_CANCELLED':
+      return 'badge bg-primary';
+
+    case 'CANCELLED':
+      return 'badge bg-danger';
+
+    case 'RETURNED':
+      return 'badge bg-secondary';
+
+    default:
+      return 'badge bg-secondary';
   }
+
+}
 
 }

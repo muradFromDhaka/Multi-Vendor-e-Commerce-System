@@ -86,8 +86,8 @@ public final class VendorCustomerMapper {
                 order.getOrderNumber(),
 
                 order.getOrderStatus(),
-                order.getPaymentStatus(),
-                order.getPaymentMethod(),
+                order.getPayment().getPaymentStatus(),
+                order.getPayment().getPaymentMethod(),
 
                 vendorTotalPrice,
 

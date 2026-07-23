@@ -1,15 +1,16 @@
 package com.abc.multiVendorEProject.service.Vendor;
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.UpdateVendorOrderStatusRequestDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorOrderDetailsResponseDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorOrderListResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.UpdateVendorOrderStatusRequestDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderDetailsResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderListResponseDto;
 import com.abc.multiVendorEProject.entity.Vendor;
 import com.abc.multiVendorEProject.entity.VendorOrder;
-import com.abc.multiVendorEProject.enums.OrderStatus;
+import com.abc.multiVendorEProject.enums.VendorOrderStatus;
 import com.abc.multiVendorEProject.mapper.VendorOrderMapper;
 import com.abc.multiVendorEProject.repository.OrderItemRepository;
 import com.abc.multiVendorEProject.repository.VendorOrderRepository;
 import com.abc.multiVendorEProject.repository.VendorRepository;
+import com.abc.multiVendorEProject.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class VendorOrderService {
     private final VendorOrderRepository vendorOrderRepository;
     private final VendorRepository vendorRepository;
     private final OrderItemRepository orderItemRepository;
+    private final OrderService orderService;
 
     @Transactional(readOnly = true)
     public Page<VendorOrderListResponseDto> getVendorOrders(Pageable pageable) {
@@ -100,12 +102,16 @@ public class VendorOrderService {
                         new RuntimeException("Vendor order not found."));
 
         validateVendorOrderStatusTransition(
-                vendorOrder.getOrderStatus(),
-                request.orderStatus());
+                vendorOrder.getVendorOrderStatus(),
+                request.vendorOrderStatus());
 
-        vendorOrder.setOrderStatus(request.orderStatus());
+        vendorOrder.setVendorOrderStatus(request.vendorOrderStatus());
 
         vendorOrderRepository.save(vendorOrder);
+
+        // Parent Order Update
+        orderService.updateParentOrderStatus(
+                vendorOrder.getOrder().getId());
 
         return VendorOrderMapper.toDetailsDto(vendorOrder);
     }
@@ -129,55 +135,70 @@ public class VendorOrderService {
 
 
     private void validateVendorOrderStatusTransition(
-            OrderStatus currentStatus,
-            OrderStatus newStatus) {
+            VendorOrderStatus currentVendorOrderStatus,
+            VendorOrderStatus newVendorOrderStatus) {
 
-        if (currentStatus == OrderStatus.DELIVERED) {
+        if (currentVendorOrderStatus == VendorOrderStatus.DELIVERED) {
             throw new RuntimeException(
                     "Delivered vendor order cannot be updated.");
         }
 
-        if (currentStatus == OrderStatus.CANCELLED) {
+        if (currentVendorOrderStatus == VendorOrderStatus.CANCELLED) {
             throw new RuntimeException(
                     "Cancelled vendor order cannot be updated.");
         }
 
-        if (currentStatus == newStatus) {
+        if (currentVendorOrderStatus == newVendorOrderStatus) {
             throw new RuntimeException(
-                    "Vendor order is already in " + newStatus + " status.");
+                    "Vendor order is already in " + newVendorOrderStatus + " status.");
         }
 
-        switch (currentStatus) {
+        switch (currentVendorOrderStatus) {
 
             case PENDING -> {
-                if (newStatus != OrderStatus.CONFIRMED
-                        && newStatus != OrderStatus.CANCELLED) {
+                if (newVendorOrderStatus != VendorOrderStatus.CONFIRMED
+                        && newVendorOrderStatus != VendorOrderStatus.CANCELLED) {
                     throw new RuntimeException(
                             "Pending order can only be CONFIRMED or CANCELLED.");
                 }
             }
 
             case CONFIRMED -> {
-                if (newStatus != OrderStatus.PROCESSING
-                        && newStatus != OrderStatus.CANCELLED) {
+                if (newVendorOrderStatus != VendorOrderStatus.PROCESSING
+                        && newVendorOrderStatus != VendorOrderStatus.CANCELLED) {
                     throw new RuntimeException(
                             "Confirmed order can only be PROCESSING or CANCELLED.");
                 }
             }
 
             case PROCESSING -> {
-                if (newStatus != OrderStatus.SHIPPED) {
+                if (newVendorOrderStatus != VendorOrderStatus.PACKED) {
                     throw new RuntimeException(
-                            "Processing order can only be SHIPPED.");
+                            "Processing order can only be PACKED.");
                 }
             }
 
+            case PACKED -> {
+
+                if (newVendorOrderStatus != VendorOrderStatus.SHIPPED) {
+                    throw new RuntimeException(
+                            "PACKED order can only be SHIPPED.");
+                }
+
+            }
+
             case SHIPPED -> {
-                if (newStatus != OrderStatus.DELIVERED) {
+                if (newVendorOrderStatus != VendorOrderStatus.DELIVERED) {
                     throw new RuntimeException(
                             "Shipped order can only be DELIVERED.");
                 }
             }
+
+            case RETURNED -> {
+                throw new RuntimeException(
+                        "Returned order cannot be updated.");
+               }
+
         }
     }
 

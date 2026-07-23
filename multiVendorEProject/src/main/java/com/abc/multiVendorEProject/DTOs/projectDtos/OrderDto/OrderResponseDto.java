@@ -2,6 +2,7 @@ package com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderItemResponseDTO;
 import com.abc.multiVendorEProject.DTOs.projectDtos.ShippingAddressResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.CustomerVendorOrderDto;
 import com.abc.multiVendorEProject.enums.OrderStatus;
 import com.abc.multiVendorEProject.enums.PaymentMethod;
 import com.abc.multiVendorEProject.enums.PaymentStatus;
@@ -44,6 +45,8 @@ public class OrderResponseDto {
     private ShippingAddressResponseDto shippingAddress;
 
     private List<OrderItemResponseDTO> items;
+
+    List<CustomerVendorOrderDto> vendorOrders;
 
     private LocalDateTime createdAt;
 }

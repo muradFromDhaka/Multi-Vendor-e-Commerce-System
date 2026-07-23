@@ -1,0 +1,377 @@
+<div class="container-fluid">
+
+  <!-- ================= Header ================= -->
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h3 class="mb-0">
+      Payment Management
+    </h3>
+
+    <button
+      class="btn btn-outline-primary"
+      (click)="refresh()">
+
+      <i class="fas fa-sync-alt me-1"></i>
+      Refresh
+
+    </button>
+
+  </div>
+
+  <!-- ================= Search & Filter ================= -->
+
+  <div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+      <div class="row g-3 align-items-end">
+
+        <!-- Search -->
+
+        <div class="col-md-4">
+
+          <label class="form-label">
+            Customer
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="searchKeyword"
+            placeholder="Search username">
+
+        </div>
+
+        <!-- Status -->
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Status
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="selectedStatus">
+
+            <option [ngValue]="undefined">
+              All
+            </option>
+
+            <option
+              *ngFor="let status of paymentStatuses"
+              [ngValue]="status">
+
+              {{status}}
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- Method -->
+
+        <div class="col-md-2">
+
+          <label class="form-label">
+            Method
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="selectedMethod">
+
+            <option [ngValue]="undefined">
+              All
+            </option>
+
+            <option
+              *ngFor="let method of paymentMethods"
+              [ngValue]="method">
+
+              {{method.replaceAll('_',' ')}}
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- Buttons -->
+
+        <div class="col-md-4">
+
+          <button
+            class="btn btn-primary me-2"
+            (click)="searchCustomer()">
+
+            Search
+
+          </button>
+
+          <button
+            class="btn btn-success me-2"
+            (click)="applyFilter()">
+
+            Filter
+
+          </button>
+
+          <button
+            class="btn btn-secondary"
+            (click)="refresh()">
+
+            Reset
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ================= Loading ================= -->
+
+  <div
+    class="text-center my-5"
+    *ngIf="loading">
+
+    <div class="spinner-border text-primary"></div>
+
+  </div>
+
+  <!-- ================= Table ================= -->
+
+  <div
+    class="card shadow-sm"
+    *ngIf="!loading">
+
+    <div class="table-responsive">
+
+      <table class="table table-hover align-middle mb-0">
+
+        <thead class="table-dark">
+
+          <tr>
+
+            <th>#</th>
+
+            <th>Order ID</th>
+
+            <th>Amount</th>
+
+            <th>Method</th>
+
+            <th>Status</th>
+
+            <th>Paid At</th>
+
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngIf="payments.length===0">
+
+            <td colspan="7" class="text-center py-5">
+
+              No Payments Found
+
+            </td>
+
+          </tr>
+
+          <tr
+            *ngFor="let payment of payments;let i=index">
+
+            <td>
+
+              {{page*size+i+1}}
+
+            </td>
+
+            <td>
+
+              {{payment.orderId}}
+
+            </td>
+
+            <td>
+
+              {{payment.amount | currency:'BDT':'symbol':'1.2-2'}}
+
+            </td>
+
+            <td>
+
+              {{payment.paymentMethod.replaceAll('_',' ')}}
+
+            </td>
+
+            <td>
+
+              <span
+                class="badge"
+
+                [ngClass]="{
+
+                  'bg-warning':payment.paymentStatus=='PENDING',
+
+                  'bg-success':payment.paymentStatus=='PAID',
+
+                  'bg-danger':payment.paymentStatus=='FAILED',
+
+                  'bg-secondary':payment.paymentStatus=='CANCELLED',
+
+                  'bg-info':payment.paymentStatus=='REFUNDED'
+
+                }">
+
+                {{payment.paymentStatus}}
+
+              </span>
+
+            </td>
+
+            <td>
+
+              {{payment.paidAt ? (payment.paidAt | date:'medium') : '-'}}
+
+            </td>
+
+            <td>
+
+              <button
+                class="btn btn-sm btn-outline-primary"
+                (click)="viewPayment(payment)">
+
+                <i class="fas fa-eye"></i>
+                View Details
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- ================= Footer ================= -->
+
+    <div class="card-footer">
+
+      <div class="row align-items-center">
+
+        <div class="col-md-4">
+
+          Showing
+
+          <strong>
+
+            {{payments.length}}
+
+          </strong>
+
+          of
+
+          <strong>
+
+            {{totalElements}}
+
+          </strong>
+
+          payments
+
+        </div>
+
+        <!-- Page Size -->
+
+        <div class="col-md-2">
+
+          <select
+            class="form-select"
+            [(ngModel)]="size"
+            (change)="loadPayments()">
+
+            <option [value]="5">5</option>
+
+            <option [value]="10">10</option>
+
+            <option [value]="20">20</option>
+
+            <option [value]="50">50</option>
+
+          </select>
+
+        </div>
+
+        <!-- Pagination -->
+
+        <div class="col-md-6">
+
+          <nav class="float-end">
+
+            <ul class="pagination mb-0">
+
+              <li
+                class="page-item"
+                [class.disabled]="page==0">
+
+                <button
+                  class="page-link"
+                  (click)="page>0 && onPageChange(page-1)">
+
+                  Previous
+
+                </button>
+
+              </li>
+
+              <li class="page-item active">
+
+                <span class="page-link">
+
+                  {{page+1}}
+
+                </span>
+
+              </li>
+
+              <li
+                class="page-item"
+                [class.disabled]="page>=totalPages-1">
+
+                <button
+                  class="page-link"
+                  (click)="page<totalPages-1 && onPageChange(page+1)">
+
+                  Next
+
+                </button>
+
+              </li>
+
+            </ul>
+
+          </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

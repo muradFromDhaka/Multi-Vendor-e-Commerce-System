@@ -54,11 +54,35 @@ export interface AdminOrderDetailsResponse {
 
   items: OrderItemResponse[];
 
+  
+  transactionId?: string;
+
+  paidAt?: string;
+
+  refundedAt?: string;
+
+  refundTransactionId?: string;
+
+  refundedAmount?: number;
+
   createdAt: string;
 
   updatedAt: string;
 
 }
+
+
+// export interface  UpdatePaymentStatusRequest {
+
+//          paymentStatus: PaymentStatus;
+
+//          transactionId: string;
+
+//          refundTransactionId: string;
+
+//          refundedAmount: number;
+
+// }
 
 export interface UpdateOrderStatusRequest {
 

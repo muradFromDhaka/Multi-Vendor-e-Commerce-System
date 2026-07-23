@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProductDetailsResponse, ProductListResponse, ProductRequest, ProductStatus } from 'src/app/models/product.model';
 import { PageResponse } from 'src/app/models/PageResponse';
@@ -99,5 +99,24 @@ export class AdminProductService {
       { status }
     );
   }
+
+
+  searchProducts(
+  keyword: string,
+  page: number,
+  size: number
+): Observable<PageResponse<ProductListResponse>> {
+
+  const params = new HttpParams()
+    .set('keyword', keyword)
+    .set('page', page)
+    .set('size', size);
+
+  return this.http.get<PageResponse<ProductListResponse>>(
+    `${this.baseUrl}/search`,
+    { params }
+  );
+
+}
 
 }

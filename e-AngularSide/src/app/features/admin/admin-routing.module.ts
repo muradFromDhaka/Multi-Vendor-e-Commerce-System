@@ -23,6 +23,8 @@ import { AttributeComponent } from './variants-management/attribute/attribute.co
 import { AttributeValueComponent } from './variants-management/attribute-value/attribute-value.component';
 import { ProductVariantDetailsComponent } from './variants-management/product-variant/product-variant-details/product-variant-details.component';
 import { ProductVariantListComponent } from './variants-management/product-variant/product-variant-list/product-variant-list.component';
+import { PaymentListComponent } from './payment-management/payment-list/payment-list.component';
+import { PaymentDetailsComponent } from './payment-management/payment-details/payment-details.component';
 
 const routes: Routes = [
 {
@@ -55,6 +57,9 @@ const routes: Routes = [
 
       {path: 'orders',component: OrderListComponent},
       {path: 'orders/:id',component: OrderDetailsComponent},
+
+      {path: 'payments',component: PaymentListComponent},
+      {path: 'payments/:id',component: PaymentDetailsComponent},
 
       {path: 'attribute',component: AttributeComponent},
       {path: 'attributeValue',component: AttributeValueComponent},

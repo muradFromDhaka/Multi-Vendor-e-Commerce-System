@@ -12,7 +12,6 @@ import { AdminProductDetailsComponent } from './products/admin-product-details/a
 import { BrandFormComponent } from './brands/brand-form/brand-form.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminProductlistComponent } from './products/admin-productlist/admin-productlist.component';
-import { AdminNavbarComponent } from './admin-navbar/admin-navbar.component';
 import { VendorDetailsComponent } from './vendor-management/vendor-details/vendor-details.component';
 import { VendorProductsComponent } from './vendor-management/vendor-products/vendor-products.component';
 import { VendorOrdersComponent } from './vendor-management/vendor-orders/vendor-orders.component';
@@ -27,6 +26,8 @@ import { AttributeComponent } from './variants-management/attribute/attribute.co
 import { AttributeValueComponent } from './variants-management/attribute-value/attribute-value.component';
 import { ProductVariantListComponent } from './variants-management/product-variant/product-variant-list/product-variant-list.component';
 import { ProductVariantDetailsComponent } from './variants-management/product-variant/product-variant-details/product-variant-details.component';
+import { PaymentDetailsComponent } from './payment-management/payment-details/payment-details.component';
+import { PaymentListComponent } from './payment-management/payment-list/payment-list.component';
 
 
 @NgModule({
@@ -41,7 +42,6 @@ import { ProductVariantDetailsComponent } from './variants-management/product-va
   BrandFormComponent,
   BrandListComponent,
   AdminProductlistComponent,
-  AdminNavbarComponent,
     VendorListComponent,
   VendorDetailsComponent,
   VendorProductsComponent,
@@ -56,6 +56,8 @@ import { ProductVariantDetailsComponent } from './variants-management/product-va
   AttributeValueComponent,
   ProductVariantListComponent,
   ProductVariantDetailsComponent,
+  PaymentDetailsComponent,
+  PaymentListComponent,
   ],
   imports: [
     CommonModule,

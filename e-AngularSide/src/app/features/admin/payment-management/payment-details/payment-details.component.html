@@ -1,0 +1,280 @@
+<div
+  class="container py-4"
+  *ngIf="payment">
+
+  <div class="card shadow">
+
+    <div class="card-header">
+
+      <h4>
+
+        Payment Details
+
+      </h4>
+
+    </div>
+
+    <div class="card-body">
+
+      <table class="table">
+
+        <tr>
+
+          <th>Payment Id</th>
+
+          <td>{{payment.paymentId}}</td>
+
+        </tr>
+
+        <tr>
+
+          <th>Order Id</th>
+
+          <td>{{payment.orderId}}</td>
+
+        </tr>
+
+        <tr>
+
+          <th>Amount</th>
+
+          <td>
+
+            {{payment.amount | currency:'BDT'}}
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Method</th>
+
+          <td>
+
+            {{payment.paymentMethod.replaceAll('_',' ')}}
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Provider</th>
+
+          <td>
+
+            {{payment.provider}}
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Status</th>
+
+          <td>
+
+            <span
+              class="badge"
+
+              [ngClass]="{
+
+                'bg-warning':
+                payment.paymentStatus=='PENDING',
+
+                'bg-success':
+                payment.paymentStatus=='PAID',
+
+                'bg-danger':
+                payment.paymentStatus=='FAILED',
+
+                'bg-secondary':
+                payment.paymentStatus=='CANCELLED',
+
+                'bg-info':
+                payment.paymentStatus=='REFUNDED'
+
+              }">
+
+              {{payment.paymentStatus}}
+
+            </span>
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Transaction Id</th>
+
+          <td>
+
+            {{payment.transactionId || '-'}}
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Paid At</th>
+
+          <td>
+
+            {{payment.paidAt | date:'medium'}}
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Refund Transaction</th>
+
+          <td>
+
+            {{payment.refundTransactionId || '-'}}
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Refund Amount</th>
+
+          <td>
+
+            {{payment.refundedAmount || '-'}}
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Refunded At</th>
+
+          <td>
+
+            {{payment.refundedAt | date:'medium'}}
+
+          </td>
+
+        </tr>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <div class="card shadow mt-4">
+
+    <div class="card-header">
+
+      Update Payment Status
+
+    </div>
+
+    <div class="card-body">
+
+      <div class="mb-3">
+
+        <label>
+
+          Status
+
+        </label>
+
+        <select
+          class="form-select"
+          [(ngModel)]="selectedStatus">
+
+          <option
+            *ngFor="let status of paymentStatuses"
+            [ngValue]="status">
+
+            {{status}}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <div
+        class="mb-3"
+        *ngIf="selectedStatus=='PAID'">
+
+        <label>
+
+          Transaction Id
+
+        </label>
+
+        <input
+          class="form-control"
+          [(ngModel)]="transactionId">
+
+      </div>
+
+      <div
+        *ngIf="selectedStatus=='REFUNDED'">
+
+        <div class="mb-3">
+
+          <label>
+
+            Refund Transaction Id
+
+          </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="refundTransactionId">
+
+        </div>
+
+        <div class="mb-3">
+
+          <label>
+
+            Refund Amount
+
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="refundedAmount">
+
+        </div>
+
+      </div>
+
+      <button
+        class="btn btn-success me-2"
+        (click)="updateStatus()"
+        [disabled]="updating">
+
+        Update
+
+      </button>
+
+      <button
+        class="btn btn-secondary"
+        (click)="back()">
+
+        Back
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

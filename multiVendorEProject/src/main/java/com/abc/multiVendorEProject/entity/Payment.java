@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Payment extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", nullable = false, unique = true)
     private Order order;
 
     @Column(nullable = false, precision = 19, scale = 2)
@@ -26,15 +26,22 @@ public class Payment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PaymentProvider provider;
 
-    @Column(nullable = false, unique = true)
-    private String transactionId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentStatus paymentStatus;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private PaymentMethod paymentMethod;
 
-    @Column(nullable = false)
     private LocalDateTime paidAt;
 
-    @Enumerated(EnumType.STRING)
-    private PaymentStatus status;
+    @Column(unique = true)
+    private String transactionId;
+
+    private String refundTransactionId;
+
+    private LocalDateTime refundedAt;
+
+    private BigDecimal refundedAmount;
 }

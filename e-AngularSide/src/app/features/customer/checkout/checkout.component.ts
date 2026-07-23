@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { OrderRequest, PaymentMethod } from 'src/app/models/order.model';
 
 import { CheckoutService } from '../services/checkout.service';
+import { CheckoutPaymentSelection } from './checkout-payment/checkout-payment.component';
 
 @Component({
   selector: 'app-checkout',
@@ -25,6 +26,16 @@ export class CheckoutComponent implements OnInit {
 
   }
 
+  selectedPayment!: CheckoutPaymentSelection;
+
+onPaymentSelected(
+  payment: CheckoutPaymentSelection
+) {
+
+  this.selectedPayment = payment;
+
+}
+
   onAddressSubmitted(address: OrderRequest): void {
 
     this.orderRequest.shippingAddressId = address.shippingAddressId;
@@ -33,11 +44,11 @@ export class CheckoutComponent implements OnInit {
 
   }
 
-  onPaymentSelected(paymentMethod: PaymentMethod): void {
+  // onPaymentSelected(paymentMethod: PaymentMethod): void {
 
-    this.orderRequest.paymentMethod = paymentMethod;
+  //   this.orderRequest.paymentMethod = paymentMethod;
 
-  }
+  // }
 
   placeOrder(): void {
 

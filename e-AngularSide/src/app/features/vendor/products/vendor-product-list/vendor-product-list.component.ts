@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductDetailsResponse, ProductListResponse } from 'src/app/models/product.model';
 import { VendorProductService } from '../../services/vendor-product.service';
 
@@ -20,14 +20,29 @@ export class VendorProductListComponent implements OnInit {
   totalPages = 0;
   totalElements = 0;
 
+  searchKeyword = '';
+
   constructor(
     private vendorProductService: VendorProductService,
+    private acRouter: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
-  }
+    this.acRouter.queryParams.subscribe(params => {
+
+    const keyword = params['keyword'];
+
+    if (keyword) {
+      this.searchKeyword = keyword;
+      this.search();
+    } else {
+      this.loadProducts();
+    }
+
+  });
+
+}
 
   loadProducts(): void {
 
@@ -60,6 +75,41 @@ export class VendorProductListComponent implements OnInit {
 
   }
 
+
+search(): void {
+
+  this.loading = true;
+
+  this.vendorProductService
+      .searchProducts(
+          this.searchKeyword,
+          this.page,
+          this.size
+      )
+      .subscribe({
+
+        next: res => {
+
+          this.products = res.content;
+          this.page = res.number;
+          this.totalPages = res.totalPages;
+          this.totalElements = res.totalElements;
+
+          this.loading = false;
+        },
+
+        error: err => {
+
+          console.error(err);
+          this.loading = false;
+
+        }
+
+      });
+
+}
+
+
   editProduct(id: number): void {
 
     this.router.navigate(['/vendor/productForm', id]);
@@ -90,20 +140,23 @@ export class VendorProductListComponent implements OnInit {
 
   changePage(page: number): void {
 
-    if (
-      page < 0 ||
-      page >= this.totalPages ||
-      page === this.page
-    ) {
-      return;
-    }
-
-    this.page = page;
-
-    this.loadProducts();
-
+  if (
+    page < 0 ||
+    page >= this.totalPages ||
+    page === this.page
+  ) {
+    return;
   }
 
+  this.page = page;
+
+  if (this.searchKeyword.trim()) {
+    this.search();
+  } else {
+    this.loadProducts();
+  }
+
+}
   nextPage(): void {
 
     if (this.page < this.totalPages - 1) {

@@ -59,9 +59,9 @@
 
           <th>Total</th>
 
-          <th>Status</th>
+          <th>Order Status</th>
 
-          <th>Payment</th>
+          <th>Payment Status</th>
 
           <th>Created</th>
 
@@ -95,32 +95,19 @@
 
           <td>
 
-            ৳ {{order.totalPrice}}
+            {{order.totalPrice | currency:'BDT':'symbol':'1.2-2'}}
 
           </td>
 
           <td>
 
-            <span
-              class="badge"
-              [ngClass]="{
-
-              'bg-warning':order.orderStatus=='PENDING',
-
-              'bg-info':order.orderStatus=='PROCESSING',
-
-              'bg-primary':order.orderStatus=='SHIPPED',
-
-              'bg-success':order.orderStatus=='DELIVERED',
-
-              'bg-danger':order.orderStatus=='CANCELLED'
-
-              }">
-
-              {{order.orderStatus}}
-
+           <span
+               class="badge"
+              [ngClass]="getOrderStatusClass(order.orderStatus)">
+              
+              {{ order.orderStatus }}
+            
             </span>
-
           </td>
 
           <td>
@@ -135,11 +122,13 @@
 
               'bg-danger':order.paymentStatus=='FAILED',
 
-              'bg-secondary':order.paymentStatus=='REFUNDED'
+              'bg-secondary':order.paymentStatus=='REFUNDED',
+
+              'bg-dark':order.paymentStatus=='CANCELLED'
 
               }">
 
-              {{order.paymentStatus}}
+              {{order.paymentStatus}} 
 
             </span>
 
@@ -147,7 +136,7 @@
 
           <td>
 
-            {{order.createdAt}}
+            {{order.createdAt | date:'dd MMM yyyy, hh:mm a'}}
 
           </td>
 

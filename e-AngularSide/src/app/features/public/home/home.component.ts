@@ -7,6 +7,8 @@ import { CartService } from 'src/app/services/cart.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { ProductListResponse } from 'src/app/models/product.model';
+import { SearchService } from 'src/app/shared/services/search.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -31,7 +33,8 @@ export class HomeComponent implements OnInit,OnDestroy{
     private categoryService:CategoryService,
     private productService:ProductService,
     private brandService:BrandService,
-    private cartService:CartService
+    private cartService:CartService,
+    private router: Router
   ){}
   
   
@@ -62,20 +65,6 @@ export class HomeComponent implements OnInit,OnDestroy{
     }
   
   
-  // getCategoryEmoji(categoryName: string): string {
-  //   switch(categoryName.toLowerCase()) {
-  //     case 'electronics': return '💻';
-  //     case 'fashion': return '👗';
-  //     case 'mobile': return '📱';
-  //     case 'grocery': return '🛒';
-  //     case 'beauty': return '💄';
-  //     case 'books': return '📚';
-  //     case 'sports': return '🏀';
-  //     default: return '💻'; // default folder emoji
-  //   }
-  // }
-  
-  
     ngOnDestroy(): void {
       clearInterval(this.intervalId);
     }
@@ -98,22 +87,23 @@ export class HomeComponent implements OnInit,OnDestroy{
       this.currentIndex = index;
     }
   
-    onSearch(): void {
+onSearch(): void {
 
-  if (!this.searchQuery.trim()) {
-    this.loadProducts();
+  const keyword = this.searchQuery.trim();
+
+  if (!keyword) {
     return;
   }
 
-  this.productService.searchProducts(this.searchQuery)
-    .subscribe({
-      next: (res) => {
-        this.products = res.content;
-      },
-      error: (err) => {
-        console.error(err);
+  this.router.navigate(
+    ['/publicProductList'],
+    {
+      queryParams: {
+        keyword: keyword
       }
-    });
+    }
+  );
+
 }
   
     addToCart(product: ProductListResponse): void {

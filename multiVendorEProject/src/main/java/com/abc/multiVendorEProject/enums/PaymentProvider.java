@@ -1,9 +1,10 @@
 package com.abc.multiVendorEProject.enums;
 
 public enum PaymentProvider {
+    MANUAL,
     BKASH,
     NAGAD,
     ROCKET,
-    STRIPE,
-    SSLCOMMERZ
+    SSLCOMMERZ,
+    STRIPE
 }

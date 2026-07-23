@@ -12,19 +12,27 @@
         </small>
       </div>
 
-      <span
-        class="badge fs-6"
+      <div class="d-flex align-items-center gap-3 mb-3">
+
+    <h4 class="mb-0">
+        Order :
+    </h4>
+
+    <span
+        class="badge fs-6 px-3 py-2"
         [ngClass]="{
-        'bg-warning': order.orderStatus=='PENDING',
-        'bg-info': order.orderStatus=='PROCESSING',
-        'bg-primary': order.orderStatus=='SHIPPED',
-        'bg-success': order.orderStatus=='DELIVERED',
-        'bg-danger': order.orderStatus=='CANCELLED'
-      }">
+          'bg-warning text-dark': order.orderStatus=='PENDING',
+          'bg-info': order.orderStatus=='PROCESSING',
+          'bg-primary': order.orderStatus=='SHIPPED',
+          'bg-success': order.orderStatus=='DELIVERED',
+          'bg-danger': order.orderStatus=='CANCELLED'
+        }">
 
-        {{order.orderStatus}}
+        {{ order.orderStatus }}
 
-      </span>
+    </span>
+
+</div>
 
     </div>
   </div>
@@ -90,7 +98,7 @@
 
                     Unit Price :
 
-                    {{item.unitPrice|currency}}
+                    {{item.unitPrice | currency:'BDT':'symbol':'1.2-2'}}
 
                 </p>
 
@@ -98,7 +106,7 @@
 
                     Total :
 
-                    {{item.totalPrice|currency}}
+                    {{item.totalPrice | currency:'BDT':'symbol':'1.2-2'}}
 
                 </p>
 
@@ -172,11 +180,7 @@
 
             Payment Method
 
-            <strong>
-
-                {{order.paymentMethod}}
-
-            </strong>
+            <strong>{{order.paymentMethod}}</strong>
 
         </p>
 
@@ -184,15 +188,248 @@
 
             Payment Status
 
-            <strong>
-
-                {{order.paymentStatus}}
-
-            </strong>
+            <strong>{{order.paymentStatus}}</strong>
 
         </p>
 
+        <button
+            class="btn btn-outline-primary btn-sm"
+            (click)="viewPaymentDetails()">
+
+            View Payment Details
+
+        </button>
+
     </div>
+
+</div>
+
+<!-- ============================================== Payment Details=========================== -->
+
+<div
+    class="modal fade"
+    id="paymentModal"
+    tabindex="-1">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Payment Details
+
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+
+            <div
+                class="modal-body"
+                *ngIf="payment">
+
+                <table class="table table-bordered">
+
+                    <tr>
+
+                        <th>Amount</th>
+
+                        <td>
+
+                            {{payment.amount |
+                            currency:'BDT':'symbol':'1.2-2'}}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Provider</th>
+
+                        <td>
+
+                            {{payment.provider}}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Payment Method</th>
+
+                        <td>
+
+                            {{payment.paymentMethod}}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Payment Status</th>
+
+                        <td>
+
+                            {{payment.paymentStatus}}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Transaction ID</th>
+
+                        <td>
+
+                            {{payment.transactionId || '-'}}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Paid At</th>
+
+                        <td>
+
+                            {{payment.paidAt ?
+                            (payment.paidAt | date:'medium')
+                            : '-'}}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Refund Transaction</th>
+
+                        <td>
+
+                            {{payment.refundTransactionId || '-'}}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Refund Amount</th>
+
+                        <td>
+
+                            {{payment.refundedAmount != null
+                            ? (payment.refundedAmount |
+                            currency:'BDT':'symbol':'1.2-2')
+                            : '-'}}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Refunded At</th>
+
+                        <td>
+
+                            {{payment.refundedAt
+                            ? (payment.refundedAt | date:'medium')
+                            : '-'}}
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Close
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =================================vendor Order status================================ -->
+
+<div class="card mb-4">
+
+  <div class="card-header">
+    Vendor Order Status
+  </div>
+
+  <div class="card-body">
+
+    <div
+      class="border rounded p-3 mb-3"
+      *ngFor="let vendor of order.vendorOrders">
+
+      <h5>{{vendor.vendorName}}</h5>
+
+      <div class="d-flex align-items-center gap-2 mb-2">
+
+    <span class="fw-semibold text-muted">
+        Vendor Status:
+    </span>
+
+    <span
+        class="badge"
+        [ngClass]="getVendorStatusClass(vendor.vendorOrderStatus)">
+
+        {{ vendor.vendorOrderStatus }}
+
+    </span>
+
+</div>
+
+      <div class="mt-3">
+
+        <div *ngFor="let item of vendor.items">
+
+          • {{item.productName}}
+          ({{item.quantity}})
+
+        </div>
+
+      </div>
+
+      <small class="text-muted">
+
+        Updated :
+        {{vendor.updatedAt | date:'medium'}}
+
+      </small>
+
+    </div>
+
+  </div>
 
 </div>
 
@@ -221,7 +458,7 @@
 
             <span>Shipping</span>
 
-            <span>{{order.shippingFee|currency}}</span>
+            <span>{{order.shippingFee | currency:'BDT':'symbol':'1.2-2'}}</span>
 
         </div>
 
@@ -229,7 +466,7 @@
 
             <span>Discount</span>
 
-            <span>-{{order.discount|currency}}</span>
+            <span>-{{order.discount | currency:'BDT':'symbol':'1.2-2'}}</span>
 
         </div>
 
@@ -239,13 +476,15 @@
 
             <span>Total</span>
 
-            <span>{{order.totalPrice|currency}}</span>
+            <span>{{order.totalPrice | currency:'BDT':'symbol':'1.2-2'}}</span>
 
         </div>
 
     </div>
 
 </div>
+
+
 
 
 <!-- =============================Order timeline==================================== -->

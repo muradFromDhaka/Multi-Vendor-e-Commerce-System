@@ -61,7 +61,7 @@ public class VendorCustomerService {
                         new EntityNotFoundException("Customer not found."));
 
         List<Order> orders =
-                orderRepository.findByUserUserName(userName);
+                orderRepository.findByUser_UserName(userName);
 
         List<VendorCustomerOrderResponseDTO> orderResponses =
                 buildOrderResponses(orders, currentVendor);

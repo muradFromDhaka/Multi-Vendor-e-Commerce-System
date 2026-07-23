@@ -98,4 +98,16 @@ public interface ProductVariantRepository
 
     Page<ProductVariant> findByProductVendorId(
             Long vendorId,
-            Pageable pageable);}
+            Pageable pageable);
+
+
+    @Query("""
+SELECT COALESCE(SUM(pv.stock),0)
+FROM ProductVariant pv
+""")
+    Long getTotalStockQuantity();
+
+
+
+
+}

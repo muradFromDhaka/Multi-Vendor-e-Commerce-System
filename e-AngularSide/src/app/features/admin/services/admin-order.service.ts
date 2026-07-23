@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/app/services/environments';
-import { AdminOrderDetailsResponse, UpdateOrderStatusRequest } from '../models/AdminOrder.model';
+import { AdminOrderDetailsResponse } from '../models/AdminOrder.model';
 import { AdminOrderPage } from '../models/AdminOrder.model';
 import { OrderStatus, PaymentStatus } from 'src/app/models/order.model';
+import { UpdatePaymentStatusRequest } from 'src/app/shared/models/payment.model';
 
 
 
@@ -47,16 +48,28 @@ export class AdminOrderService {
     );
   }
 
-  updateOrderStatus(
-    orderId: number,
-    request: UpdateOrderStatusRequest
-  ): Observable<AdminOrderDetailsResponse> {
+updatePaymentStatus(
+  orderId: number,
+  request: UpdatePaymentStatusRequest
+): Observable<AdminOrderDetailsResponse> {
 
-    return this.http.patch<AdminOrderDetailsResponse>(
-      `${this.apiUrl}/${orderId}/status`,
-      request
-    );
-  }
+  return this.http.patch<AdminOrderDetailsResponse>(
+    `${this.apiUrl}/${orderId}/payment-status`,
+    request
+  );
+}
+
+
+cancelOrder(
+    orderId:number
+):Observable<AdminOrderDetailsResponse>{
+
+   return this.http.patch<AdminOrderDetailsResponse>(
+      `${this.apiUrl}/${orderId}/cancel`,
+      {}
+   );
+}
+
 
   // =====================================================
   // Search

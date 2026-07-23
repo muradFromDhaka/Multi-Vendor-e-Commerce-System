@@ -13,41 +13,6 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  // /** CREATE PRODUCT */
-  // createProduct(dto: ProductRequest, images?: File[]): Observable<ProductDetailsResponse> {
-  //   const formData = new FormData();
-  //   formData.append('product', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
-
-  //   if (images) {
-  //     for (const file of images) {
-  //       formData.append('images', file);
-  //     }
-  //   }
-
-  //   return this.http.post<ProductDetailsResponse>(this.baseUrl, formData);
-  // }
-
-  // /** UPDATE PRODUCT */
-  // updateProduct(id: number, dto: ProductRequest, images?: File[]): Observable<ProductDetailsResponse> {
-
-  //   console.log("ProductService.updateProduct called");
-
-  //   const formData = new FormData();
-  //   formData.append('product', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
-
-  //   if (images) {
-  //     for (const file of images) {
-  //       formData.append('images', file);
-  //     }
-  //   }
-
-  //   console.log("Sending PUT Request");
-
-  //   return this.http.put<ProductDetailsResponse>(`${this.baseUrl}/${id}`, formData);
-  // }
-
-
-  /** LIST ALL PRODUCTS */
  getAllProducts(
   page = 0,
   size = 10,

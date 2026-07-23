@@ -30,8 +30,8 @@ export class OrderListComponent implements OnInit {
 
   searchText = '';
 
-  orderStatuses = Object.values(OrderStatus);
-  paymentStatuses = Object.values(PaymentStatus);
+  // orderStatuses = Object.values(OrderStatus);
+  // paymentStatuses = Object.values(PaymentStatus);
 
   constructor(
     private adminOrderService: AdminOrderService,
@@ -137,6 +137,31 @@ export class OrderListComponent implements OnInit {
     }
 
   }
+
+  getOrderStatusClass(status: OrderStatus): string {
+  switch (status) {
+    case OrderStatus.PENDING:
+      return 'bg-warning';
+    case OrderStatus.PROCESSING:
+      return 'bg-info';
+    case OrderStatus.SHIPPED:
+      return 'bg-primary';
+    case OrderStatus.DELIVERED:
+      return 'bg-success';
+    case OrderStatus.CANCELLED:
+      return 'bg-danger';
+    case OrderStatus.PARTIALLY_DELIVERED:
+      return 'bg-dark';
+    case OrderStatus.PARTIALLY_CANCELLED:
+      return 'bg-secondary';
+    case OrderStatus.RETURNED:
+      return 'text-bg-light border';
+    default:
+      return 'bg-secondary';
+  }
+}
+
+
 
   viewOrder(orderId: number): void {
 

@@ -2,13 +2,20 @@ package com.abc.multiVendorEProject.enums;
 
 public enum OrderStatus {
 
-    PAID,
-    SHIPPED,
     PENDING,
-    DELIVERED,
-    CANCELLED,
-    CONFIRMED,
+
     PROCESSING,
+
+    SHIPPED,
+
+    DELIVERED,
+
+    CANCELLED,
+
+    PARTIALLY_DELIVERED,
+
+    PARTIALLY_CANCELLED,
+
     RETURNED
 
 }

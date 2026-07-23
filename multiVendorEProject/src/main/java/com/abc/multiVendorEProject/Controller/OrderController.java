@@ -39,8 +39,6 @@ public class OrderController {
     public OrderResponseDto getMyOrder(
             @PathVariable Long orderId) {
 
-        System.out.println("Controller : " + orderId);
-
         return orderService.getMyOrder(orderId);
     }
 

@@ -13,6 +13,8 @@ import { VendorProductVariantDetailsComponent } from './product-variant-manageme
 import { VendorProductVariantFormComponent } from './product-variant-management/vendor-product-variant-form/vendor-product-variant-form.component';
 import { VendorCustomerListComponent } from './customers/vendor-customer-list/vendor-customer-list.component';
 import { VendorCustomerDetailsComponent } from './customers/vendor-customer-details/vendor-customer-details.component';
+import { VendorOrderListComponent } from './orders/vendor-order-list/vendor-order-list.component';
+import { VendorOrderDetailsComponent } from './orders/vendor-order-details/vendor-order-details.component';
 
 const routes: Routes = [
 
@@ -40,7 +42,10 @@ const routes: Routes = [
         
 
         {path:'vendorCustomer',component:VendorCustomerListComponent},
-        {path:'vendorCustomer/:userName',component:VendorCustomerDetailsComponent}
+        {path:'vendorCustomer/:userName',component:VendorCustomerDetailsComponent},
+
+        {path:'orders',component:VendorOrderListComponent},
+        {path:'orders/:id',component:VendorOrderDetailsComponent},
     ]
 
 }

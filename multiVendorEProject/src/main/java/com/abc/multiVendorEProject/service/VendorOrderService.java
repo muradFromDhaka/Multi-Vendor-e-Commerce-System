@@ -1,15 +1,14 @@
-package com.abc.multiVendorEProject.service;//package com.abc.SpringSecurityExample.service;
+package com.abc.multiVendorEProject.service;//package com.abc.multiVendorEProject.service;
 //
-//
-//import com.abc.SpringSecurityExample.Config.ResourceNotFoundException;
-//import com.abc.SpringSecurityExample.DTOs.projectDtos.vendorDto.VendorOrderDetailsResponseDto;
-//import com.abc.SpringSecurityExample.DTOs.projectDtos.vendorDto.VendorOrderListResponseDto;
-//import com.abc.SpringSecurityExample.entity.Vendor;
-//import com.abc.SpringSecurityExample.entity.VendorOrder;
-//import com.abc.SpringSecurityExample.enums.VendorOrderStatus;
-//import com.abc.SpringSecurityExample.mapper.VendorOrderMapper;
-//import com.abc.SpringSecurityExample.repository.VendorOrderRepository;
-//import com.abc.SpringSecurityExample.repository.VendorRepository;
+//import com.abc.multiVendorEProject.Config.ResourceNotFoundException;
+//import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorOrderDetailsResponseDto;
+//import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorOrderListResponseDto;
+//import com.abc.multiVendorEProject.entity.Vendor;
+//import com.abc.multiVendorEProject.entity.VendorOrder;
+//import com.abc.multiVendorEProject.enums.VendorOrderStatus;
+//import com.abc.multiVendorEProject.mapper.VendorOrderMapper;
+//import com.abc.multiVendorEProject.repository.VendorOrderRepository;
+//import com.abc.multiVendorEProject.repository.VendorRepository;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.data.domain.Page;
 //import org.springframework.data.domain.Pageable;

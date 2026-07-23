@@ -4,6 +4,7 @@ public enum VendorOrderStatus {
     PENDING,
     CONFIRMED,
     PROCESSING,
+    PACKED,
     SHIPPED,
     DELIVERED,
     CANCELLED,

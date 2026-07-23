@@ -10,7 +10,7 @@
 
   <!-- Order Summary -->
 
-  <div class="card">
+<div class="card">
 
     <div class="row">
       <span>Order Number</span>
@@ -21,20 +21,49 @@
       <span>Status</span>
       <span
         class="status"
-        [ngClass]="order.orderStatus">
-        {{ order.orderStatus }}
-      </span>
+        [ngClass]="getOrderStatusClass(order.orderStatus)">    
+              {{ order.orderStatus }}
+        </span>
     </div>
 
     <div class="row">
-      <span>Payment</span>
-      <span>{{order.paymentStatus}}</span>
+      <h3>Payment Information</h3>
+      <span
+          class="status"
+          [ngClass]="getPaymentStatusClass(order.paymentStatus)">
+          {{order.paymentStatus}}
+      </span>
     </div>
 
     <div class="row">
       <span>Payment Method</span>
       <span>{{order.paymentMethod}}</span>
     </div>
+
+  <div class="row">
+    <span>Transaction ID</span>
+    <span>{{order.transactionId || '-'}}</span>
+  </div>
+
+  <div class="row">
+    <span>Paid At</span>
+    <span>{{order.paidAt || '-'}}</span>
+  </div>
+
+  <div class="row">
+    <span>Refund Amount</span>
+    <span>{{order.refundedAmount || '-'}}</span>
+  </div>
+
+  <div class="row">
+    <span>Refunded At</span>
+    <span>{{order.refundedAt || '-'}}</span>
+  </div>
+
+</div>
+
+
+
 
     <div class="row">
       <span>Order Date</span>
@@ -49,20 +78,20 @@
 
     <h3>Shipping Address</h3>
 
-    <p>{{order.shippingAddress.username}}</p>
+    <p>{{order?.shippingAddress?.username}}</p>
 
-    <p>{{order.shippingAddress.phone}}</p>
+    <p>{{order?.shippingAddress?.phone}}</p>
 
     <p>
-      {{order.shippingAddress.street}},
-      {{order.shippingAddress.city}},
-      {{order.shippingAddress.district}}
+      {{order?.shippingAddress?.street}},
+      {{order?.shippingAddress?.city}},
+      {{order?.shippingAddress?.district}}
     </p>
 
     <p>
-      {{order.shippingAddress.country}}
+      {{order?.shippingAddress?.country}}
       -
-      {{order.shippingAddress.zipCode}}
+      {{order?.shippingAddress?.zipCode}}
     </p>
 
   </div>
@@ -77,7 +106,7 @@
 
     <div
       class="item"
-      *ngFor="let item of order.items">
+      *ngFor="let item of order?.items">
 
       <img
         [src]="item.imageUrl"
@@ -97,7 +126,7 @@
 
         <p>Qty : {{item.quantity}}</p>
 
-        <p>{{ order.totalPrice | currency:'BDT':'symbol':'1.2-2' }}</p>
+        <p>{{ order?.totalPrice | currency:'BDT':'symbol':'1.2-2' }}</p>
 
         <strong>
           {{item.totalPrice | currency:'BDT':'symbol':'1.2-2' }}
@@ -119,17 +148,17 @@
 
     <div class="row">
       <span>Subtotal</span>
-      <span>{{order.subtotal | currency:'BDT':'symbol':'1.2-2' }}</span>
+      <span>{{order?.subtotal | currency:'BDT':'symbol':'1.2-2' }}</span>
     </div>
 
     <div class="row">
       <span>Shipping</span>
-      <span>{{order.shippingFee | currency:'BDT':'symbol':'1.2-2' }}</span>
+      <span>{{order?.shippingFee | currency:'BDT':'symbol':'1.2-2' }}</span>
     </div>
 
     <div class="row">
       <span>Discount</span>
-      <span>- {{order.discount | currency:'BDT':'symbol':'1.2-2' }}</span>
+      <span>- {{order?.discount | currency:'BDT':'symbol':'1.2-2' }}</span>
     </div>
 
     <hr>
@@ -139,7 +168,7 @@
       <span>Total</span>
 
       <strong>
-        {{order.totalPrice | currency:'BDT':'symbol':'1.2-2' }}
+        {{order?.totalPrice | currency:'BDT':'symbol':'1.2-2' }}
       </strong>
 
     </div>
@@ -152,7 +181,7 @@
 
     <button
       class="cancel-btn"
-      *ngIf="order.orderStatus === OrderStatus.PENDING"
+      *ngIf="order?.orderStatus === OrderStatus.PENDING"
       (click)="cancelOrder()">
 
       Cancel Order
@@ -160,8 +189,6 @@
     </button>
 
   </div>
-
-</div>
 
 
 

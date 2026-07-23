@@ -1,9 +1,11 @@
 package com.abc.multiVendorEProject.Controller;
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.PaymentRequestDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.PaymentResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.PaymentDto.UpdatePaymentStatusRequestDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.PaymentDto.PaymentRequestDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.PaymentDto.PaymentResponseDto;
 import com.abc.multiVendorEProject.enums.PaymentStatus;
-import com.abc.multiVendorEProject.service.PaymentService;
+import com.abc.multiVendorEProject.service.Customer.PaymentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -18,44 +20,10 @@ public class PaymentController {
 
 
     @PostMapping
-    public ResponseEntity<PaymentResponseDto> createPayment(@RequestBody PaymentRequestDto dto){
+    public ResponseEntity<PaymentResponseDto> createPayment(
+            @Valid @RequestBody PaymentRequestDto dto){
+
         return ResponseEntity.ok(paymentService.createPayment(dto));
-    }
-
-    @PutMapping("/{paymentId}")
-    public ResponseEntity<PaymentResponseDto> updatePayment(
-            @PathVariable Long paymentId,
-            @RequestBody PaymentRequestDto dto){
-
-        return ResponseEntity.ok(paymentService.updatePayment(paymentId,dto));
-    }
-
-    @PutMapping("/{paymentId}/status")
-    public ResponseEntity<PaymentResponseDto> updatePaymentStatus(
-            @PathVariable Long paymentId,
-            @RequestParam PaymentStatus status){
-
-        return ResponseEntity.ok(paymentService.updatePaymentStatus(paymentId, status));
-    }
-
-
-    @GetMapping
-    public Page<PaymentResponseDto> getAllPayments(
-            @RequestParam int page,
-            @RequestParam int size,
-            @RequestParam String sortBy,
-            @RequestParam String sortDir){
-
-        return paymentService.getAllPayments(page,size,sortBy,sortDir);
-    }
-
-    @GetMapping("/status")
-    public Page<PaymentResponseDto> getPaymentsByStatus(
-            @RequestParam PaymentStatus status,
-            @RequestParam int page,
-            @RequestParam int size){
-
-        return paymentService.getPaymentsByStatus(status,page,size);
     }
 
     @GetMapping("/{paymentId}")
@@ -68,10 +36,4 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.getPaymentByOrderId(orderId));
     }
 
-    @DeleteMapping("/{paymentId}")
-    public ResponseEntity<?> deletePayment(@PathVariable Long paymentId){
-        paymentService.deletePayment(paymentId);
-
-        return ResponseEntity.noContent().build();
-    }
 }
