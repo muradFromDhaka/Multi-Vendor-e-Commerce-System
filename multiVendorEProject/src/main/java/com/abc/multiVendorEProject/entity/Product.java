@@ -38,7 +38,7 @@ public class Product extends BaseEntity{
 	    private String description;
 
         @Column(nullable = false)
-        private Integer soldCount = 0;
+        private long soldCount = 0;
 
 
 	    @ManyToOne(fetch = FetchType.LAZY)

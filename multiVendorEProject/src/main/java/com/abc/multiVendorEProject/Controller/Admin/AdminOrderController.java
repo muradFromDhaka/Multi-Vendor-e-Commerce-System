@@ -75,43 +75,6 @@ public class AdminOrderController {
         return adminOrderService.getOrderByOrderNumber(orderNumber);
     }
 
-    // =====================================================
-    // Revenue
-    // =====================================================
-
-    @GetMapping("/revenue/total")
-    public BigDecimal getTotalRevenue() {
-        return adminOrderService.getTotalRevenue();
-    }
-
-    @GetMapping("/revenue/today")
-    public BigDecimal getTodayRevenue() {
-        return adminOrderService.getTodayRevenue();
-    }
-
-    @GetMapping("/revenue/month")
-    public BigDecimal getMonthlyRevenue() {
-        return adminOrderService.getMonthlyRevenue();
-    }
-
-    @GetMapping("/revenue/year")
-    public BigDecimal getYearlyRevenue() {
-        return adminOrderService.getYearlyRevenue();
-    }
-
-    @GetMapping("/revenue")
-    public BigDecimal getRevenueBetween(
-
-            @RequestParam
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-            LocalDateTime start,
-
-            @RequestParam
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-            LocalDateTime end) {
-
-        return adminOrderService.getRevenueBetween(start, end);
-    }
 
     // =====================================================
     // Dashboard Statistics

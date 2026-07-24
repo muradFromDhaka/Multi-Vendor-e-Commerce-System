@@ -1,0 +1,98 @@
+<section class="dashboard-section">
+
+  <div class="mb-4">
+
+    <h4 class="section-title">
+      Products & Inventory
+    </h4>
+
+    <p class="section-subtitle">
+      Monitor catalog growth and inventory health.
+    </p>
+
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Catalog Overview -->
+
+    <div class="col-lg-6">
+
+      <div class="dashboard-card h-100">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+          <span>Catalog Overview</span>
+
+          <i class="bi bi-box-seam fs-5 text-primary"></i>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="status-row">
+            <span>Total Products</span>
+            <strong>{{dashboard.totalProducts}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Product Variants</span>
+            <strong>{{dashboard.totalProductVariants}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Categories</span>
+            <strong>{{dashboard.totalCategories}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Brands</span>
+            <strong>{{dashboard.totalBrands}}</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Inventory Status -->
+
+    <div class="col-lg-6">
+
+      <div class="dashboard-card h-100">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+          <span>Inventory Status</span>
+
+          <i class="bi bi-boxes fs-5 text-success"></i>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="status-row">
+            <span>Total Stock Quantity</span>
+            <strong>{{dashboard.totalStockQuantity}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Out of Stock Products</span>
+            <strong>{{dashboard.outOfStockProducts}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Low Stock Products</span>
+            <strong>{{dashboard.lowStockProducts}}</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

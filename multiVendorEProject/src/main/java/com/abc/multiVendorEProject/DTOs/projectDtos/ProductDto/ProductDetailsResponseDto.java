@@ -38,5 +38,5 @@ public class ProductDetailsResponseDto {
     private String vendorName;
 
     // Backend managed field
-    private Integer soldCount;
+    private long soldCount;
 }

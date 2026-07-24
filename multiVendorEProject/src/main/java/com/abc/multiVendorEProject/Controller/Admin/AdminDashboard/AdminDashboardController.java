@@ -1,7 +1,7 @@
-package com.abc.multiVendorEProject.Controller.Admin;
+package com.abc.multiVendorEProject.Controller.Admin.AdminDashboard;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.AdminDashboard.AdminDashboardResponseDto;
-import com.abc.multiVendorEProject.service.Admin.AdminDashboardService;
+import com.abc.multiVendorEProject.service.Admin.Dashboard.AdminDashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ public class AdminDashboardController {
     // Dashboard
     // =====================================================
 
-    @GetMapping
+    @GetMapping("/summary")
     public AdminDashboardResponseDto getDashboard() {
 
         return adminDashboardService.getDashboard();

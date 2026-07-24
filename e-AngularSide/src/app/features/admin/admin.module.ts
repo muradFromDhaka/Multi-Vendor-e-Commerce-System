@@ -28,6 +28,18 @@ import { ProductVariantListComponent } from './variants-management/product-varia
 import { ProductVariantDetailsComponent } from './variants-management/product-variant/product-variant-details/product-variant-details.component';
 import { PaymentDetailsComponent } from './payment-management/payment-details/payment-details.component';
 import { PaymentListComponent } from './payment-management/payment-list/payment-list.component';
+import { DashboardHeaderComponent } from './admin-dashboard/dashboard-header/dashboard-header.component';
+import { DashboardOverviewComponent } from './admin-dashboard/dashboard-overview/dashboard-overview.component';
+import { RevenueAnalyticsComponent } from './admin-dashboard/revenue-analytics/revenue-analytics.component';
+import { FinancePaymentComponent } from './admin-dashboard/finance-payment/finance-payment.component';
+import { OrdersAnalyticsComponent } from './admin-dashboard/orders-analytics/orders-analytics.component';
+import { CustomerVendorComponent } from './admin-dashboard/customer-vendor/customer-vendor.component';
+import { ProductInventoryComponent } from './admin-dashboard/product-inventory/product-inventory.component';
+import { EngagementAnalyticsComponent } from './admin-dashboard/engagement-analytics/engagement-analytics.component';
+import { DashboardChartsComponent } from './admin-dashboard/dashboard-charts/dashboard-charts.component';
+import { RecentOrdersComponent } from './admin-dashboard/recent-orders/recent-orders.component';
+import { RecentActivitiesComponent } from './admin-dashboard/recent-activities/recent-activities.component';
+import { ProductAnalyticsComponent } from './admin-dashboard/product-analytics/product-analytics.component';
 
 
 @NgModule({
@@ -58,6 +70,19 @@ import { PaymentListComponent } from './payment-management/payment-list/payment-
   ProductVariantDetailsComponent,
   PaymentDetailsComponent,
   PaymentListComponent,
+  DashboardHeaderComponent,
+  DashboardOverviewComponent,
+  RevenueAnalyticsComponent,
+  FinancePaymentComponent,
+  OrdersAnalyticsComponent,
+  CustomerVendorComponent,
+  ProductInventoryComponent,
+  EngagementAnalyticsComponent,
+  DashboardChartsComponent,
+  RecentOrdersComponent,
+  RecentActivitiesComponent,
+  DashboardHeaderComponent,
+  ProductAnalyticsComponent,
   ],
   imports: [
     CommonModule,

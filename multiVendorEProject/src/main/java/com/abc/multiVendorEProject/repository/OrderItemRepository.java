@@ -96,4 +96,57 @@ WHERE oi.variant.product.category.id = :categoryId
 """)
     BigDecimal getCategoryRevenue(
             @Param("categoryId") Long categoryId);
+
+
+    @Query("""
+SELECT c
+FROM OrderItem oi
+JOIN oi.variant v
+JOIN v.product p
+JOIN p.category c
+GROUP BY c
+ORDER BY SUM(oi.quantity) DESC
+""")
+    List<Category> findBestSellingCategories();
+
+
+
+    @Query("""
+SELECT COALESCE(SUM(oi.quantity),0)
+FROM OrderItem oi
+WHERE oi.variant.product.category.id = :categoryId
+""")
+    Long getCategoryQuantitySold(
+            @Param("categoryId") Long categoryId);
+
+
+    @Query("""
+SELECT p
+FROM OrderItem oi
+JOIN oi.variant v
+JOIN v.product p
+GROUP BY p
+ORDER BY SUM(oi.quantity) DESC
+""")
+    Page<Product> findBestSellingProduct(Pageable pageable);
+
+    @Query("""
+SELECT COALESCE(SUM(oi.quantity),0)
+FROM OrderItem oi
+WHERE oi.variant.product.id = :productId
+""")
+    Long getProductQuantitySold(
+            @Param("productId") Long productId);
+
+
+    @Query("""
+SELECT oi.vendor
+FROM OrderItem oi
+WHERE oi.order.payment.paymentStatus = 'PAID'
+GROUP BY oi.vendor
+ORDER BY SUM(oi.totalPrice) DESC
+""")
+    Page<Vendor> findTopVendorsByRevenue(Pageable pageable);
+
+
 }

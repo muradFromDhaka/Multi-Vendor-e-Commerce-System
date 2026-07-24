@@ -14,10 +14,40 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  // login() {
+  //   this.authService.login(this.username, this.password).subscribe({
+  //     next: () => this.router.navigate(['/']),
+  //     error: (err) => (this.error = 'invalid userName or password'),
+  //   });
+  // }
+
+
   login() {
-    this.authService.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/']),
-      error: (err) => (this.error = 'invalid userName or password'),
-    });
-  }
+  this.authService.login(this.username, this.password).subscribe({
+    next: () => {
+
+      if (this.authService.hasRole('ROLE_ADMIN')) {
+
+        this.router.navigate(['/admin/adminDashboard']);
+
+      } else if (this.authService.hasRole('ROLE_VENDOR')) {
+
+        this.router.navigate(['/vendor/vendorDashboard']);
+
+      } else {
+
+        this.router.navigate(['/']);
+
+      }
+
+    },
+
+    error: () => {
+      this.error = 'Invalid username or password';
+    }
+
+  });
+}
+
+
 }

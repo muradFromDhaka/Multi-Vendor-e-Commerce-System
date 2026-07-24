@@ -1,0 +1,90 @@
+<section class="dashboard-section">
+
+    <div class="mb-4">
+
+        <h4 class="section-title">
+            Engagement Analytics
+        </h4>
+
+        <p class="section-subtitle">
+            Customer engagement across reviews, wishlists and shopping carts.
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Reviews & Ratings -->
+
+        <div class="col-lg-6">
+
+            <div class="dashboard-card h-100">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+
+                    <span>Reviews & Ratings</span>
+
+                    <i class="bi bi-star-fill fs-5 text-warning"></i>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="status-row">
+                        <span>Total Reviews</span>
+                        <strong>{{dashboard.totalReviews}}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Average Rating</span>
+                        <strong>
+                            {{dashboard.averageRating | number:'1.1-2'}}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Shopping Activities -->
+
+        <div class="col-lg-6">
+
+            <div class="dashboard-card h-100">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+
+                    <span>Shopping Activities</span>
+
+                    <i class="bi bi-cart-check fs-5 text-primary"></i>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="status-row">
+                        <span>Total Carts</span>
+                        <strong>{{dashboard.totalCarts}}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Active Carts</span>
+                        <strong>{{dashboard.totalActiveCarts}}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Wishlist Items</span>
+                        <strong>{{dashboard.totalWishlistItems}}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

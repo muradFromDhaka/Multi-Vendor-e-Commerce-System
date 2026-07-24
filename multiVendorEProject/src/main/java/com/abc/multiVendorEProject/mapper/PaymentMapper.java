@@ -12,7 +12,7 @@ public class PaymentMapper {
 
         Payment payment = new Payment();
 
-        payment.setProvider(dto.provider());
+        payment.setPaymentProvider(dto.provider());
         payment.setTransactionId(dto.transactionId());
         payment.setPaymentMethod(dto.paymentMethod());
 
@@ -27,7 +27,7 @@ public class PaymentMapper {
                 payment.getAmount(),                 // amount
                 payment.getPaidAt(),                 // paidAt
                 payment.getTransactionId(),          // transactionId
-                payment.getProvider(),               // provider
+                payment.getPaymentProvider(),               // provider
                 payment.getPaymentMethod(),          // paymentMethod
                 payment.getPaymentStatus(),          // paymentStatus
                 payment.getRefundTransactionId(),
@@ -38,7 +38,7 @@ public class PaymentMapper {
 
     public void updateEntity(Payment payment, PaymentRequestDto dto) {
 
-        payment.setProvider(dto.provider());
+        payment.setPaymentProvider(dto.provider());
         payment.setTransactionId(dto.transactionId());
         payment.setPaymentMethod(dto.paymentMethod());
     }

@@ -1,0 +1,183 @@
+<section class="dashboard-section mb-4">
+
+    <div class="row g-4">
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card overview-card">
+
+                <div class="card-body">
+
+                    <small class="card-title">
+                        Gross Revenue
+                    </small>
+
+                    <h3>
+
+                        {{dashboard.totalGrossRevenue | number:'1.2-2'}}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card overview-card">
+
+                <div class="card-body">
+
+                    <small class="card-title">
+                        Net Revenue
+                    </small>
+
+                    <h3>
+
+                        {{dashboard.totalNetRevenue | number:'1.2-2'}}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card overview-card">
+
+                <div class="card-body">
+
+                    <small class="card-title">
+                        Total Orders
+                    </small>
+
+                    <h3>
+
+                        {{dashboard.totalOrders}}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card overview-card">
+
+                <div class="card-body">
+
+                    <small class="card-title">
+                        Customers
+                    </small>
+
+                    <h3>
+
+                        {{dashboard.totalCustomers}}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card overview-card">
+
+                <div class="card-body">
+
+                    <small class="card-title">
+                        Vendors
+                    </small>
+
+                    <h3>
+
+                        {{dashboard.totalVendors}}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card overview-card">
+
+                <div class="card-body">
+
+                    <small class="card-title">
+                        Products
+                    </small>
+
+                    <h3>
+
+                        {{dashboard.totalProducts}}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card overview-card">
+
+                <div class="card-body">
+
+                    <small class="card-title">
+                        Pending Orders
+                    </small>
+
+                    <h3>
+
+                        {{dashboard.pendingOrders}}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card overview-card">
+
+                <div class="card-body">
+
+                    <small class="card-title">
+                        Pending Payments
+                    </small>
+
+                    <h3>
+
+                        {{dashboard.pendingPayments}}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

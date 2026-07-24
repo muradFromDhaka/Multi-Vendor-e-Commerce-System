@@ -104,9 +104,9 @@ from Order o
     @Query(value = """
 SELECT COUNT(*)
 FROM (
-    SELECT user_user_name
+    SELECT user_name
     FROM orders
-    GROUP BY user_user_name
+    GROUP BY user_name
     HAVING COUNT(id) >= 2
 ) t
 """, nativeQuery = true)

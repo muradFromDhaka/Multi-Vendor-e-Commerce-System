@@ -11,7 +11,9 @@ export class AdminDashboardComponent {
 
    dashboard?: AdminDashboard;
 
-  loading = true;
+  loading = false;
+
+  error = '';
 
   constructor(
     private adminDashboardService: AdminDashboardService
@@ -21,17 +23,28 @@ export class AdminDashboardComponent {
     this.loadDashboard();
   }
 
-  loadDashboard() {
+  loadDashboard(): void {
+
+    this.loading = true;
+
+    this.error = '';
 
     this.adminDashboardService.getDashboard().subscribe({
 
-      next: (res) => {
-        this.dashboard = res;
+      next: (response) => {
+
+        this.dashboard = response;
+
         this.loading = false;
+
       },
 
       error: () => {
+
+        this.error = 'Failed to load dashboard.';
+
         this.loading = false;
+
       }
 
     });

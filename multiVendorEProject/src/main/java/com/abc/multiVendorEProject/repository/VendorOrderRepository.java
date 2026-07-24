@@ -43,7 +43,7 @@ public interface VendorOrderRepository extends JpaRepository<VendorOrder, Long>{
 
 // ============Top Vendor=======================
     @Query("""
-select new com.abc.multiVendorEProject.DTOs.projectDtos.AdminDashboard.TopVendorDto(
+select new com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.TopVendorDto(
     v.shopName,
     coalesce(sum(vo.totalPrice),0)
 )

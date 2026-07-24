@@ -24,7 +24,7 @@ public class Payment extends BaseEntity {
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    private PaymentProvider provider;
+    private PaymentProvider paymentProvider;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

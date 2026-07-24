@@ -1,0 +1,124 @@
+<section class="dashboard-section">
+
+    <div class="section-header mb-4">
+
+        <div>
+
+            <h4 class="section-title">
+                Orders Analytics
+            </h4>
+
+            <p class="section-subtitle">
+                Monitor order lifecycle and fulfillment performance.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-header">
+                    Order Summary
+                </div>
+
+                <div class="card-body">
+
+                    <div class="status-row">
+                        <span>Total Orders</span>
+                        <strong>{{ dashboard.totalOrders }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Today's Orders</span>
+                        <strong>{{ dashboard.todayOrders }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Paid Orders</span>
+                        <strong>{{ dashboard.paidOrders }}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Order Status -->
+        <div class="col-lg-4">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-header">
+                    Order Status
+                </div>
+
+                <div class="card-body">
+
+                    <div class="status-row">
+                        <span>Pending</span>
+                        <strong>{{ dashboard.pendingOrders }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Processing</span>
+                        <strong>{{ dashboard.processingOrders }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Shipped</span>
+                        <strong>{{ dashboard.shippedOrders }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Delivered</span>
+                        <strong>{{ dashboard.deliveredOrders }}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Order Completion -->
+        <div class="col-lg-4">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-header">
+                    Order Completion
+                </div>
+
+                <div class="card-body">
+
+                    <div class="status-row">
+                        <span>Cancelled</span>
+                        <strong>{{ dashboard.cancelledOrders }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Returned</span>
+                        <strong>{{ dashboard.returnedOrders }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Delivered</span>
+                        <strong>{{ dashboard.deliveredOrders }}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

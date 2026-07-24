@@ -1,0 +1,125 @@
+<section class="dashboard-section">
+
+  <div class="mb-4">
+
+    <h4 class="section-title">
+      Customers & Vendors
+    </h4>
+
+    <p class="section-subtitle">
+      Customer growth, vendor performance and marketplace overview.
+    </p>
+
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Customer Analytics -->
+
+    <div class="col-lg-6">
+
+      <div class="dashboard-card h-100">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+          <span>Customer Analytics</span>
+
+          <i class="bi bi-people fs-5 text-primary"></i>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="status-row">
+            <span>Total Customers</span>
+            <strong>{{dashboard.totalCustomers}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Today's Registrations</span>
+            <strong>{{dashboard.todayCustomers}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Active Customers</span>
+            <strong>{{dashboard.activeCustomers}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Repeat Customers</span>
+            <strong>{{dashboard.repeatCustomers}}</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Vendor Analytics -->
+
+    <div class="col-lg-6">
+
+      <div class="dashboard-card h-100">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+          <span>Vendor Analytics</span>
+
+          <i class="bi bi-shop fs-5 text-success"></i>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="status-row">
+            <span>Total Vendors</span>
+            <strong>{{dashboard.totalVendors}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Approved Vendors</span>
+            <strong>{{dashboard.approvedVendors}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Pending Approval</span>
+            <strong>{{dashboard.pendingVendors}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Suspended Vendors</span>
+            <strong>{{dashboard.suspendedVendors}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Rejected Vendors</span>
+            <strong>{{dashboard.rejectVendors}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Today's Registrations</span>
+            <strong>{{dashboard.todayVendors}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Top Performing Vendor</span>
+            <strong>{{dashboard.topVendorName || 'N/A'}}</strong>
+          </div>
+
+          <div class="status-row">
+            <span>Top Vendor Revenue</span>
+            <strong>
+              ৳ {{dashboard.topVendorRevenue | number:'1.2-2'}}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

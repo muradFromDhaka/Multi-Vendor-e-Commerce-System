@@ -45,6 +45,7 @@ public class AdminDashboardResponseDto {
     private BigDecimal todayRefundAmount;
     private BigDecimal monthlyRefundAmount;
     private BigDecimal yearlyRefundAmount;
+
     private BigDecimal averageRefundAmount;
     private BigDecimal highestRefundAmount;
     private BigDecimal lowestRefundAmount;
@@ -137,6 +138,7 @@ public class AdminDashboardResponseDto {
     private Long rejectVendors;
     private Long suspendedVendors;
     private Long todayVendors;
+
     private String topVendorName;
     private BigDecimal topVendorRevenue;
 

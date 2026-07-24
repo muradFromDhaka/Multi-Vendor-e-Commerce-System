@@ -1,0 +1,97 @@
+<section class="dashboard-section">
+
+    <div class="mb-4">
+
+        <h4 class="section-title">
+            Product Analytics
+        </h4>
+
+        <p class="section-subtitle">
+            Analyze product and category sales performance.
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Best Selling Product -->
+
+        <div class="col-lg-6">
+
+            <div class="dashboard-card h-100">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+
+                    <span>Best Selling Product</span>
+
+                    <i class="bi bi-trophy fs-5 text-warning"></i>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="status-row">
+                        <span>Product</span>
+                        <strong>{{dashboard.bestSellingProduct || 'N/A'}}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Quantity Sold</span>
+                        <strong>{{dashboard.bestSellingProductQuantitySold}}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Revenue</span>
+                        <strong>
+                            ৳ {{dashboard.bestSellingProductRevenue | number:'1.2-2'}}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Best Selling Category -->
+
+        <div class="col-lg-6">
+
+            <div class="dashboard-card h-100">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+
+                    <span>Best Selling Category</span>
+
+                    <i class="bi bi-tags fs-5 text-success"></i>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="status-row">
+                        <span>Category</span>
+                        <strong>{{dashboard.bestSellingCategory || 'N/A'}}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Quantity Sold</span>
+                        <strong>{{dashboard.bestSellingCategoryQuantitySold}}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Revenue</span>
+                        <strong>
+                            ৳ {{dashboard.bestSellingCategoryRevenue | number:'1.2-2'}}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

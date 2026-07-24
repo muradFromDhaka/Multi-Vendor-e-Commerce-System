@@ -27,26 +27,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @EntityGraph(attributePaths = {"variants"})
     Page<Product> findByBrandId(Long brandId, Pageable pageable);
-
-
-
-    @Query("""
-SELECT p
-FROM OrderItem oi
-JOIN oi.variant v
-JOIN v.product p
-GROUP BY p
-ORDER BY SUM(oi.quantity) DESC
-""")
-    Page<Product> findBestSellingProduct(Pageable pageable);
-
-    @Query("""
-SELECT COALESCE(SUM(oi.quantity),0)
-FROM OrderItem oi
-WHERE oi.variant.product.id = :productId
-""")
-    Long getProductQuantitySold(
-            @Param("productId") Long productId);
+    
 
     @EntityGraph(attributePaths = {"variants"})
     @Query("""
@@ -116,4 +97,6 @@ AND (
             @Param("keyword") String keyword,
             Pageable pageable
     );
+
+    Optional<Product> findTopByDeletedFalseOrderBySoldCountDesc();
 }

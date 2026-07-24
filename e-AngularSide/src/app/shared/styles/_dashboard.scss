@@ -1,0 +1,169 @@
+/* ==========================================================
+   Dashboard Common Styles
+========================================================== */
+
+.dashboard-section {
+
+  margin-bottom: 2rem;
+
+}
+
+.section-title {
+
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212529;
+
+}
+
+.section-subtitle {
+
+  color: #6c757d;
+  margin-bottom: 0;
+
+}
+
+.dashboard-card {
+
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+  transition: .25s;
+  height: 100%;
+  background: #fff;
+
+}
+
+.dashboard-card:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow: 0 10px 25px rgba(0,0,0,.10);
+
+}
+
+.dashboard-card .card-header {
+
+  background: transparent;
+  border-bottom: 1px solid #ececec;
+  padding: 16px 20px;
+  font-weight: 600;
+
+}
+
+.dashboard-card .card-body {
+
+  padding: 20px;
+
+}
+
+.status-row {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 0;
+
+  border-bottom: 1px solid #f1f1f1;
+
+}
+
+.status-row:last-child {
+
+  border-bottom: none;
+
+}
+
+.status-row span {
+
+  color: #6c757d;
+
+}
+
+.status-row strong {
+
+  font-size: 16px;
+  font-weight: 600;
+
+}
+
+.analytics-value {
+
+  font-size: 28px;
+  font-weight: 700;
+  color: #212529;
+
+}
+
+.analytics-label {
+
+  color: #6c757d;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+
+}
+
+.dashboard-badge {
+
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+
+}
+
+
+
+
+
+
+// =============================Dashboard Header====================
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.dashboard-subtitle {
+  color: #6c757d;
+}
+
+.dashboard-filter {
+  max-width: 220px;
+}
+
+
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212529;
+}
+
+.section-subtitle {
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+
+.chart-placeholder {
+  min-height: 280px;
+  border: 2px dashed #dee2e6;
+  border-radius: 12px;
+  background: #f8f9fa;
+  color: #6c757d;
+  font-weight: 600;
+  text-align: center;
+}

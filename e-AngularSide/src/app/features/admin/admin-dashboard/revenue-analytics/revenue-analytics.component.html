@@ -1,0 +1,128 @@
+<section class="dashboard-section">
+
+    <div class="section-header mb-4">
+
+        <div>
+
+            <h4 class="section-title">
+                Revenue Analytics
+            </h4>
+
+            <p class="section-subtitle">
+                Gross revenue, net revenue and payment overview.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Gross Revenue -->
+        <div class="col-lg-4">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-body">
+
+                    <div class="analytics-label">
+                        Total Gross Revenue
+                    </div>
+
+                    <div class="analytics-value">
+                        {{ dashboard.totalGrossRevenue | number:'1.2-2' }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Net Revenue -->
+        <div class="col-lg-4">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-body">
+
+                    <div class="analytics-label">
+                        Total Net Revenue
+                    </div>
+
+                    <div class="analytics-value">
+                        {{ dashboard.totalNetRevenue | number:'1.2-2' }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Average Payment -->
+        <div class="col-lg-4">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-body">
+
+                    <div class="analytics-label">
+                        Average Payment
+                    </div>
+
+                    <div class="analytics-value">
+                        {{ dashboard.averagePaymentAmount | number:'1.2-2' }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Highest Payment -->
+        <div class="col-lg-6">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-body">
+
+                    <div class="analytics-label">
+                        Highest Payment
+                    </div>
+
+                    <div class="analytics-value">
+                        {{ dashboard.highestPaymentAmount | number:'1.2-2' }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Lowest Payment -->
+        <div class="col-lg-6">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-body">
+
+                    <div class="analytics-label">
+                        Lowest Payment
+                    </div>
+
+                    <div class="analytics-value">
+                        {{ dashboard.lowestPaymentAmount | number:'1.2-2' }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

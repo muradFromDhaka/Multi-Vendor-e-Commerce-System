@@ -1,0 +1,139 @@
+<section class="dashboard-section">
+
+    <div class="section-header mb-4">
+
+        <div>
+
+            <h4 class="section-title">
+                Finance & Payments
+            </h4>
+
+            <p class="section-subtitle">
+                Payment status, financial overview and payment methods.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Payment Status -->
+        <div class="col-xl-4">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-header">
+                    Payment Status
+                </div>
+
+                <div class="card-body">
+
+                    <div class="status-row">
+                        <span>Pending</span>
+                        <strong>{{ dashboard.pendingPayments }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Paid</span>
+                        <strong>{{ dashboard.paidPayments }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Failed</span>
+                        <strong>{{ dashboard.failedPayments }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Refunded</span>
+                        <strong>{{ dashboard.refundedPayments }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Cancelled</span>
+                        <strong>{{ dashboard.cancelledPayments }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Total Payments</span>
+                        <strong>{{ dashboard.totalPayments }}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Finance Summary -->
+        <div class="col-xl-4">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-header">
+                    Finance Summary
+                </div>
+
+                <div class="card-body">
+
+                    <div class="status-row">
+                        <span>Pending Amount</span>
+                        <strong>{{ dashboard.pendingPaymentAmount | number:'1.2-2' }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Failed Amount</span>
+                        <strong>{{ dashboard.failedPaymentAmount | number:'1.2-2' }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Cancelled Amount</span>
+                        <strong>{{ dashboard.cancelledPaymentAmount | number:'1.2-2' }}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="col-xl-4">
+
+            <div class="card dashboard-card h-100">
+
+                <div class="card-header">
+                    Payment Methods
+                </div>
+
+                <div class="card-body">
+
+                    <div class="status-row">
+                        <span>Card</span>
+                        <strong>{{ dashboard.cardPayments }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Cash On Delivery</span>
+                        <strong>{{ dashboard.cashOnDeliveryPayments }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Mobile Banking</span>
+                        <strong>{{ dashboard.mobileBankingPayments }}</strong>
+                    </div>
+
+                    <div class="status-row">
+                        <span>Bank Transfer</span>
+                        <strong>{{ dashboard.bankTransferPayments }}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

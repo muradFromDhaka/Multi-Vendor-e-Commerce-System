@@ -10,7 +10,7 @@
         <a routerLink="" class="brand-logo">
           <div class="logo-wrapper">
             <span class="logo-icon">A</span>
-            <span class="logo-text">E-SunShine</span>
+            <span class="logo-text">P U R I O N</span>
           </div>
         </a>
 
@@ -198,11 +198,6 @@
     <div class="navbar-container">
       <div class="secondary-nav">
 
-        <a routerLink="/" routerLinkActive="active" class="nav-link">
-          <span class="nav-link-icon">🏠</span>
-          <span class="nav-link-text">Home</span>
-        </a>
-
         <a
           routerLink="/admin/adminDashboard"
           routerLinkActive="active"
@@ -210,7 +205,7 @@
           class="nav-link"
         >
           <span class="nav-link-icon">📊</span>
-          <span class="nav-link-text">admin Dashboard</span>
+          <span class="nav-link-text">Dashboard</span>
         </a>
 
          <a
@@ -267,8 +262,8 @@
         >
           <span class="nav-link-icon">👥</span>
           <span class="nav-link-text">Customers</span>
-        </a>  
-
+        </a>
+        
         <a
           routerLink="/admin/orders"
           routerLinkActive="active"
@@ -279,6 +274,15 @@
           <span class="order-badge" *ngIf="pendingOrders > 0">{{
             pendingOrders
           }}</span>
+        </a>
+
+         <a
+          routerLink="/admin/payments"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-link-icon">🎯</span>
+          <span class="nav-link-text">Payment</span>
         </a>
 
 <!-- ===============  Variant ================== -->
@@ -297,7 +301,7 @@
   <div class="dropdown-menu">
 
     <a routerLink="/admin/attribute" class="dropdown-item">
-      🎯 Attribute
+      🎯 Variants Attribute
     </a>
 
     <a routerLink="/admin/attributeValue" class="dropdown-item">
@@ -306,10 +310,6 @@
 
     <a routerLink="/admin/productVariantList" class="dropdown-item">
       🧩Product Variant
-    </a>
-
-    <a routerLink="/admin/payments" class="dropdown-item">
-      🎯 Payment List
     </a>
 
   </div>

@@ -3,11 +3,12 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { UserRequest, UserResponse } from '../models/customer.model';
 import { LoginResponse } from '../models/auth.model';
+import { environment } from './environments';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
   private tokenKey = 'jwtToken';
 
   private userSubject = new BehaviorSubject<UserResponse | null>(null);

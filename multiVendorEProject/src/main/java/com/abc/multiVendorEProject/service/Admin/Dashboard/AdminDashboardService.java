@@ -1,20 +1,20 @@
-package com.abc.multiVendorEProject.service.Admin;
+package com.abc.multiVendorEProject.service.Admin.Dashboard;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.AdminDashboard.AdminDashboardResponseDto;
-import com.abc.multiVendorEProject.enums.OrderStatus;
-import com.abc.multiVendorEProject.enums.PaymentMethod;
-import com.abc.multiVendorEProject.enums.PaymentStatus;
-import com.abc.multiVendorEProject.enums.VendorStatus;
+import com.abc.multiVendorEProject.entity.Category;
+import com.abc.multiVendorEProject.entity.Product;
+import com.abc.multiVendorEProject.entity.Vendor;
+import com.abc.multiVendorEProject.enums.*;
 import com.abc.multiVendorEProject.repository.*;
 import com.abc.multiVendorEProject.repository.VariantRepository.ProductVariantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +34,7 @@ public class AdminDashboardService {
     private final WishlistRepository wishlistRepository;
     private final CartRepository cartRepository;
     private final PaymentRepository paymentRepository;
+    private final OrderItemRepository orderItemRepository;
 
     private LocalDateTime todayStart;
     private LocalDateTime todayEnd;
@@ -47,12 +48,25 @@ public class AdminDashboardService {
         AdminDashboardResponseDto dto = new AdminDashboardResponseDto();
 
         loadRevenue(dto);
+        loadSales(dto);
+        loadRefundAnalytics(dto);
+
         loadOrders(dto);
+
         loadPayments(dto);
+        loadPaymentMethodAnalytics(dto);
+        loadPaymentProviderAnalytics(dto);
+        loadFinanceAnalytics(dto);
+
         loadUsers(dto);
+        loadVendorAnalytics(dto);
+
         loadCatalog(dto);
+        loadProductAnalytics(dto);
+
         loadInventory(dto);
-        loadOthers(dto);
+
+        loadEngagement(dto);
 
         return dto;
     }
@@ -79,34 +93,73 @@ public class AdminDashboardService {
 
     private void loadRevenue(AdminDashboardResponseDto dto) {
 
-        dto.setTotalRevenue(
+        dto.setTotalGrossRevenue(
                 paymentRepository.getGrossRevenue());
 
-        dto.setTodayRevenue(
+        dto.setTodayGrossRevenue(
                 paymentRepository.getGrossRevenueBetween(
                         todayStart,
                         todayEnd));
 
-        dto.setMonthlyRevenue(
-                paymentRepository.getRevenueBetween(
+        dto.setMonthlyGrossRevenue(
+                paymentRepository.getGrossRevenueBetween(
                         monthStart,
                         todayEnd));
 
-        dto.setYearlyRevenue(
-                paymentRepository.getRevenueBetween(
+        dto.setYearlyGrossRevenue(
+                paymentRepository.getGrossRevenueBetween(
                         yearStart,
                         todayEnd));
 
+        dto.setTotalNetRevenue(
+                paymentRepository.getGrossRevenue()
+                        .subtract(paymentRepository.getTotalRefundAmount()));
+
+        dto.setTodayNetRevenue(
+                paymentRepository.getGrossRevenueBetween(todayStart, todayEnd)
+                        .subtract(paymentRepository.getRefundAmountBetween(todayStart, todayEnd)));
+
+        dto.setMonthlyNetRevenue(
+                paymentRepository.getGrossRevenueBetween(monthStart, todayEnd)
+                        .subtract(paymentRepository.getRefundAmountBetween(monthStart, todayEnd)));
+
+        dto.setYearlyNetRevenue(
+                paymentRepository.getGrossRevenueBetween(yearStart, todayEnd)
+                        .subtract(paymentRepository.getRefundAmountBetween(yearStart, todayEnd)));
+
         dto.setAveragePaymentAmount(
-                paymentRepository.getAveragePaymentAmount(PaymentStatus.PAID));
+                paymentRepository.getAveragePaymentAmount(
+                        PaymentStatus.PAID));
 
         dto.setHighestPaymentAmount(
-                paymentRepository.getHighestPaymentAmount(PaymentStatus.PAID));
+                paymentRepository.getHighestPaymentAmount(
+                        PaymentStatus.PAID));
 
         dto.setLowestPaymentAmount(
-                paymentRepository.getLowestPaymentAmount(PaymentStatus.PAID));
+                paymentRepository.getLowestPaymentAmount(
+                        PaymentStatus.PAID));
+
+    }
 
 
+    //    ==============Sales Analytics=============
+
+    private void loadSales(AdminDashboardResponseDto dto) {
+
+        dto.setTodaySalesAmount(
+                paymentRepository.getGrossRevenueBetween(
+                        todayStart,
+                        todayEnd));
+
+        dto.setMonthlySalesAmount(
+                paymentRepository.getGrossRevenueBetween(
+                        monthStart,
+                        todayEnd));
+
+        dto.setYearlySalesAmount(
+                paymentRepository.getGrossRevenueBetween(
+                        yearStart,
+                        todayEnd));
     }
 
 //    ==============Refund Analytics=============
@@ -134,8 +187,12 @@ public class AdminDashboardService {
         dto.setAverageRefundAmount(
                 paymentRepository.getAverageRefundAmount(PaymentStatus.REFUNDED));
 
+        dto.setLowestRefundAmount(
+                paymentRepository.getLowestRefundAmount(
+                        PaymentStatus.REFUNDED));
+
         dto.setHighestRefundAmount(
-                paymentRepository.getHighestRefundAmount());
+                paymentRepository.getHighestRefundAmount(PaymentStatus.REFUNDED));
     }
 
 
@@ -168,38 +225,69 @@ public class AdminDashboardService {
                 paymentRepository.countByPaymentMethod(
                         PaymentMethod.CARD));
 
-        dto.setCodPayments(
+        dto.setCashOnDeliveryPayments(
                 paymentRepository.countByPaymentMethod(
                         PaymentMethod.CASH_ON_DELIVERY));
 
-        dto.setBkashPayments(
+        dto.setMobileBankingPayments(
                 paymentRepository.countByPaymentMethod(
                         PaymentMethod.MOBILE_BANKING));
 
-        dto.setNagadPayments(
+        dto.setBankTransferPayments(
                 paymentRepository.countByPaymentMethod(
                         PaymentMethod.BANK_TRANSFER));
 
 
         // Average Payment
 
-        dto.setAverageBkashPayment(
+        dto.setAverageCardPayment(
                 paymentRepository.getAveragePaymentByMethod(
                         PaymentMethod.CARD));
 
-        dto.setAverageCodPayment(
+        dto.setAverageCashOnDeliveryPayment(
                 paymentRepository.getAveragePaymentByMethod(
                         PaymentMethod.CASH_ON_DELIVERY));
 
-        dto.setAverageNagadPayment(
+        dto.setAverageMobileBankingPayment(
                 paymentRepository.getAveragePaymentByMethod(
                         PaymentMethod.MOBILE_BANKING));
 
-        dto.setAverageCardPayment(
+        dto.setAverageBankTransferPayment(
                 paymentRepository.getAveragePaymentByMethod(
                         PaymentMethod.BANK_TRANSFER));
 
     }
+
+
+    //    =============Payment Provider Analytics===========================
+
+    private void loadPaymentProviderAnalytics(AdminDashboardResponseDto dto) {
+
+        dto.setManualRevenue(
+                paymentRepository.getAveragePaymentByProvider(
+                        PaymentProvider.MANUAL));
+
+        dto.setBkashRevenue(
+                paymentRepository.getAveragePaymentByProvider(
+                        PaymentProvider.BKASH));
+
+        dto.setNagadRevenue(
+                paymentRepository.getAveragePaymentByProvider(
+                        PaymentProvider.NAGAD));
+
+        dto.setRocketRevenue(
+                paymentRepository.getAveragePaymentByProvider(
+                        PaymentProvider.ROCKET));
+
+        dto.setSslCommerzRevenue(
+                paymentRepository.getAveragePaymentByProvider(
+                        PaymentProvider.SSLCOMMERZ));
+
+        dto.setStripeRevenue(
+                paymentRepository.getAveragePaymentByProvider(
+                        PaymentProvider.STRIPE));
+    }
+
 
 
     // ====================Finance Analytics===================
@@ -325,10 +413,92 @@ public class AdminDashboardService {
                 vendorRepository.countByCreatedAtBetween(
                         todayStart,
                         todayEnd));
+
+        dto.setActiveCustomers(
+                userRepository.countByRolesRoleNameAndEnabledTrueAndDeletedFalse(
+                        "ROLE_USER"));
+
+        dto.setRepeatCustomers(
+                orderRepository.countRepeatCustomers());
+
     }
 
+
+//    ==============Vendor Analytics=================
+
+    private void loadVendorAnalytics(AdminDashboardResponseDto dto) {
+
+        Vendor topVendor = orderItemRepository
+                .findTopVendorsByRevenue(PageRequest.of(0, 1))
+                .stream()
+                .findFirst()
+                .orElse(null);
+
+        if (topVendor != null) {
+
+            dto.setTopVendorName(topVendor.getShopName());
+
+            dto.setTopVendorRevenue(
+                    orderItemRepository.getVendorRevenue(topVendor.getId()));
+        }
+
+        if (topVendor != null) {
+
+            dto.setTopVendorName(
+                    topVendor.getShopName());
+
+            dto.setTopVendorRevenue(
+                    orderItemRepository.getVendorRevenue(
+                            topVendor.getId()));
+        }
+    }
+
+//    =================Product Analytics=================
+
+    private void loadProductAnalytics(AdminDashboardResponseDto dto) {
+
+        Product product =
+                productRepository.findTopByDeletedFalseOrderBySoldCountDesc()
+                        .orElse(null);
+
+        if (product != null) {
+
+            dto.setBestSellingProduct(
+                    product.getName());
+
+            dto.setBestSellingProductQuantitySold(
+                    product.getSoldCount());
+
+            dto.setBestSellingProductRevenue(
+                    orderItemRepository.getProductRevenue(
+                            product.getId()));
+        }
+
+        List<Category> categories = orderItemRepository.findBestSellingCategories();
+
+        Category category = categories.isEmpty()
+                ? null
+                : categories.get(0);
+
+        if (category != null) {
+
+            dto.setBestSellingCategory(
+                    category.getName());
+
+            dto.setBestSellingCategoryQuantitySold(
+                    orderItemRepository.getCategoryQuantitySold(
+                            category.getId()));
+
+            dto.setBestSellingCategoryRevenue(
+                    orderItemRepository.getCategoryRevenue(
+                            category.getId()));
+        }
+    }
+
+
+
     // =====================================================
-    // Catalog
+    // Catalog Analytics
     // =====================================================
 
     private void loadCatalog(AdminDashboardResponseDto dto) {
@@ -347,7 +517,7 @@ public class AdminDashboardService {
     }
 
     // =====================================================
-    // Inventory
+    // Inventory Analytics
     // =====================================================
 
     private void loadInventory(AdminDashboardResponseDto dto) {
@@ -358,22 +528,39 @@ public class AdminDashboardService {
         dto.setLowStockProducts(
                 productVariantRepository.countByStockLessThan(
                         LOW_STOCK_LIMIT));
+
+        dto.setOutOfStockProducts(
+                productVariantRepository.countByStock(0));
+
+        dto.setTotalStockQuantity(
+                productVariantRepository.getTotalStockQuantity());
+
+        dto.setLowStockProducts(
+                productVariantRepository.countByStockBetween(
+                        1,
+                        LOW_STOCK_LIMIT - 1));
     }
 
     // =====================================================
-    // Others
+    // Engagement Analytics
     // =====================================================
 
-    private void loadOthers(AdminDashboardResponseDto dto) {
+    private void loadEngagement(AdminDashboardResponseDto dto) {
 
         dto.setTotalReviews(
                 reviewRepository.count());
 
+        dto.setAverageRating(
+                reviewRepository.getAverageRating());
+
         dto.setTotalWishlistItems(
-                wishlistRepository.count());
+                wishlistRepository.getTotalWishlistItems());
 
         dto.setTotalCarts(
                 cartRepository.count());
+
+        dto.setTotalActiveCarts(
+                cartRepository.countActiveCarts());
     }
 
 }

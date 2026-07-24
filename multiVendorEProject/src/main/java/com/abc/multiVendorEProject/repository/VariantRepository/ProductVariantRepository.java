@@ -37,6 +37,8 @@ public interface ProductVariantRepository
             Pageable pageable
     );
 
+    long countByStockBetween(Integer startStock, Integer endStock);
+
     long countByProductId(Long productId);
 
 

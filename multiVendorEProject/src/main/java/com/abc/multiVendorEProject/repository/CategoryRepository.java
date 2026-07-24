@@ -28,23 +28,4 @@ public interface CategoryRepository extends JpaRepository<Category,Long> {
             nativeQuery = true)
     List<Category> searchByName(@Param("category") String name);
 
-    @Query("""
-SELECT c
-FROM OrderItem oi
-JOIN oi.variant v
-JOIN v.product p
-JOIN p.category c
-GROUP BY c
-ORDER BY SUM(oi.quantity) DESC
-""")
-    Page<Category> findBestSellingCategory(Pageable pageable);
-
-
-    @Query("""
-SELECT COALESCE(SUM(oi.quantity),0)
-FROM OrderItem oi
-WHERE oi.variant.product.category.id = :categoryId
-""")
-    Long getCategoryQuantitySold(
-            @Param("categoryId") Long categoryId);
 }

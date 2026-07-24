@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class AdminDashboardService {
 
-    private api = `${environment.apiUrl}/admin/dashboard`;
+    private api = `${environment.apiUrl}/admin/dashboard/summary`;
   
     constructor(private http: HttpClient) {}
   
