@@ -1,1 +1,268 @@
-<p>footer works!</p>
+<footer class="footer">
+
+
+<div class="container py-5">
+
+
+<div class="row g-4">
+
+
+
+<!-- Brand -->
+
+
+<div class="col-lg-4">
+
+
+<h2 class="brand">
+
+PURION
+
+</h2>
+
+
+<p>
+
+Premium quality products with
+secure and reliable shopping experience.
+
+</p>
+
+
+
+<div class="social">
+
+
+<a
+
+*ngFor="let social of socialLinks"
+
+[href]="social.link">
+
+
+<i
+
+class="bi"
+
+[class]="social.icon">
+
+</i>
+
+
+</a>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<!-- Quick Links -->
+
+
+<div class="col-lg-2 col-md-4">
+
+
+<h5>
+
+Quick Links
+
+</h5>
+
+
+<ul>
+
+
+<li
+
+*ngFor="let item of quickLinks">
+
+<a href="#">
+
+{{item}}
+
+</a>
+
+</li>
+
+
+</ul>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- Customer -->
+
+
+<div class="col-lg-3 col-md-4">
+
+
+<h5>
+
+Customer Service
+
+</h5>
+
+
+<ul>
+
+
+<li
+
+*ngFor="let item of customerLinks">
+
+<a href="#">
+
+{{item}}
+
+</a>
+
+
+</li>
+
+
+</ul>
+
+
+</div>
+
+
+
+
+
+
+<!-- Contact -->
+
+
+<div class="col-lg-3 col-md-4">
+
+
+<h5>
+
+Contact
+
+</h5>
+
+
+<p>
+
+<i class="bi bi-geo-alt"></i>
+
+Dhaka, Bangladesh
+
+</p>
+
+
+
+<p>
+
+<i class="bi bi-telephone"></i>
+
++880 1XXXXXXXXX
+
+</p>
+
+
+
+<p>
+
+<i class="bi bi-envelope"></i>
+
+support@purion.com
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+<hr>
+
+
+
+<!-- Payment -->
+
+
+<div class="payment-section text-center">
+
+
+<h6>
+
+Secure Payment
+
+</h6>
+
+
+
+<div class="payment-icons">
+
+
+<span>
+
+VISA
+
+</span>
+
+
+<span>
+
+Mastercard
+
+</span>
+
+
+<span>
+
+bKash
+
+</span>
+
+
+<span>
+
+Nagad
+
+</span>
+
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="copyright">
+
+
+© 2026 PURION. All Rights Reserved.
+
+
+</div>
+
+
+</footer>

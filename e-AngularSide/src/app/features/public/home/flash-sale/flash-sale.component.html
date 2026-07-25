@@ -1,1 +1,135 @@
-<p>flash-sale works!</p>
+<section class="flash-sale">
+
+
+<div class="container">
+
+
+<div class="sale-header">
+
+
+<div>
+
+<h2>
+
+🔥 Flash Sale
+
+</h2>
+
+
+<p>
+
+Limited time deals
+
+</p>
+
+</div>
+
+
+
+
+<div class="countdown">
+
+
+<div>
+
+<span>{{hours}}</span>
+
+<small>Hours</small>
+
+</div>
+
+
+<div>
+
+<span>{{minutes}}</span>
+
+<small>Minutes</small>
+
+</div>
+
+
+<div>
+
+<span>{{seconds}}</span>
+
+<small>Seconds</small>
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="row">
+
+
+<div
+
+class="col-lg-4 col-md-6"
+
+*ngFor="let product of products">
+
+
+<div class="sale-card">
+
+
+<img
+
+[src]="product.image">
+
+
+<h5>
+
+{{product.name}}
+
+</h5>
+
+
+
+<div>
+
+
+<span class="old-price">
+
+{{product.price | currency:'BDT'}}
+
+</span>
+
+
+<span class="discount-price">
+
+{{product.discountPrice | currency:'BDT'}}
+
+</span>
+
+
+</div>
+
+
+<button class="btn btn-danger">
+
+Shop Now
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</section>

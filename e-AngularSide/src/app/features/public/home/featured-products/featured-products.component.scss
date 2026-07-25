@@ -1,0 +1,51 @@
+.featured-section {
+
+  background: #ffffff;
+
+}
+
+
+
+.section-header h2 {
+
+  font-size: 34px;
+
+  font-weight: 700;
+
+  margin-bottom: 10px;
+
+}
+
+
+
+.section-header p {
+
+  color: #777;
+
+  font-size: 16px;
+
+}
+
+
+
+/* Product spacing */
+
+.row {
+
+  margin-top: 20px;
+
+}
+
+
+
+/* Mobile */
+
+@media(max-width:768px){
+
+  .section-header h2 {
+
+    font-size:28px;
+
+  }
+
+}

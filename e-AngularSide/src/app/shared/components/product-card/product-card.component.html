@@ -1,0 +1,174 @@
+<div class="card product-card h-100">
+
+
+  <!-- Image Section -->
+
+  <div class="image-wrapper">
+
+
+    <img
+      [src]="getImageUrl()"
+      class="product-image"
+      alt="{{product.name}}">
+
+
+
+    <!-- Discount Badge -->
+
+    <span
+      class="discount-badge"
+      *ngIf="product.discountPrice">
+
+
+      {{
+        ((product.price - product.discountPrice)
+        / product.price * 100)
+        | number:'1.0-0'
+      }}% OFF
+
+
+    </span>
+
+
+
+
+    <!-- Wishlist -->
+
+    <i
+      class="bi wishlist-icon"
+
+      [class.bi-heart-fill]="product.inWishlist"
+
+      [class.bi-heart]="!product.inWishlist"
+
+      (click)="toggleWishlist()">
+
+    </i>
+
+
+
+  </div>
+
+
+
+
+
+  <!-- Body -->
+
+  <div class="card-body">
+
+
+
+    <h5 class="product-name">
+
+      {{product.name}}
+
+    </h5>
+
+
+
+
+    <!-- Rating -->
+
+    <div class="rating">
+
+      <i class="bi bi-star-fill"></i>
+
+      {{product.averageRating || 0}}
+
+      <span>
+
+        ({{product.totalReviews || 0}})
+
+      </span>
+
+    </div>
+
+
+
+
+
+
+    <!-- Price -->
+
+    <div class="price mt-2">
+
+
+      <span
+        class="discount-price"
+        *ngIf="product.discountPrice">
+
+
+        {{product.discountPrice | currency:'BDT '}}
+
+
+      </span>
+
+
+
+      <span
+        [class.old-price]="product.discountPrice">
+
+
+        {{product.price | currency:'BDT '}}
+
+
+      </span>
+
+
+    </div>
+
+
+
+
+
+
+    <!-- Actions -->
+
+
+    <div class="action-buttons mt-auto">
+
+
+      <button
+
+        class="btn btn-dark cart-btn"
+
+        (click)="addToCart()">
+
+
+
+        <i class="bi bi-cart"></i>
+
+        Cart
+
+
+      </button>
+
+
+
+
+
+      <button
+
+        class="btn btn-outline-dark view-btn"
+        [routerLink]="['/product',product.id]"
+        >
+
+
+        <i class="bi bi-eye"></i>
+
+        View
+
+
+      </button>
+
+
+
+    </div>
+
+
+
+  </div>
+
+
+</div>

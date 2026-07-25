@@ -1,1 +1,121 @@
-<p>deals-section works!</p>
+<section class="deals-section py-5">
+
+
+<div class="container">
+
+
+
+<!-- Banner -->
+
+<div class="deal-banner mb-5">
+
+
+<div class="row align-items-center">
+
+
+<div class="col-lg-7">
+
+
+<h1>
+
+🔥 Mega Deals
+
+</h1>
+
+
+<h3>
+
+Up to 50% Discount
+
+</h3>
+
+
+<p>
+
+Grab your favourite products before the offer ends.
+
+</p>
+
+
+
+<button
+
+class="btn btn-dark px-4">
+
+
+Shop Now
+
+
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="col-lg-5 text-center">
+
+
+<img
+
+src="assets/images/deal-banner.png"
+
+class="deal-image">
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- Products -->
+
+
+<div
+
+class="row g-4"
+
+*ngIf="!loading && deals.length > 0">
+
+
+
+<div
+
+class="col-xl-3 col-lg-4 col-md-6 d-flex"
+
+*ngFor="let product of deals">
+
+
+<app-product-card
+
+[product]="product">
+
+</app-product-card>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+</section>

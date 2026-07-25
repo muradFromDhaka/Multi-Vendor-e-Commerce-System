@@ -25,6 +25,7 @@ import { WhyChooseUsComponent } from './home/why-choose-us/why-choose-us.compone
 import { CustomerReviewsComponent } from './home/customer-reviews/customer-reviews.component';
 import { NewsletterComponent } from './home/newsletter/newsletter.component';
 import { FooterComponent } from './home/footer/footer.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { FooterComponent } from './home/footer/footer.component';
     CommonModule,
     PublicRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ]
 })
 export class PublicModule { }

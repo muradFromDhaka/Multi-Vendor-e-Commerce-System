@@ -13,6 +13,7 @@ import { CustomerNavbarComponent } from './shared/navbar/customer-navbar/custome
 import { PublicNavbarComponent } from './shared/navbar/public-navbar/public-navbar.component';
 import { AdminNavbarComponent } from './shared/navbar/admin-navbar/admin-navbar.component';
 import { TestComponent } from './test/test.component';
+import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,10 +24,12 @@ import { TestComponent } from './test/test.component';
     PublicNavbarComponent,
     TestComponent,
     ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    CommonModule,
     ReactiveFormsModule,
     HttpClientModule
   ],

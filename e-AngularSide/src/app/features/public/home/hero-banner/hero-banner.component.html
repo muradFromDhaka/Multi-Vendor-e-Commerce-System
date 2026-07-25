@@ -1,1 +1,96 @@
-<p>hero-banner works!</p>
+<section class="hero">
+
+
+<div class="container">
+
+
+<div class="hero-content">
+
+
+<div class="row align-items-center">
+
+
+<!-- Text -->
+
+<div class="col-lg-6">
+
+
+<h1>
+
+{{banners[currentBanner].title}}
+
+</h1>
+
+
+<p>
+
+{{banners[currentBanner].subtitle}}
+
+</p>
+
+
+<button class="btn btn-primary">
+
+{{banners[currentBanner].buttonText}}
+
+</button>
+
+
+</div>
+
+
+
+<!-- Image -->
+
+
+<div class="col-lg-6">
+
+
+<img
+
+[src]="banners[currentBanner].image"
+
+class="img-fluid hero-image">
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- Navigation -->
+
+
+<button
+
+class="slider-btn prev"
+
+(click)="previousBanner()">
+
+‹
+
+</button>
+
+
+
+<button
+
+class="slider-btn next"
+
+(click)="nextBanner()">
+
+›
+
+</button>
+
+
+</section>

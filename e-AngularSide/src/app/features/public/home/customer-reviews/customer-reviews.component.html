@@ -1,1 +1,104 @@
-<p>customer-reviews works!</p>
+<section class="review-section py-5">
+
+
+<div class="container">
+
+
+<div class="section-header text-center mb-5">
+
+
+<h2>
+Customer Reviews
+</h2>
+
+
+<p>
+What our customers say about us
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="row g-4">
+
+
+
+<div
+
+class="col-lg-3 col-md-6"
+
+*ngFor="let review of reviews">
+
+
+
+<div class="review-card">
+
+
+
+<img
+
+[src]="review.image"
+
+class="customer-image"
+
+alt="customer">
+
+
+
+
+
+<h5>
+
+{{review.name}}
+
+</h5>
+
+
+
+
+<div class="stars">
+
+
+<i
+
+class="bi bi-star-fill"
+
+*ngFor="let star of [].constructor(review.rating)">
+
+</i>
+
+
+</div>
+
+
+
+
+
+<p>
+
+"{{review.comment}}"
+
+</p>
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>

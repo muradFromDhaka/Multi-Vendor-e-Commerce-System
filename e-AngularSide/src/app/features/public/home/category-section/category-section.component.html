@@ -1,1 +1,81 @@
-<p>category-section works!</p>
+<section class="category-section py-5">
+
+
+<div class="container">
+
+
+<div class="section-title text-center mb-5">
+
+<h2>
+Shop By Category
+</h2>
+
+<p class="text-muted">
+Explore products from different categories
+</p>
+
+
+</div>
+
+
+
+
+<div class="row g-4">
+
+
+
+<div
+
+class="col-xl-2 col-lg-3 col-md-4 col-6"
+
+*ngFor="let category of categories">
+
+
+
+<div class="category-card">
+
+
+
+<img
+
+[src]="category.image"
+
+class="img-fluid">
+
+
+
+<div class="overlay">
+
+
+<h5>
+
+{{category.name}}
+
+</h5>
+
+
+<button class="btn btn-light btn-sm">
+
+Explore
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+</section>

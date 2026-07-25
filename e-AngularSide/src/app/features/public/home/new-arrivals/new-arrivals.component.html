@@ -1,1 +1,128 @@
-<p>new-arrivals works!</p>
+<section class="new-arrivals-section py-5">
+
+
+<div class="container">
+
+
+
+<!-- Header -->
+
+<div class="section-header mb-5">
+
+
+<div>
+
+
+<h2>
+New Arrivals
+</h2>
+
+
+<p>
+Discover our newest products
+</p>
+
+
+</div>
+
+
+
+<button
+class="btn btn-outline-dark">
+
+
+View All
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+<!-- Loading -->
+
+
+<div
+class="text-center py-5"
+*ngIf="loading">
+
+
+<div class="spinner-border text-dark">
+
+</div>
+
+
+<p class="mt-3">
+Loading new products...
+</p>
+
+
+</div>
+
+
+
+
+
+
+<!-- Products -->
+
+
+<div
+
+class="row g-4"
+
+*ngIf="!loading && products.length > 0">
+
+
+
+<div
+
+class="col-xl-3 col-lg-4 col-md-6 d-flex"
+
+*ngFor="let product of products">
+
+
+<app-product-card
+
+[product]="product">
+
+</app-product-card>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- Empty -->
+
+<div
+
+class="text-center"
+
+*ngIf="!loading && products.length === 0">
+
+
+<h5>
+No new arrivals available
+</h5>
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
