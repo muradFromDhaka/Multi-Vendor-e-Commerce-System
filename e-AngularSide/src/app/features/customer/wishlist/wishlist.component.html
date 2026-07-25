@@ -1,0 +1,135 @@
+<div class="container py-4">
+
+
+<h3 class="mb-4">
+
+❤️ My Wishlist
+
+<span class="badge bg-primary">
+
+{{wishlist.totalProducts || 0}}
+
+</span>
+
+</h3>
+
+
+
+<div *ngIf="loading"
+     class="text-center">
+
+    <div class="spinner-border"></div>
+
+</div>
+
+
+
+<div 
+class="row"
+*ngIf="wishlist && wishlist.products.length > 0">
+
+
+<div class="col-md-3 mb-4"
+     *ngFor="let product of wishlist.products">
+
+
+<div class="card h-100 shadow-sm">
+
+
+<img
+class="card-img-top"
+[src]="product.imageUrl"
+[alt]="product.productName"
+height="220">
+
+
+
+<div class="card-body">
+
+
+<h5 class="card-title">
+
+{{product.productName}}
+
+</h5>
+
+
+
+<div class="mb-2">
+
+
+<span class="text-warning">
+
+⭐ {{product.averageRating}}
+
+</span>
+
+<small class="text-muted">
+
+({{product.totalReviews}} reviews)
+
+</small>
+
+
+</div>
+
+
+
+
+<div>
+
+
+<span class="fw-bold text-success"
+*ngIf="product.discountPrice">
+
+৳ {{product.discountPrice}}
+
+</span>
+
+
+<span
+[class.text-decoration-line-through]="product.discountPrice">
+
+৳ {{product.price}}
+
+</span>
+
+
+</div>
+
+
+
+<button
+class="btn btn-danger btn-sm mt-3 w-100"
+(click)="removeProduct(product.productId)">
+
+Remove
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div 
+*ngIf="wishlist && wishlist.products.length === 0"
+class="alert alert-info">
+
+Your wishlist is empty.
+
+</div>
+
+
+</div>

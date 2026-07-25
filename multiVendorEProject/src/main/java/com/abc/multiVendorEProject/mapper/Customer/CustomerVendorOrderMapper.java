@@ -1,6 +1,6 @@
 package com.abc.multiVendorEProject.mapper.Customer;
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.CustomerVendorOrderDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Customer.CustomerVendorOrderDto;
 import com.abc.multiVendorEProject.entity.VendorOrder;
 import com.abc.multiVendorEProject.mapper.OrderItemMapper;
 

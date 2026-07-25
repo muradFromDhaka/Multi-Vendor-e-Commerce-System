@@ -129,3 +129,39 @@
     }
 
 }
+
+// =============================================
+
+
+.wishlist-icon {
+
+  font-size: 32px;
+
+  cursor: pointer;
+
+  color: #da0707;
+
+  transition: 0.3s;
+
+}
+
+
+.wishlist-icon:hover {
+
+  transform: scale(1.15);
+
+}
+
+
+.bi-heart-fill {
+
+  color: red;
+
+}
+
+
+.bi-heart {
+
+  color: #777;
+
+}

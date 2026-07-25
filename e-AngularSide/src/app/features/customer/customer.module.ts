@@ -12,6 +12,7 @@ import { OrderListComponent } from './order-list/order-list.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckoutSummaryComponent } from './checkout/checkout-summary/checkout-summary.component';
+import { WishlistComponent } from './wishlist/wishlist.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { CheckoutSummaryComponent } from './checkout/checkout-summary/checkout-s
     CheckoutPaymentComponent,
     CheckoutSummaryComponent,
     OrderListComponent,
-    OrderDetailsComponent
+    OrderDetailsComponent,
+    WishlistComponent
   ],
   imports: [
     CommonModule,

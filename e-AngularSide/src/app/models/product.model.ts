@@ -1,10 +1,10 @@
 import { ProductVariantResponse } from "./productVariant.model";
 
 export enum ProductStatus {
+  DRAFT = 'DRAFT',
   ACTIVE = 'ACTIVE',
-  OUT_OF_STOCK = 'OUT_OF_STOCK',
+  INACTIVE = 'INACTIVE',
   DISCONTINUED = 'DISCONTINUED',
-  DRAFT = 'DRAFT'
 }
 
 export interface ProductRequest {
@@ -59,6 +59,9 @@ export interface ProductDetailsResponse {
   vendorName: string;
 
   soldCount: number;
+
+  // নতুন field
+  inWishlist?: boolean;
 }
 
 
@@ -94,4 +97,7 @@ export interface ProductListResponse {
   totalVariants: number;
 
   status: ProductStatus;
+
+  // নতুন field
+  inWishlist?: boolean;
 }

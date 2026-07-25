@@ -1,13 +1,10 @@
 package com.abc.multiVendorEProject.mapper;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderItemResponseDTO;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderDetailsResponseDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderListResponseDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderPaymentInfoDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.VendorOrderDetailsResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.VendorOrderListResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.VendorOrderPaymentInfoDto;
 import com.abc.multiVendorEProject.entity.VendorOrder;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;

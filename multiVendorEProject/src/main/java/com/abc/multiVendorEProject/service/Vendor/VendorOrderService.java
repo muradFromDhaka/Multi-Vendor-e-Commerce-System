@@ -1,8 +1,8 @@
 package com.abc.multiVendorEProject.service.Vendor;
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.UpdateVendorOrderStatusRequestDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderDetailsResponseDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderListResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.UpdateVendorOrderStatusRequestDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.VendorOrderDetailsResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.VendorOrderListResponseDto;
 import com.abc.multiVendorEProject.entity.Vendor;
 import com.abc.multiVendorEProject.entity.VendorOrder;
 import com.abc.multiVendorEProject.enums.VendorOrderStatus;
@@ -121,7 +121,7 @@ public class VendorOrderService {
 // Helper
 // ===============================
 
-    private Vendor getLoggedInVendor() {
+    public Vendor getLoggedInVendor() {
 
         String userName = SecurityContextHolder
                 .getContext()

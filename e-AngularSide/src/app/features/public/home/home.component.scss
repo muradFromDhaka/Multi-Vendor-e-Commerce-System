@@ -889,3 +889,23 @@ section {
     }
 
 }
+
+
+// ==========================Wishlist icon==========================
+
+// .wishlist-icon {
+//   font-size: 32px;
+//   cursor: pointer;
+//   color: red;
+// }
+
+.wishlist-icon {
+  font-size: 32px;
+  cursor: pointer;
+  color: red;
+  transition: 0.3s;
+}
+
+.wishlist-icon:hover {
+  transform: scale(1.15);
+}

@@ -5,6 +5,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { CustomerComponent } from './customer.component';
 import { OrderListComponent } from './order-list/order-list.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
+import { WishlistComponent } from './wishlist/wishlist.component';
 
 const routes: Routes = [
   {
@@ -16,12 +17,12 @@ const routes: Routes = [
 
 
       { path: 'cart', component: CartComponent },
-
       { path: 'checkout', component: CheckoutComponent },
 
       { path: 'orders', component: OrderListComponent },
- 
       { path: 'orders/:id', component: OrderDetailsComponent },
+
+       {path:'wishlist',component:WishlistComponent}
 
     ]
   }

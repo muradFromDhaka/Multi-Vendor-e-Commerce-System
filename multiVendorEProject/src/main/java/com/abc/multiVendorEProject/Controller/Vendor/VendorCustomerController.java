@@ -1,7 +1,7 @@
 package com.abc.multiVendorEProject.Controller.Vendor;
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.VendorCustomerDetailsResponseDTO;
-import com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.VendorCustomerResponseDTO;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Customer.VendorCustomerDetailsResponseDTO;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Customer.VendorCustomerResponseDTO;
 import com.abc.multiVendorEProject.service.Vendor.VendorCustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

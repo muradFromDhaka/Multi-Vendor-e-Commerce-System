@@ -9,6 +9,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { ProductListResponse } from 'src/app/models/product.model';
 import { SearchService } from 'src/app/shared/services/search.service';
 import { Router } from '@angular/router';
+import { WishlistService } from '../../customer/services/wishlist.service';
 
 @Component({
   selector: 'app-home',
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit,OnDestroy{
   
   constructor(
     private categoryService:CategoryService,
+    private wishlistService: WishlistService,
     private productService:ProductService,
     private brandService:BrandService,
     private cartService:CartService,
@@ -45,7 +47,13 @@ export class HomeComponent implements OnInit,OnDestroy{
     }
   
     loadProducts():void{
-      this.productService.getAllProducts().subscribe((res) => this.products = res.content)
+      this.productService.getAllProducts().subscribe({
+        next: 
+        (res) => {this.products = res.content
+                  this.checkWishlistStatus();
+        }
+      
+      })
       this.productService.getMostPopular().subscribe((res) => this.mostPopularProducts = res.content)
     }
   
@@ -132,6 +140,77 @@ onSearch(): void {
     ? product.thumbnailUrl
 
     : this.baseImageUrl + product.thumbnailUrl;
+
+}
+
+// ====================================
+
+checkWishlistStatus(){
+
+  this.products.forEach(product => {
+    
+    this.wishlistService
+        .existsInWishlist(product.id)
+        .subscribe({
+
+          next:(exists)=>{
+
+            product.inWishlist = exists;
+
+          },
+
+          error:(err)=>{
+
+            console.log(err);
+
+          }
+
+        });
+
+
+  });
+
+}
+
+
+
+toggleWishlist(product: ProductListResponse){
+
+
+  if(product.inWishlist){
+
+
+    this.wishlistService
+        .removeFromWishlist(product.id)
+        .subscribe({
+
+          next:()=>{
+
+            product.inWishlist = false;
+
+          }
+
+        });
+
+
+
+  }else{
+
+
+    this.wishlistService
+        .addToWishlist(product.id)
+        .subscribe({
+
+          next:()=>{
+
+            product.inWishlist = true;
+
+          }
+
+        });
+
+  }
+
 
 }
 

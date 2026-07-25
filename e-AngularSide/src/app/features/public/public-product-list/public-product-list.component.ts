@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
 import { environment } from 'src/app/services/environments';
 import { ProductService } from 'src/app/services/product.service';
+import { WishlistService } from '../../customer/services/wishlist.service';
 
 @Component({
   selector: 'app-public-product-list',
@@ -29,6 +30,7 @@ totalPages = 0;
 
     constructor(
       private productService: ProductService,
+      private wishlistService: WishlistService,
       private cartService: CartService,
       public authService: AuthService,
       private acRoute: ActivatedRoute,
@@ -67,6 +69,7 @@ loadProducts(): void {
       next: (res) => {
 
         this.products = res.content;
+        this.checkWishlistStatus();
         this.totalElements = res.totalElements;
         this.totalPages = res.totalPages;
 
@@ -102,6 +105,7 @@ searchProducts(): void {
     next: (res) => {
 
       this.products = res.content;
+      this.checkWishlistStatus();
       this.totalElements = res.totalElements;
       this.totalPages = res.totalPages;
       this.loading = false;
@@ -116,6 +120,76 @@ searchProducts(): void {
     }
 
   });
+
+}
+
+
+checkWishlistStatus(){
+
+  this.products.forEach(product => {
+    
+    this.wishlistService
+        .existsInWishlist(product.id)
+        .subscribe({
+
+          next:(exists)=>{
+
+            product.inWishlist = exists;
+
+          },
+
+          error:(err)=>{
+
+            console.log(err);
+
+          }
+
+        });
+
+
+  });
+
+}
+
+
+
+toggleWishlist(product: ProductListResponse){
+
+
+  if(product.inWishlist){
+
+
+    this.wishlistService
+        .removeFromWishlist(product.id)
+        .subscribe({
+
+          next:()=>{
+
+            product.inWishlist = false;
+
+          }
+
+        });
+
+
+
+  }else{
+
+
+    this.wishlistService
+        .addToWishlist(product.id)
+        .subscribe({
+
+          next:()=>{
+
+            product.inWishlist = true;
+
+          }
+
+        });
+
+  }
+
 
 }
 

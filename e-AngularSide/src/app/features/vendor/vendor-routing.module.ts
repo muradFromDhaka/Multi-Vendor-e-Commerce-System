@@ -15,6 +15,8 @@ import { VendorCustomerListComponent } from './customers/vendor-customer-list/ve
 import { VendorCustomerDetailsComponent } from './customers/vendor-customer-details/vendor-customer-details.component';
 import { VendorOrderListComponent } from './orders/vendor-order-list/vendor-order-list.component';
 import { VendorOrderDetailsComponent } from './orders/vendor-order-details/vendor-order-details.component';
+import { VendorInventoryComponent } from './inventory/vendor-inventory/vendor-inventory.component';
+import { UpdateStockComponent } from './inventory/update-stock/update-stock.component';
 
 const routes: Routes = [
 
@@ -46,6 +48,9 @@ const routes: Routes = [
 
         {path:'orders',component:VendorOrderListComponent},
         {path:'orders/:id',component:VendorOrderDetailsComponent},
+
+        {path: 'inventory',component: VendorInventoryComponent},
+        {path: 'inventory/:id',component: UpdateStockComponent}
     ]
 
 }

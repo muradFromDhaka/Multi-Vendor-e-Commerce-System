@@ -1,0 +1,112 @@
+
+<div *ngIf="loading" class="text-center py-5">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+<div *ngIf="!loading && inventory">
+
+  <div class="card shadow">
+
+  <div class="card-header">
+    <h5 class="mb-0">
+      Update Inventory Stock
+    </h5>
+  </div>
+
+  <div class="card-body">
+
+    <div
+      *ngIf="errorMessage"
+      class="alert alert-danger">
+
+      {{ errorMessage }}
+
+    </div>
+
+    <div class="mb-3">
+
+      <label class="form-label">
+        Product
+      </label>
+
+      <input
+        class="form-control"
+        [value]="inventory.productName"
+        readonly>
+
+    </div>
+
+    <div class="mb-3">
+
+      <label class="form-label">
+        SKU
+      </label>
+
+      <input
+        class="form-control"
+        [value]="inventory.sku"
+        readonly>
+
+    </div>
+
+    <div class="mb-3">
+
+      <label class="form-label">
+        Current Stock
+      </label>
+
+      <input
+        class="form-control"
+        [value]="inventory.stock"
+        readonly>
+
+    </div>
+
+    <div class="mb-3">
+
+      <label class="form-label">
+        New Stock
+      </label>
+
+      <input
+        type="number"
+        class="form-control"
+        min="0"
+        [(ngModel)]="stock">
+
+    </div>
+
+  </div>
+
+  <div class="card-footer text-end">
+
+    <button
+      class="btn btn-secondary me-2"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
+
+    <button
+      class="btn btn-primary"
+      (click)="save()"
+      [disabled]="loading">
+
+      <span
+        *ngIf="loading"
+        class="spinner-border spinner-border-sm me-2">
+      </span>
+
+      Save
+
+    </button>
+
+  </div>
+
+</div>
+
+</div>
+
+
+

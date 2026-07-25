@@ -85,6 +85,20 @@
             <div class="d-flex gap-2">
 
   <button
+class="wishlist-btn"
+(click)="toggleWishlist(product)">
+
+
+<i 
+class="bi"
+[class.bi-heart-fill]="product.inWishlist"
+[class.bi-heart]="!product.inWishlist">
+</i>
+
+
+</button>
+
+  <button
     class="btn btn-outline-dark btn-sm flex-fill"
     [routerLink]="['/publicProductView', product.id]">
 

@@ -1,9 +1,9 @@
 package com.abc.multiVendorEProject.service.Vendor;
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.VendorCustomerDetailsResponseDTO;
-import com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.VendorCustomerOrderItemResponseDTO;
-import com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.VendorCustomerOrderResponseDTO;
-import com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.VendorCustomerResponseDTO;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Customer.VendorCustomerDetailsResponseDTO;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Customer.VendorCustomerOrderItemResponseDTO;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Customer.VendorCustomerOrderResponseDTO;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Customer.VendorCustomerResponseDTO;
 import com.abc.multiVendorEProject.entity.*;
 import com.abc.multiVendorEProject.mapper.Vendor.VendorCustomerMapper;
 import com.abc.multiVendorEProject.repository.OrderRepository;

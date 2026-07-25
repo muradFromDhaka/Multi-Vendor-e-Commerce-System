@@ -1,7 +1,7 @@
 package com.abc.multiVendorEProject.repository;
 
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.VendorCustomerResponseDTO;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Customer.VendorCustomerResponseDTO;
 import com.abc.multiVendorEProject.entity.Order;
 import com.abc.multiVendorEProject.entity.User;
 import com.abc.multiVendorEProject.enums.OrderStatus;
@@ -13,7 +13,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +64,7 @@ and o.createdAt between :start and :end
 
 
     @Query("""
-SELECT new com.abc.multiVendorEProject.DTOs.projectDtos.Vendor.Customer.VendorCustomerResponseDTO(
+SELECT new com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Customer.VendorCustomerResponseDTO(
     u.userName,
     CONCAT(
         COALESCE(u.userFirstName,''),

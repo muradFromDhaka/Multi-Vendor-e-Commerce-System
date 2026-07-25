@@ -12,7 +12,6 @@ import { VendorProfileComponent } from './profile/vendor-profile/vendor-profile.
 import { VendorProductFormComponent } from './products/vendor-product-form/vendor-product-form.component';
 import { VendorProductListComponent } from './products/vendor-product-list/vendor-product-list.component';
 import { VendorProductDetailsComponent } from './products/vendor-product-details/vendor-product-details.component';
-import { VendorInventoryComponent } from './inventory/vendor-inventory/vendor-inventory.component';
 import { VendorOrderListComponent } from './orders/vendor-order-list/vendor-order-list.component';
 import { VendorOrderDetailsComponent } from './orders/vendor-order-details/vendor-order-details.component';
 import { VendorReviewListComponent } from './reviews/vendor-review-list/vendor-review-list.component';
@@ -23,6 +22,8 @@ import { VendorProductVariantFormComponent } from './product-variant-management/
 import { VendorProductVariantDetailsComponent } from './product-variant-management/vendor-product-variant-details/vendor-product-variant-details.component';
 import { VendorCustomerListComponent } from './customers/vendor-customer-list/vendor-customer-list.component';
 import { VendorCustomerDetailsComponent } from './customers/vendor-customer-details/vendor-customer-details.component';
+import { VendorInventoryComponent } from './inventory/vendor-inventory/vendor-inventory.component';
+import { UpdateStockComponent } from './inventory/update-stock/update-stock.component';
 
 
 @NgModule({
@@ -35,7 +36,6 @@ import { VendorCustomerDetailsComponent } from './customers/vendor-customer-deta
     VendorProductFormComponent,
     VendorProductListComponent,
     VendorProductDetailsComponent,
-    VendorInventoryComponent,
     VendorOrderListComponent,
     VendorOrderDetailsComponent,
     VendorReviewListComponent,
@@ -45,7 +45,9 @@ import { VendorCustomerDetailsComponent } from './customers/vendor-customer-deta
     VendorProductVariantFormComponent,
     VendorProductVariantDetailsComponent,
     VendorCustomerListComponent,
-    VendorCustomerDetailsComponent
+    VendorCustomerDetailsComponent,
+    VendorInventoryComponent,
+    UpdateStockComponent
   ],
   imports: [
     CommonModule,

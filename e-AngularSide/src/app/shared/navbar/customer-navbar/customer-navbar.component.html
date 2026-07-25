@@ -10,7 +10,7 @@
         <a routerLink="/admin/dashboard" class="brand-logo">
           <div class="logo-wrapper">
             <span class="logo-icon"></span>
-            <span class="logo-text">E-SunShine</span>
+            <span class="logo-text">P U R I O N</span>
           </div>
         </a>
 
@@ -250,6 +250,16 @@
           <span class="order-badge" *ngIf="totalOrders > 0">{{
             totalOrders
           }}</span>
+        </a>
+
+        <a
+          routerLink="/customer/wishlist"
+          routerLinkActive="active"
+          class="nav-link"
+          *ngIf="currentUser$"
+        >
+          <span class="nav-link-icon">❤️</span>
+          <span class="nav-link-text">Wishlist</span>
         </a>
 
 

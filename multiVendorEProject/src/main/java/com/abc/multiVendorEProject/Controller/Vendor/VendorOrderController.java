@@ -1,9 +1,9 @@
 package com.abc.multiVendorEProject.Controller.Vendor;
 
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.UpdateVendorOrderStatusRequestDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderDetailsResponseDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorOrderDto.VendorOrderListResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.UpdateVendorOrderStatusRequestDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.VendorOrderDetailsResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.VendorOrderListResponseDto;
 import com.abc.multiVendorEProject.service.Vendor.VendorOrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

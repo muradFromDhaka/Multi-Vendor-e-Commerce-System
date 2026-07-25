@@ -12,6 +12,7 @@ import {
   ProductListResponse
 } from 'src/app/models/product.model';
 import { ProductVariantResponse } from '../../../models/productVariant.model';
+import { WishlistService } from '../../customer/services/wishlist.service';
 
 @Component({
   selector: 'app-public-product-view',
@@ -41,6 +42,7 @@ export class PublicProductViewComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private wishlistService: WishlistService,
     public authService: AuthService,
     private route: ActivatedRoute,
     private cartService: CartService,
@@ -60,6 +62,7 @@ export class PublicProductViewComponent implements OnInit {
     this.productId = +id;
 
     this.loadProduct();
+
   }
 
   loadProduct() {
@@ -71,6 +74,7 @@ export class PublicProductViewComponent implements OnInit {
       next: (res) => {
 
         this.product = res;
+        this.checkWishlistStatus();
 
         if (res.productVariants.length > 0) {
           this.selectedVariant = res.productVariants[0];
@@ -89,6 +93,73 @@ export class PublicProductViewComponent implements OnInit {
     });
 
   }
+
+
+
+  checkWishlistStatus(){
+    
+    this.wishlistService
+        .existsInWishlist(this.product.id)
+        .subscribe({
+
+          next:(exists)=>{
+
+            this.product.inWishlist = exists;
+            
+
+          },
+
+          error:(err)=>{
+
+            console.log(err);
+
+          }
+
+        });
+
+}
+
+
+
+toggleWishlist(){
+
+  if(this.product.inWishlist){
+
+
+    this.wishlistService
+        .removeFromWishlist(this.product.id)
+        .subscribe({
+
+          next:()=>{
+
+            this.product.inWishlist = false;
+
+          }
+
+        });
+
+
+  }else{
+
+
+    this.wishlistService
+        .addToWishlist(this.product.id)
+        .subscribe({
+
+          next:()=>{
+
+            this.product.inWishlist = true;
+
+          }
+
+        });
+
+  }
+
+}
+
+
+
 
   //------------------------------------
   // Variant

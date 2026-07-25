@@ -313,11 +313,19 @@
 
                             class="btn btn-outline-primary"
 
-                            [routerLink]="['/view',product.id]">
+                            [routerLink]="['/publicProductView',product.id]">
 
                             View
 
                         </button>
+
+                        <i
+  class="bi wishlist-icon"
+  [title]="product.inWishlist ? 'Remove from wishlist' : 'Add to wishlist'"
+  [class.bi-heart-fill]="product.inWishlist"
+  [class.bi-heart]="!product.inWishlist"
+  (click)="toggleWishlist(product)">
+</i>
 
                         <button
                             class="btn btn-warning"
@@ -446,11 +454,19 @@
 
                             class="btn btn-outline-primary"
 
-                            [routerLink]="['/view', product.id]">
+                            [routerLink]="['/publicProductView', product.id]">
 
                             View
 
                         </button>
+
+<i
+  class="bi wishlist-icon"
+  [title]="product.inWishlist ? 'Remove from wishlist' : 'Add to wishlist'"
+  [class.bi-heart-fill]="product.inWishlist"
+  [class.bi-heart]="!product.inWishlist"
+  (click)="toggleWishlist(product)">
+</i>
 
                         <button
                             class="btn btn-warning"

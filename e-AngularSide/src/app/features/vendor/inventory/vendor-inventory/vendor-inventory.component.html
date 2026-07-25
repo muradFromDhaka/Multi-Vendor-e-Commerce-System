@@ -1,1 +1,278 @@
-<p>vendor-inventory works!</p>
+<div class="container-fluid py-4">
+
+  <div class="card shadow-sm">
+
+    <div class="card-header bg-white">
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+        <h4 class="mb-2 mb-md-0">
+          Inventory Management
+        </h4>
+
+        <div class="btn-group">
+
+          <button
+            class="btn"
+            [class.btn-primary]="selectedFilter === 'ALL'"
+            [class.btn-outline-primary]="selectedFilter !== 'ALL'"
+            (click)="changeFilter('ALL')">
+
+            All
+
+          </button>
+
+          <button
+            class="btn"
+            [class.btn-warning]="selectedFilter === 'LOW_STOCK'"
+            [class.btn-outline-warning]="selectedFilter !== 'LOW_STOCK'"
+            (click)="changeFilter('LOW_STOCK')">
+
+            Low Stock
+
+          </button>
+
+          <button
+            class="btn"
+            [class.btn-danger]="selectedFilter === 'OUT_OF_STOCK'"
+            [class.btn-outline-danger]="selectedFilter !== 'OUT_OF_STOCK'"
+            (click)="changeFilter('OUT_OF_STOCK')">
+
+            Out of Stock
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card-body">
+
+      <div
+        *ngIf="loading"
+        class="text-center py-5">
+
+        <div class="spinner-border text-primary"></div>
+
+      </div>
+
+      <div
+        *ngIf="errorMessage"
+        class="alert alert-danger">
+
+        {{ errorMessage }}
+
+      </div>
+
+      <div
+        class="table-responsive"
+        *ngIf="!loading">
+
+        <table class="table table-hover align-middle">
+
+          <thead class="table-light">
+
+          <tr>
+
+            <th>Image</th>
+
+            <th>Product</th>
+
+            <th>SKU</th>
+
+            <th>Attributes</th>
+
+            <th>Price</th>
+
+            <th>Stock</th>
+
+            <th>Status</th>
+
+            <th>Updated</th>
+
+            <th class="text-center">Action</th>
+
+          </tr>
+
+          </thead>
+
+          <tbody>
+
+          <tr *ngFor="let item of inventories">
+
+            <td>
+
+              <img
+                [src]="item.imageUrl"
+                alt="Product"
+                class="rounded"
+                width="60"
+                height="60">
+
+            </td>
+
+            <td>
+
+              <strong>{{ item.productName }}</strong>
+
+            </td>
+
+            <td>
+
+              {{ item.sku }}
+
+            </td>
+
+            <td>
+
+              {{ item.attributes }}
+
+            </td>
+
+            <td>
+
+              <div *ngIf="item.discountPrice; else normalPrice">
+
+                <span class="text-decoration-line-through text-muted me-2">
+
+                  {{ item.price | number:'1.2-2' }}
+
+                </span>
+
+                <span class="text-danger fw-bold">
+
+                  {{ item.discountPrice | number:'1.2-2' }}
+
+                </span>
+
+              </div>
+
+              <ng-template #normalPrice>
+
+                {{ item.price | currency:'BDT':'symbol':'1.2-2' }}
+
+              </ng-template>
+
+            </td>
+
+            <td>
+
+              {{ item.stock }}
+
+            </td>
+
+            <td>
+
+              <span
+                class="badge bg-success"
+                *ngIf="item.stockStatus==='IN_STOCK'">
+
+                In Stock
+
+              </span>
+
+              <span
+                class="badge bg-warning text-dark"
+                *ngIf="item.stockStatus==='LOW_STOCK'">
+
+                Low Stock
+
+              </span>
+
+              <span
+                class="badge bg-danger"
+                *ngIf="item.stockStatus==='OUT_OF_STOCK'">
+
+                Out Of Stock
+
+              </span>
+
+            </td>
+
+            <td>
+
+              {{ item.updatedAt | date:'mediumDate' }}
+
+            </td>
+
+            <td class="text-center">
+
+              <button
+                [routerLink]="['/vendor/inventory', item.variantId]"
+                class="btn btn-sm btn-outline-primary">
+
+                Update Stock
+
+              </button>
+
+            </td>
+
+          </tr>
+
+          <tr *ngIf="inventories.length === 0">
+
+            <td
+              colspan="9"
+              class="text-center text-muted py-5">
+
+              No inventory found.
+
+            </td>
+
+          </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+    <div class="card-footer bg-white">
+
+      <div class="d-flex justify-content-between align-items-center">
+
+        <small>
+
+          Total Items : {{ totalElements }}
+
+        </small>
+
+        <div>
+
+          <button
+            class="btn btn-outline-secondary btn-sm me-2"
+            (click)="changePage(currentPage-1)"
+            [disabled]="currentPage===0">
+
+            Previous
+
+          </button>
+
+          <span>
+
+            Page {{ currentPage+1 }} of {{ totalPages }}
+
+          </span>
+
+          <button
+            class="btn btn-outline-secondary btn-sm ms-2"
+            (click)="changePage(currentPage+1)"
+            [disabled]="currentPage+1>=totalPages">
+
+            Next
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

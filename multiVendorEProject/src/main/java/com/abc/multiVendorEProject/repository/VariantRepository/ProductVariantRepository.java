@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,7 +29,7 @@ public interface ProductVariantRepository
 
     Optional<ProductVariant> findBySku(String sku);
 
-    Optional<ProductVariant> findById(Long id);
+    Optional<ProductVariant> findById(Long variantId);
 
     List<ProductVariant> findByProductId(Long productId);
 
@@ -98,10 +99,6 @@ public interface ProductVariantRepository
             Pageable pageable
     );
 
-    Page<ProductVariant> findByProductVendorId(
-            Long vendorId,
-            Pageable pageable);
-
 
     @Query("""
 SELECT COALESCE(SUM(pv.stock),0)
@@ -110,6 +107,33 @@ FROM ProductVariant pv
     Long getTotalStockQuantity();
 
 
+    Page<ProductVariant> findByProductVendorId(Long vendorId, Pageable pageable);
+
+
+    @Query("""
+SELECT pv
+FROM ProductVariant pv
+WHERE pv.product.vendor.id = :vendorId
+AND pv.stock > 0
+AND pv.stock <= :threshold
+""")
+    Page<ProductVariant> findLowStockVariants(
+            @Param("vendorId") Long vendorId,
+            @Param("threshold") Integer threshold,
+            Pageable pageable
+    );
+
+
+    @Query("""
+SELECT pv
+FROM ProductVariant pv
+WHERE pv.product.vendor.id = :vendorId
+AND pv.stock = 0
+""")
+    Page<ProductVariant> findOutOfStockVariants(
+            @Param("vendorId") Long vendorId,
+            Pageable pageable
+    );
 
 
 }
