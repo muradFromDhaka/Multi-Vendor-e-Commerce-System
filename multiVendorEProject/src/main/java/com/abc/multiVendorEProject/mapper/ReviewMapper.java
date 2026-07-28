@@ -1,7 +1,7 @@
 package com.abc.multiVendorEProject.mapper;
 
-import com.abc.multiVendorEProject.DTOs.projectDtos.ReviewRequestDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.ReviewResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.ReviewDto.ReviewRequestDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.ReviewDto.ReviewResponseDto;
 import com.abc.multiVendorEProject.entity.Product;
 import com.abc.multiVendorEProject.entity.Review;
 import com.abc.multiVendorEProject.entity.User;

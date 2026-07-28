@@ -20,6 +20,7 @@ Explore products from different categories
 
 
 
+
 <div class="row g-4">
 
 
@@ -32,19 +33,30 @@ class="col-xl-2 col-lg-3 col-md-4 col-6"
 
 
 
-<div class="category-card">
+
+
+<div 
+class="category-card"
+(click)="openCategory(category.id)">
+
+
 
 
 
 <img
 
-[src]="category.image"
+[src]="getImageUrl(category)"
 
-class="img-fluid">
+class="img-fluid"
+
+alt="{{category.name}}">
+
+
 
 
 
 <div class="overlay">
+
 
 
 <h5>
@@ -54,18 +66,24 @@ class="img-fluid">
 </h5>
 
 
-<button class="btn btn-light btn-sm">
+
+<button 
+class="btn btn-light btn-sm"
+[routerLink]="['/categoryProduct',category.id, category.name]"
+type="button">
 
 Explore
 
 </button>
 
 
-</div>
-
-
 
 </div>
+
+
+
+</div>
+
 
 
 </div>

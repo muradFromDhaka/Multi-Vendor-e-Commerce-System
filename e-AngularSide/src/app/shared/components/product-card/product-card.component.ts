@@ -1,105 +1,149 @@
-import { Component, Input } from '@angular/core';
-import { ProductListResponse } from 'src/app/models/product.model';
-import { environment } from 'src/app/services/environments';
-import { CartService } from 'src/app/services/cart.service';
-import { WishlistService } from 'src/app/features/customer/services/wishlist.service';
+import {
+Component,
+Input,
+Output,
+EventEmitter
+} from '@angular/core';
+
+import { ProductDetailsResponse, ProductListResponse } from
+'src/app/models/product.model';
+
+import { environment }
+from 'src/app/services/environments';
+
 
 
 @Component({
-  selector: 'app-product-card',
-  templateUrl: './product-card.component.html',
-  styleUrls: ['./product-card.component.scss']
+
+selector:'app-product-card',
+
+templateUrl:'./product-card.component.html',
+
+styleUrls:['./product-card.component.scss']
+
 })
+
 export class ProductCardComponent {
 
 
-  @Input()
-  product!: ProductListResponse;
+
+@Input()
+product!: ProductListResponse;
+
+ @Output()
+  wishlist = new EventEmitter<ProductListResponse>();
 
 
-  baseImageUrl = environment.baseImageUrl;
+  @Output()
+  cart = new EventEmitter<ProductListResponse>();
+
+
+  @Output()
+  view = new EventEmitter<number>();
+
+
+  @Output()
+  review = new EventEmitter<number>();
 
 
 
-  constructor(
-    private cartService: CartService,
-    private wishlistService: WishlistService
-  ){}
+baseImageUrl =
+environment.baseImageUrl;
 
 
 
-  addToCart(){
+
+get discountPercentage(){
 
 
-    this.cartService.addItemToCart({
-
-      productVariantId:
-      this.product.productVariantId,
-
-      quantity:1
-
-    });
+if(!this.product.discountPrice)
+return 0;
 
 
+return Math.round(
+
+(
+(this.product.price -
+this.product.discountPrice)
+/ this.product.price
+)*100
+
+);
+
+
+}
+
+
+
+
+getImageUrl(){
+
+
+if(!this.product.thumbnailUrl){
+
+return 'assets/images/no-image.png';
+
+}
+
+
+return this.product.thumbnailUrl.startsWith('http')
+
+?
+this.product.thumbnailUrl
+
+:
+this.baseImageUrl+
+this.product.thumbnailUrl;
+
+
+}
+
+
+
+
+
+
+ toggleWishlist() {
+    this.wishlist.emit(this.product);
   }
 
 
 
 
-  toggleWishlist(){
+addToCart(){
 
+console.log(
+"Add cart",
+this.product.id
+);
 
-    if(this.product.inWishlist){
+this.cart.emit(this.product);
 
-
-      this.wishlistService
-      .removeFromWishlist(this.product.id)
-      .subscribe(()=>{
-
-        this.product.inWishlist=false;
-
-      });
-
-
-
-    }else{
-
-
-      this.wishlistService
-      .addToWishlist(this.product.id)
-      .subscribe(()=>{
-
-        this.product.inWishlist=true;
-
-      });
-
-
-    }
-
-
-  }
+}
 
 
 
 
-  getImageUrl():string{
+viewProduct(){
+
+this.view.emit(
+this.product.id
+);
+
+}
 
 
-    if(!this.product.thumbnailUrl){
-
-      return 'assets/images/no-image.png';
-
-    }
 
 
-    return this.product.thumbnailUrl.startsWith('http')
-    ?
-    this.product.thumbnailUrl
-    :
-    this.baseImageUrl + this.product.thumbnailUrl;
+writeReview(){
+
+this.review.emit(
+this.product.id
+);
 
 
-  }
+}
+
 
 
 }

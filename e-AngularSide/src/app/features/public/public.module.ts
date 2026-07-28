@@ -26,6 +26,7 @@ import { CustomerReviewsComponent } from './home/customer-reviews/customer-revie
 import { NewsletterComponent } from './home/newsletter/newsletter.component';
 import { FooterComponent } from './home/footer/footer.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { PublicVendorShopComponent } from './public-vendor-shop/public-vendor-shop.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CustomerReviewsComponent,
     NewsletterComponent,
     FooterComponent,
+    PublicVendorShopComponent,
   
   ],
   imports: [

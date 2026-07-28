@@ -1,0 +1,102 @@
+<div class="review-summary">
+
+    <h4 class="mb-4">
+
+        Customer Reviews
+
+    </h4>
+
+    <div
+        *ngIf="loading"
+        class="text-center py-4">
+
+        <div class="spinner-border"></div>
+
+    </div>
+
+    <div *ngIf="!loading && summary">
+
+        <div class="row">
+
+            <!-- Left -->
+
+            <div class="col-md-4 text-center">
+
+                <h1 class="display-4">
+
+                    {{ summary.averageRating | number:'1.1-1' }}
+
+                </h1>
+
+                <div class="mb-2">
+
+                    <i
+                        *ngFor="let star of [1,2,3,4,5]"
+                        class="bi"
+                        [ngClass]="
+                        star <= summary.averageRating
+                        ? 'bi-star-fill text-warning'
+                        : 'bi-star text-secondary'">
+                    </i>
+
+                </div>
+
+                <p>
+
+                    {{ summary.totalReviews }}
+                    Reviews
+
+                </p>
+
+            </div>
+
+            <!-- Right -->
+
+            <div class="col-md-8">
+
+                <div
+                    *ngFor="let row of [
+
+                    {star:5,count:summary.fiveStar},
+
+                    {star:4,count:summary.fourStar},
+
+                    {star:3,count:summary.threeStar},
+
+                    {star:2,count:summary.twoStar},
+
+                    {star:1,count:summary.oneStar}
+
+                    ]"
+                    class="rating-row">
+
+                    <span>
+
+                        {{ row.star }} ★
+
+                    </span>
+
+                    <div class="progress flex-grow-1 mx-3">
+
+                        <div
+                            class="progress-bar bg-warning"
+                            [style.width.%]="getPercentage(row.count)">
+                        </div>
+
+                    </div>
+
+                    <span>
+
+                        {{ row.count }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

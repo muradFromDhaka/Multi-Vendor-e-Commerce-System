@@ -1,7 +1,8 @@
-package com.abc.multiVendorEProject.Controller;
+package com.abc.multiVendorEProject.Controller.Vendor;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.OrderResponseDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderItemResponseDTO;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.TopVendorResponseDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorResponseDto;
 import com.abc.multiVendorEProject.service.VendorService;
@@ -17,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vendors")
+@RequestMapping("/api/vendor")
 @RequiredArgsConstructor
 public class VendorController {
 
@@ -61,6 +62,15 @@ public class VendorController {
         return vendorService.updateVendor(id, dto, logo, banner);
     }
 
+
+    @GetMapping("/{id}")
+    public VendorResponseDto getVendorById(
+            @PathVariable Long id) {
+
+        return vendorService.getVendorById(id);
+
+    }
+
     // Logged-in Vendor Profile
     @GetMapping("/me")
     public ResponseEntity<VendorResponseDto> getMyVendor() {
@@ -81,4 +91,14 @@ public class VendorController {
 
         return ResponseEntity.ok(vendorService.getMyOrderItems());
     }
+
+    @GetMapping("/top")
+    public Page<TopVendorResponseDto> getTopVendors(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size
+    ) {
+        return vendorService.getTopVendors(page, size);
+    }
+
+
 }

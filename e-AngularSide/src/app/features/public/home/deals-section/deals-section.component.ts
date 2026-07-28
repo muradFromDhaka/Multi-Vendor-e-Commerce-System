@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { WishlistService } from 'src/app/features/customer/services/wishlist.service';
 
 import { ProductListResponse } from 'src/app/models/product.model';
+import { AuthService } from 'src/app/services/auth.service';
+import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
-
-
 
 @Component({
   selector: 'app-deals-section',
@@ -12,80 +14,148 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class DealsSectionComponent implements OnInit {
 
-
   deals: ProductListResponse[] = [];
 
   loading = true;
 
-
-
   constructor(
-    private productService: ProductService
-  ){}
-
-
-
+    private productService: ProductService,
+    private wishlistService: WishlistService,
+    private authService: AuthService,
+    private cartService: CartService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
 
+    console.log("Deals component loaded");
+    
     this.loadDeals();
 
   }
 
+  loadDeals(): void {
 
-
-
-
-  loadDeals(){
-
-
-    /*
-      Future:
-      productService.getDiscountedProducts()
-    */
-
+    this.loading = true;
 
     this.productService
-        .getLatest()
-        .subscribe({
+      .getDeals()
+      .subscribe({
 
-          next:(res)=>{
+        next: (res) => {
 
+          this.deals = res.content;
 
-            this.deals = res.content
-              .filter(product =>
-                product.discountPrice
-              )
-              .slice(0,4);
+          console.log("Deals:-----------------", this.deals)
 
+          this.loading = false;
 
+        },
 
-            this.loading=false;
+        error: (err) => {
 
+          console.error(
+            'Failed to load deals',
+            err
+          );
 
-          },
+          this.loading = false;
 
+        }
 
-          error:(err)=>{
-
-
-            console.error(
-              "Failed to load deals",
-              err
-            );
-
-
-            this.loading=false;
-
-
-          }
-
-
-        });
-
+      });
 
   }
 
+
+
+  handleWishlist(product: ProductListResponse){
+
+
+  if(!this.authService.isLoggedIn()){
+
+      this.router.navigate(['/auth/login']);
+
+      return;
+
+  }
+
+
+  if(product.inWishlist){
+
+    this.wishlistService
+    .removeFromWishlist(product.id)
+    .subscribe({
+
+      next:()=>{
+
+        product.inWishlist = false;
+
+      }
+
+    });
+
+  }
+  else{
+
+    this.wishlistService
+    .addToWishlist(product.id)
+    .subscribe({
+
+      next:()=>{
+
+        product.inWishlist = true;
+
+      }
+
+    });
+
+  }
+
+}
+
+
+
+handleCart(product: ProductListResponse){
+
+
+this.cartService.addItemToCart({
+
+productVariantId:
+product.productVariantId,
+
+quantity:1
+
+});
+
+
+}
+
+
+
+openProduct(id:number){
+
+
+this.router.navigate([
+'/publicProductView',
+id
+]);
+
+
+}
+
+
+
+writeReview(id:number){
+
+
+this.router.navigate([
+'/customer/review',
+id
+]);
+
+
+}
 
 
 }

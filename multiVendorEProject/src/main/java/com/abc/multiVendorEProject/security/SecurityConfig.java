@@ -46,6 +46,7 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                          "/api/products/**",
                                          "/api/categories/**",
+                                         "/api/vendor/**",
                                          "/api/brands/**",
                                          "/api/attributes/**",
                                          "/uploadDir/**",
@@ -56,7 +57,7 @@ public class SecurityConfig {
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
-                                .requestMatchers("/api/vendor/**").hasAnyRole("VENDOR", "ADMIN")
+//                                .requestMatchers("/api/vendor/**").hasAnyRole("VENDOR", "ADMIN")
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()

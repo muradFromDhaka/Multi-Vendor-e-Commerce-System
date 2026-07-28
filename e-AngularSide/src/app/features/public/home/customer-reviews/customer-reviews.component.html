@@ -1,104 +1,112 @@
-<section class="review-section py-5">
+<section class="customer-reviews">
 
+  <div class="container">
 
-<div class="container">
+    <div class="section-header">
 
+      <span class="section-tag">
+        Customer Testimonials
+      </span>
 
-<div class="section-header text-center mb-5">
+      <h2>
+        What Our Customers Say
+      </h2>
 
+      <p>
+        Real experiences from customers who purchased products from our marketplace.
+      </p>
 
-<h2>
-Customer Reviews
-</h2>
+    </div>
 
+    <!-- Loading -->
+    <div
+      class="loading-state"
+      *ngIf="loading">
 
-<p>
-What our customers say about us
-</p>
+      <div class="spinner"></div>
 
+      <p>Loading reviews...</p>
 
-</div>
+    </div>
 
+    <!-- Empty -->
+    <div
+      class="empty-state"
+      *ngIf="!loading && reviews.length===0">
 
+      <div class="icon">💬</div>
 
+      <h4>No Reviews Yet</h4>
 
+      <p>
+        Customer reviews will appear here after successful purchases.
+      </p>
 
-<div class="row g-4">
+    </div>
 
+    <!-- Reviews -->
+    <div
+      class="reviews-grid"
+      *ngIf="!loading && reviews.length>0">
 
+      <div
+        class="review-card"
+        *ngFor="let review of reviews">
 
-<div
+        <div class="review-header">
 
-class="col-lg-3 col-md-6"
+          <div class="avatar">
 
-*ngFor="let review of reviews">
+            {{review.userName.charAt(0).toUpperCase()}}
 
+          </div>
 
+          <div class="user-info">
 
-<div class="review-card">
+            <h5>{{review.userName}}</h5>
 
+            <span>{{review.createdAt | date:'mediumDate'}}</span>
 
+          </div>
 
-<img
+        </div>
 
-[src]="review.image"
+        <div class="rating">
 
-class="customer-image"
+          <ng-container *ngFor="let star of [1,2,3,4,5]">
 
-alt="customer">
+            <span
+              [class.active]="star<=review.rating">
 
+              ★
 
+            </span>
 
+          </ng-container>
 
+        </div>
 
-<h5>
+        <p class="comment">
 
-{{review.name}}
+          "{{review.comment}}"
 
-</h5>
+        </p>
 
+        <div class="product">
 
+          Purchased:
+          <strong>
 
+            {{review.productName}}
 
-<div class="stars">
+          </strong>
 
+        </div>
 
-<i
+      </div>
 
-class="bi bi-star-fill"
+    </div>
 
-*ngFor="let star of [].constructor(review.rating)">
-
-</i>
-
-
-</div>
-
-
-
-
-
-<p>
-
-"{{review.comment}}"
-
-</p>
-
-
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-
-</div>
-
+  </div>
 
 </section>

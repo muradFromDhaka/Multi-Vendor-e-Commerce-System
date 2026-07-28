@@ -13,15 +13,11 @@ import { OrderService } from 'src/app/services/order.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent{
 
 
    constructor(public authService: AuthService){}
 
-   
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
  
 
 }

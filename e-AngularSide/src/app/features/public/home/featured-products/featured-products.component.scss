@@ -1,51 +1,25 @@
-.featured-section {
+.featured-section{
 
-  background: #ffffff;
-
-}
-
-
-
-.section-header h2 {
-
-  font-size: 34px;
-
-  font-weight: 700;
-
-  margin-bottom: 10px;
+background:#f8f9fa;
 
 }
 
 
 
-.section-header p {
+.section-header h2{
 
-  color: #777;
+font-size:32px;
 
-  font-size: 16px;
-
-}
-
-
-
-/* Product spacing */
-
-.row {
-
-  margin-top: 20px;
+font-weight:700;
 
 }
 
 
 
-/* Mobile */
+.section-header p{
 
-@media(max-width:768px){
-
-  .section-header h2 {
-
-    font-size:28px;
-
-  }
+font-size:16px;
 
 }
+
+

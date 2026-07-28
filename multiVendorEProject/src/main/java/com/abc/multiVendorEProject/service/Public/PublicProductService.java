@@ -172,26 +172,13 @@ public class PublicProductService {
 
 
     @Transactional
-    public Page<ProductDetailsResponseDto> getProductsByVendor(
+    public Page<ProductListResponseDTO> getProductsByVendor(
             Long vendorId,
             Pageable pageable) {
 
         return productRepository
                 .findByVendorIdAndDeletedFalse(vendorId, pageable)
-                .map(product -> {
-
-                    List<ProductVariantResponseDTO> variants =
-                            product.getVariants()
-                                    .stream()
-                                    .map(ProductVariantMapper::toResponse)
-                                    .toList();
-
-                    return ProductMapper.toDetailsDto(
-                            product,
-                            variants,
-                            variants.size()
-                    );
-                });
+                .map(ProductMapper::toListDto);
     }
 
 
@@ -212,6 +199,15 @@ public class PublicProductService {
                         pageable
                 )
         );
+    }
+
+    public Page<ProductListResponseDTO> getDealsProducts(
+            Pageable pageable) {
+
+        return productRepository
+                .findDiscountedProducts(pageable)
+                .map(ProductMapper::toListDto);
+
     }
 
 }

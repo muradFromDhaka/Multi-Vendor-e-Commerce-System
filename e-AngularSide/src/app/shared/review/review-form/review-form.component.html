@@ -1,0 +1,36 @@
+<div class="review-form">
+
+    <h4>
+
+        {{ review ? 'Update Review' : 'Write a Review' }}
+
+    </h4>
+
+    <div class="stars">
+
+        <i
+            *ngFor="let star of [1,2,3,4,5]"
+            class="bi"
+            [ngClass]="star <= form.rating ? 'bi-star-fill text-warning' : 'bi-star'"
+            (click)="selectRating(star)">
+        </i>
+
+    </div>
+
+    <textarea
+        class="form-control mt-3"
+        rows="4"
+        placeholder="Write your review..."
+        [(ngModel)]="form.comment">
+    </textarea>
+
+    <button
+        class="btn btn-primary mt-3"
+        [disabled]="loading"
+        (click)="submit()">
+
+        {{ review ? 'Update Review' : 'Submit Review' }}
+
+    </button>
+
+</div>

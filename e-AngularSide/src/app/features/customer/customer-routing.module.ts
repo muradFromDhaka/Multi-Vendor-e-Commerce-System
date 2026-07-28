@@ -22,7 +22,13 @@ const routes: Routes = [
       { path: 'orders', component: OrderListComponent },
       { path: 'orders/:id', component: OrderDetailsComponent },
 
-       {path:'wishlist',component:WishlistComponent}
+       {path:'wishlist',component:WishlistComponent},
+
+      //  {path:'reviewForm',component:ReviewFormComponent},
+      //  {path:'reviewForm/:id',component:ReviewFormComponent},
+      //  {path:'reviewList',component:ReviewListComponent},
+      //  {path:'reviewSummary',component:ReviewSummaryComponent}
+
 
     ]
   }

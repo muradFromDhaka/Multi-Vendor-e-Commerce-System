@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WishlistResponse } from '../models/wishlist.model';
 import { WishlistService } from '../services/wishlist.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector:'app-wishlist',
@@ -17,7 +19,9 @@ export class WishlistComponent implements OnInit {
 
 
   constructor(
-    private wishlistService: WishlistService
+    private wishlistService: WishlistService,
+    private authService: AuthService,
+    private router: Router
   ){}
 
 
@@ -31,6 +35,14 @@ export class WishlistComponent implements OnInit {
 
 
   loadWishlist(){
+
+      if(!this.authService.isLoggedIn()){
+
+      this.router.navigate(['/auth/login']);
+
+      return;
+
+  }
 
     this.wishlistService.getWishlist()
     .subscribe({

@@ -1,74 +1,39 @@
-import { Component } from '@angular/core';
-
-
-interface CustomerReview {
-
-  name:string;
-
-  image:string;
-
-  rating:number;
-
-  comment:string;
-
-}
-
-
+import { Component, OnInit } from '@angular/core';
+import { ReviewService } from 'src/app/shared/services/review.service';
+import { ReviewResponse } from 'src/app/models/review.model';
 
 @Component({
   selector: 'app-customer-reviews',
   templateUrl: './customer-reviews.component.html',
   styleUrls: ['./customer-reviews.component.scss']
 })
-export class CustomerReviewsComponent {
+export class CustomerReviewsComponent implements OnInit {
 
+  reviews: ReviewResponse[] = [];
 
+  loading = false;
 
-reviews:CustomerReview[]=[
+  constructor(
+    private reviewService: ReviewService
+  ) {}
 
+  ngOnInit(): void {
+    this.loadReviews();
+  }
 
-{
- name:'Rahim Ahmed',
- image:'assets/images/customer1.jpg',
- rating:5,
- comment:
- 'Excellent product quality and very fast delivery. Highly recommended.'
-},
+  loadReviews(): void {
 
+  this.reviewService.getLatestReviews().subscribe({
 
+    next: (reviews) => {
+      this.reviews = reviews;
+      console.log(this.reviews);
+    },
 
-{
- name:'Nusrat Jahan',
- image:'assets/images/customer2.jpg',
- rating:4,
- comment:
- 'Good shopping experience. Product was exactly as described.'
-},
+    error: console.error
 
+  });
 
-
-{
- name:'Sakib Hasan',
- image:'assets/images/customer3.jpg',
- rating:5,
- comment:
- 'Amazing service and premium quality products.'
-},
-
-
-
-{
- name:'Farzana Akter',
- image:'assets/images/customer4.jpg',
- rating:5,
- comment:
- 'Customer support was very helpful. Love this platform.'
 }
-
-
-
-];
-
-
 
 }

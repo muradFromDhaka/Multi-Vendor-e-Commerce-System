@@ -51,7 +51,7 @@ const routes: Routes = [
       {path: 'vendors/edit/:id',component: VendorEditComponent},
 
       {path: 'customers',component: CustomerListComponent},
-      {path: 'customer/:username',component: CustomerDetailsComponent},
+      {path: 'customers/:username',component: CustomerDetailsComponent},
       
       {path: 'roles',component: RoleManagementComponent},
 

@@ -18,11 +18,19 @@ export class CustomerDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private customerService: AdminCustomerService
-  ) { }
+  ) { 
+    console.trace("CustomerDetailsComponent constructor");
+  }
 
   ngOnInit(): void {
 
-    console.log("CustomerDetailsComponent Loaded");
+
+  console.log("Current URL =", this.router.url);
+  console.log("Route Config =", this.route.routeConfig?.path);
+  console.log("CustomerDetailsComponent Loaded");
+
+  console.log("Current URL =", this.router.url);
+console.log("Route Config =", this.route.snapshot.routeConfig?.path);
 
   const username = this.route.snapshot.paramMap.get('username');
 
@@ -34,29 +42,7 @@ export class CustomerDetailsComponent implements OnInit {
 
   }
 
-  // loadCustomer(username: string): void {
-
-  //   this.loading = true;
-
-  //   this.customerService.getCustomer(username).subscribe({
-
-  //     next: (res) => {
-
-  //       this.customer = res;
-  //       this.loading = false;
-
-  //     },
-
-  //     error: () => {
-
-  //       this.loading = false;
-  //       alert("Customer not found");
-
-  //     }
-
-  //   });
-
-  // }
+  
 
 
   loadCustomer(username: string): void {

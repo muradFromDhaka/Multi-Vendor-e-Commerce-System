@@ -2,6 +2,7 @@ package com.abc.multiVendorEProject.Controller.Admin;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.OrderResponseDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.ProductDto.ProductDetailsResponseDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.ProductDto.ProductListResponseDTO;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorResponseDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorStatsDto;
@@ -89,7 +90,7 @@ public class AdminVendorController {
     }
 
     @GetMapping("/{vendorId}/products")
-    public ResponseEntity<Page<ProductDetailsResponseDto>> getVendorProducts(
+    public ResponseEntity<Page<ProductListResponseDTO>> getVendorProducts(
             @PathVariable Long vendorId,
             Pageable pageable) {
 

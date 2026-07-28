@@ -1,0 +1,89 @@
+<div class="review-list">
+
+    <h4 class="mb-4">
+
+        Customer Reviews ({{ totalElements }})
+
+    </h4>
+
+    <div
+        *ngIf="loading"
+        class="text-center py-4">
+
+        <div class="spinner-border"></div>
+
+    </div>
+
+    <div
+        *ngIf="!loading && reviews.length === 0"
+        class="alert alert-light">
+
+        No reviews yet.
+
+    </div>
+
+    <div
+        *ngFor="let review of reviews"
+        class="review-item">
+
+        <div class="d-flex justify-content-between">
+
+            <h6>
+
+                {{ review.userName }}
+
+            </h6>
+
+            <div>
+
+                <i
+                    *ngFor="let star of [1,2,3,4,5]"
+                    class="bi"
+                    [ngClass]="star <= review.rating
+                    ? 'bi-star-fill text-warning'
+                    : 'bi-star text-secondary'">
+                </i>
+
+            </div>
+
+        </div>
+
+        <p class="text-muted mb-0">
+
+            {{ review.comment }}
+
+        </p>
+
+    </div>
+
+    <div
+        *ngIf="totalPages > 1"
+        class="d-flex justify-content-between mt-4">
+
+        <button
+            class="btn btn-outline-secondary"
+            (click)="previousPage()"
+            [disabled]="page===0">
+
+            Previous
+
+        </button>
+
+        <span>
+
+            Page {{ page + 1 }} of {{ totalPages }}
+
+        </span>
+
+        <button
+            class="btn btn-outline-secondary"
+            (click)="nextPage()"
+            [disabled]="page+1>=totalPages">
+
+            Next
+
+        </button>
+
+    </div>
+
+</div>

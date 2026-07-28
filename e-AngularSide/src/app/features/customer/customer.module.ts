@@ -26,7 +26,8 @@ import { WishlistComponent } from './wishlist/wishlist.component';
     CheckoutSummaryComponent,
     OrderListComponent,
     OrderDetailsComponent,
-    WishlistComponent
+    WishlistComponent,
+   
   ],
   imports: [
     CommonModule,

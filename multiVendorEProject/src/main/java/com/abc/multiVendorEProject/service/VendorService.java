@@ -2,10 +2,7 @@ package com.abc.multiVendorEProject.service;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderDto.OrderResponseDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.OrderItemResponseDTO;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorRequestDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorResponseDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorStatsDto;
-import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorSummaryDto;
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.*;
 import com.abc.multiVendorEProject.entity.Vendor;
 import com.abc.multiVendorEProject.enums.VendorStatus;
 import com.abc.multiVendorEProject.mapper.OrderItemMapper;
@@ -19,6 +16,7 @@ import com.abc.multiVendorEProject.entity.User;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -283,5 +281,13 @@ public class  VendorService {
         );
     }
 
+
+    public Page<TopVendorResponseDto> getTopVendors(int page, int size) {
+
+        return vendorRepository.getTopVendors(
+                PageRequest.of(page, size)
+        );
+
+    }
 
 }

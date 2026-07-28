@@ -49,6 +49,21 @@ export interface VendorSummary {
 
 }
 
+
+export interface TopVendorResponse {
+
+  id: number;
+
+  shopName: string;
+
+  logoUrl: string;
+
+  rating: number;
+
+  totalProducts: number;
+
+}
+
 export interface VendorStats {
 
   totalProducts: number;

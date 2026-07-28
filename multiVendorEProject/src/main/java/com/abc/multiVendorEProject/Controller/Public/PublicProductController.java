@@ -52,7 +52,7 @@ public class PublicProductController {
     }
 
     @GetMapping("/vendor/{vendorId}")
-    public Page<ProductDetailsResponseDto> getProductsByVendor(
+    public Page<ProductListResponseDTO> getProductsByVendor(
             @PathVariable Long vendorId,
             Pageable pageable) {
 
@@ -92,6 +92,15 @@ public class PublicProductController {
             Pageable pageable) {
 
         return customerProductService.getMostPopularProducts(pageable);
+    }
+
+    @GetMapping("/deals")
+    public Page<ProductListResponseDTO> getDealsProducts(
+            Pageable pageable) {
+
+        return customerProductService
+                .getDealsProducts(pageable);
+
     }
 
 }

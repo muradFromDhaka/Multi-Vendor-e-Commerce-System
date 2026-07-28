@@ -1,174 +1,217 @@
 <div class="card product-card h-100">
 
 
-  <!-- Image Section -->
+<!-- Image -->
 
-  <div class="image-wrapper">
+<div class="image-wrapper">
 
 
-    <img
-      [src]="getImageUrl()"
-      class="product-image"
-      alt="{{product.name}}">
+<img
+[src]="getImageUrl()"
+class="product-image"
+alt="{{product.name}}">
 
 
 
-    <!-- Discount Badge -->
+<!-- Discount -->
 
-    <span
-      class="discount-badge"
-      *ngIf="product.discountPrice">
+<span
+class="discount-badge"
+*ngIf="product.discountPrice">
 
 
-      {{
-        ((product.price - product.discountPrice)
-        / product.price * 100)
-        | number:'1.0-0'
-      }}% OFF
+{{discountPercentage}}% OFF
 
 
-    </span>
+</span>
 
 
 
 
-    <!-- Wishlist -->
+<!-- Wishlist -->
 
-    <i
-      class="bi wishlist-icon"
+<button
+class="wishlist-btn"
+(click)="toggleWishlist()">
 
-      [class.bi-heart-fill]="product.inWishlist"
 
-      [class.bi-heart]="!product.inWishlist"
+<i
+class="bi"
+[class.bi-heart-fill]="product.inWishlist"
+[class.bi-heart]="!product.inWishlist">
 
-      (click)="toggleWishlist()">
+</i>
 
-    </i>
 
+</button>
 
 
-  </div>
+</div>
 
 
 
 
 
-  <!-- Body -->
+<div class="card-body d-flex flex-column">
 
-  <div class="card-body">
 
 
+<!-- Product Name -->
 
-    <h5 class="product-name">
+<h5 class="product-name">
 
-      {{product.name}}
+{{product.name}}
 
-    </h5>
+</h5>
 
 
 
 
-    <!-- Rating -->
+<!-- Brand -->
 
-    <div class="rating">
+<p class="brand">
 
-      <i class="bi bi-star-fill"></i>
+{{product.brandName}}
 
-      {{product.averageRating || 0}}
+</p>
 
-      <span>
 
-        ({{product.totalReviews || 0}})
 
-      </span>
 
-    </div>
 
+<!-- Rating -->
 
 
+<div class="rating">
 
 
+<i class="bi bi-star-fill"></i>
 
-    <!-- Price -->
 
-    <div class="price mt-2">
+<span>
 
+{{product.averageRating || 0}}
 
-      <span
-        class="discount-price"
-        *ngIf="product.discountPrice">
+</span>
 
 
-        {{product.discountPrice | currency:'BDT '}}
+<small>
 
+({{product.totalReviews || 0}} reviews)
 
-      </span>
+</small>
 
 
+</div>
 
-      <span
-        [class.old-price]="product.discountPrice">
 
 
-        {{product.price | currency:'BDT '}}
 
 
-      </span>
 
 
-    </div>
+<!-- Price -->
 
 
+<div class="price mt-3">
 
 
+<span
+class="discount-price"
+*ngIf="product.discountPrice">
 
 
-    <!-- Actions -->
+{{product.discountPrice | currency:'BDT '}}
 
 
-    <div class="action-buttons mt-auto">
+</span>
 
 
-      <button
 
-        class="btn btn-dark cart-btn"
+<span
+[class.old-price]="product.discountPrice">
 
-        (click)="addToCart()">
 
+{{product.price | currency:'BDT '}}
 
 
-        <i class="bi bi-cart"></i>
+</span>
 
-        Cart
 
+</div>
 
-      </button>
 
 
 
 
+<!-- Stock -->
 
-      <button
 
-        class="btn btn-outline-dark view-btn"
-        [routerLink]="['/product',product.id]"
-        >
+<div class="stock mt-2">
 
 
-        <i class="bi bi-eye"></i>
+<span
+class="text-success"
+*ngIf="product.status==='ACTIVE'">
 
-        View
 
+● In Stock
 
-      </button>
 
+</span>
 
 
-    </div>
+</div>
 
 
 
-  </div>
+
+
+
+<!-- Buttons -->
+
+
+<div class="actions mt-auto">
+
+
+
+<button
+
+class="btn btn-dark cart-btn"
+
+(click)="addToCart()">
+
+
+<i class="bi bi-cart"></i>
+
+Cart
+
+
+</button>
+
+
+
+
+
+<button
+
+class="btn btn-outline-dark"
+
+(click)="viewProduct()">
+
+
+<i class="bi bi-eye"></i>
+
+View
+
+
+</button>
+
+
+
+</div>
+
+</div>
 
 
 </div>

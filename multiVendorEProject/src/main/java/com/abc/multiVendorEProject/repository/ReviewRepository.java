@@ -3,21 +3,24 @@ package com.abc.multiVendorEProject.repository;
 import com.abc.multiVendorEProject.entity.Product;
 import com.abc.multiVendorEProject.entity.Review;
 import com.abc.multiVendorEProject.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    long count();
+    // =========================
+    // Basic CRUD Queries
+    // =========================
 
-    List<Review> findByProduct(Product product);
+    Page<Review> findByProduct(Product product, Pageable pageable);
 
     List<Review> findByUser(User user);
 
@@ -25,19 +28,28 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Long countByProduct(Product product);
 
-    @Query("""
-       SELECT AVG(r.rating)
-       FROM Review r
-       WHERE r.product = :product
-       """)
-    Double getAverageRatingByProduct( @Param("product") Product product);
+    Long countByProductAndRating(Product product, Double rating);
 
+    // =========================
+    // Product Review Summary
+    // =========================
 
     @Query("""
-SELECT COALESCE(AVG(r.rating),0)
-FROM Review r
-""")
+        SELECT COALESCE(AVG(r.rating), 0)
+        FROM Review r
+        WHERE r.product = :product
+        """)
+    Double getAverageRatingByProduct(@Param("product") Product product);
+
+    // =========================
+    // Global Review Statistics (Admin Dashboard)
+    // =========================
+
+    @Query("""
+        SELECT COALESCE(AVG(r.rating), 0)
+        FROM Review r
+        """)
     BigDecimal getAverageRating();
 
-
+    List<Review> findTop6ByOrderByCreatedAtDesc();
 }

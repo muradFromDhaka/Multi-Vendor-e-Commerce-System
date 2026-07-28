@@ -27,6 +27,7 @@ export class TopRatedProductsComponent implements OnInit {
   ngOnInit(): void {
 
     this.loadTopRatedProducts();
+    console.log("Top rated products: ", this.loadTopRatedProducts);
 
   }
 
@@ -51,6 +52,7 @@ export class TopRatedProductsComponent implements OnInit {
 
           next:(res)=>{
 
+            // console.log("Response:", res.content);
 
             this.products = res.content
               .filter(product =>
@@ -58,7 +60,7 @@ export class TopRatedProductsComponent implements OnInit {
               )
               .slice(0,8);
 
-
+              // console.log("Top rated products:", this.products);
 
             this.loading=false;
 

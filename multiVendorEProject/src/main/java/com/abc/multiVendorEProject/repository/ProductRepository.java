@@ -99,4 +99,17 @@ AND (
     );
 
     Optional<Product> findTopByDeletedFalseOrderBySoldCountDesc();
+
+    @Query("""
+SELECT DISTINCT p
+FROM Product p
+JOIN p.variants v
+WHERE p.deleted = false
+AND p.status = com.abc.multiVendorEProject.enums.ProductStatus.ACTIVE
+AND v.discountPrice IS NOT NULL
+AND v.discountPrice > 0
+AND v.discountPrice < v.price
+""")
+    Page<Product> findDiscountedProducts(Pageable pageable);
+
 }

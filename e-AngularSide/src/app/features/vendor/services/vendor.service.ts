@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { VendorRequest, VendorResponse } from 'src/app/models/vendor.model';
+import { TopVendorResponse, VendorRequest, VendorResponse } from 'src/app/models/vendor.model';
 import { OrderResponse } from 'src/app/models/order.model';
 import { OrderItemResponse } from 'src/app/models/orderItem.model';
 import { environment } from 'src/app/services/environments';
+import { PageResponse } from 'src/app/models/PageResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VendorService {
-  private baseUrl = `${environment.apiUrl}/vendors`;
+  private baseUrl = `${environment.apiUrl}/vendor`;
 
   constructor(private http: HttpClient) {}
 
@@ -105,4 +106,26 @@ updateVendor(
   myOrders(): Observable<OrderResponse[]> {
     return this.http.get<OrderResponse[]>(`${this.baseUrl}/me/orders`);
   }
+
+
+  getTopVendors(
+  page = 0,
+  size = 8,
+  sort = 'rating,desc'
+) {
+
+  return this.http.get<PageResponse<TopVendorResponse>>(
+    `${this.baseUrl}/top`,
+    {
+      params: {
+        page,
+        size,
+        sort
+      }
+    }
+  );
+
+}
+
+
 }

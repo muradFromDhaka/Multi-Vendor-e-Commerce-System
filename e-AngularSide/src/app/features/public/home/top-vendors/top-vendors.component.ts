@@ -1,20 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
-
-interface TopVendor {
-
-  id:number;
-
-  shopName:string;
-
-  logoUrl:string;
-
-  rating:number;
-
-  totalProducts:number;
-
-}
-
+import { environment } from 'src/app/services/environments';
+import { TopVendorResponse } from 'src/app/models/vendor.model';
+import { VendorService } from 'src/app/features/vendor/services/vendor.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-top-vendors',
@@ -23,12 +11,16 @@ interface TopVendor {
 })
 export class TopVendorsComponent implements OnInit {
 
-
-  vendors: TopVendor[] = [];
+  vendors: TopVendorResponse[] = [];
 
   loading = true;
 
+  baseImageUrl = environment.baseImageUrl;
 
+  constructor(
+    private vendorService: VendorService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
 
@@ -36,63 +28,62 @@ export class TopVendorsComponent implements OnInit {
 
   }
 
+  loadTopVendors(): void {
 
+    this.loading = true;
 
+    this.vendorService
+      .getTopVendors()
+      .subscribe({
 
-  loadTopVendors(){
+        next: (res) => {
 
+          // console.log("Top Vendors Response:", res);
 
-    // Temporary demo data
-    // Later replace with vendor API
+          this.vendors = res.content;
 
+          // console.log(" Vendors:---------------------", this.vendors);
 
-    this.vendors = [
+          this.loading = false;
 
+        },
 
-      {
-        id:1,
-        shopName:'Premium Fashion BD',
-        logoUrl:'assets/images/vendor1.jpg',
-        rating:4.8,
-        totalProducts:120
-      },
+        error: (err) => {
 
+          console.error(err);
 
-      {
-        id:2,
-        shopName:'Tech World',
-        logoUrl:'assets/images/vendor2.jpg',
-        rating:4.6,
-        totalProducts:85
-      },
+          this.loading = false;
 
+        }
 
-      {
-        id:3,
-        shopName:'Smart Lifestyle',
-        logoUrl:'assets/images/vendor3.jpg',
-        rating:4.9,
-        totalProducts:200
-      },
+      });
 
+  }
 
-      {
-        id:4,
-        shopName:'Urban Collection',
-        logoUrl:'assets/images/vendor4.jpg',
-        rating:4.5,
-        totalProducts:60
-      }
+  getLogoUrl(vendor: TopVendorResponse): string {
 
+    if (!vendor.logoUrl) {
 
-    ];
+      return 'assets/images/default-shop.png';
 
+    }
 
-    this.loading=false;
+    return vendor.logoUrl.startsWith('http')
 
+      ? vendor.logoUrl
+
+      : this.baseImageUrl + vendor.logoUrl;
 
   }
 
 
+  openVendorShop(vendorId: number): void {
+
+  this.router.navigate([
+    '/vendorShop',
+    vendorId
+  ]);
+
+}
 
 }

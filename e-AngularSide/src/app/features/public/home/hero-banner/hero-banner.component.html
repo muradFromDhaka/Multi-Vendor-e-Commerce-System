@@ -1,13 +1,15 @@
 <section class="hero">
 
 
+<div class="hero-overlay"></div>
+
+
+
 <div class="container">
 
 
-<div class="hero-content">
+<div class="row align-items-center hero-content">
 
-
-<div class="row align-items-center">
 
 
 <!-- Text -->
@@ -29,9 +31,16 @@
 </p>
 
 
-<button class="btn btn-primary">
+<button
+
+class="btn btn-light btn-lg">
+
 
 {{banners[currentBanner].buttonText}}
+
+
+<i class="bi bi-arrow-right ms-2"></i>
+
 
 </button>
 
@@ -40,17 +49,20 @@
 
 
 
+
+
+
 <!-- Image -->
 
 
-<div class="col-lg-6">
+<div class="col-lg-6 text-center">
 
 
 <img
 
 [src]="banners[currentBanner].image"
 
-class="img-fluid hero-image">
+class="hero-image">
 
 
 </div>
@@ -60,14 +72,14 @@ class="img-fluid hero-image">
 </div>
 
 
-</div>
-
 
 </div>
 
 
 
-<!-- Navigation -->
+
+
+<!-- Arrows -->
 
 
 <button
@@ -76,9 +88,13 @@ class="slider-btn prev"
 
 (click)="previousBanner()">
 
-‹
+
+<i class="bi bi-chevron-left"></i>
+
 
 </button>
+
+
 
 
 
@@ -88,9 +104,37 @@ class="slider-btn next"
 
 (click)="nextBanner()">
 
-›
+
+<i class="bi bi-chevron-right"></i>
+
 
 </button>
+
+
+
+
+
+
+<!-- Indicators -->
+
+
+<div class="dots">
+
+
+<span
+
+*ngFor="let banner of banners; let i=index"
+
+[class.active]="i===currentBanner"
+
+(click)="goToBanner(i)">
+
+
+</span>
+
+
+</div>
+
 
 
 </section>

@@ -96,9 +96,9 @@ getProductsByVendor(
   page = 0,
   size = 10,
   sort = 'id,desc'
-): Observable<PageResponse<ProductDetailsResponse>> {
+): Observable<PageResponse<ProductListResponse>> {
 
-  return this.http.get<PageResponse<ProductDetailsResponse>>(
+  return this.http.get<PageResponse<ProductListResponse>>(
     `${this.baseUrl}/vendor/${vendorId}`,
     {
       params: {
@@ -173,6 +173,26 @@ getMostPopular(
     }
   }
 );
-  }
+}
+
+
+  getDeals(
+  page = 0,
+  size = 4,
+  sort = 'id,desc'
+): Observable<PageResponse<ProductListResponse>> {
+
+  return this.http.get<PageResponse<ProductListResponse>>(
+    `${this.baseUrl}/deals`,
+    {
+      params: {
+        page,
+        size,
+        sort
+      }
+    }
+  );
+
+}
 
 }

@@ -1,34 +1,31 @@
 .product-card{
 
+
 border:none;
 
 border-radius:18px;
 
 overflow:hidden;
 
-height:100%;
-
-display:flex;
-
-flex-direction:column;
-
 box-shadow:
-0 5px 20px rgba(0,0,0,.08);
+0 8px 25px rgba(0,0,0,.08);
 
 transition:.3s;
 
-background:#fff;
 
 }
-
 
 
 .product-card:hover{
 
-transform:translateY(-8px);
+
+transform:
+translateY(-8px);
+
 
 box-shadow:
-0 12px 30px rgba(0,0,0,.15);
+0 15px 35px rgba(0,0,0,.15);
+
 
 }
 
@@ -36,15 +33,15 @@ box-shadow:
 
 
 
-// Image
-
 .image-wrapper{
+
 
 height:260px;
 
 position:relative;
 
-overflow:hidden;
+background:#f8f8f8;
+
 
 }
 
@@ -53,21 +50,13 @@ overflow:hidden;
 
 .product-image{
 
+
 width:100%;
 
 height:100%;
 
 object-fit:cover;
 
-transition:.4s;
-
-}
-
-
-
-.product-card:hover .product-image{
-
-transform:scale(1.08);
 
 }
 
@@ -75,9 +64,9 @@ transform:scale(1.08);
 
 
 
-// Discount
 
 .discount-badge{
+
 
 position:absolute;
 
@@ -85,17 +74,19 @@ top:15px;
 
 left:15px;
 
+
 background:#dc3545;
 
 color:white;
+
+padding:6px 12px;
+
+border-radius:20px;
 
 font-size:13px;
 
 font-weight:600;
 
-padding:5px 10px;
-
-border-radius:20px;
 
 }
 
@@ -103,77 +94,57 @@ border-radius:20px;
 
 
 
-// Wishlist
 
-.wishlist-icon{
+.wishlist-btn{
+
 
 position:absolute;
 
-top:15px;
-
 right:15px;
 
-width:42px;
+top:15px;
 
-height:42px;
+
+width:40px;
+
+height:40px;
+
 
 border-radius:50%;
 
+border:none;
+
+
 background:white;
 
-display:flex;
 
-align-items:center;
+font-size:22px;
 
-justify-content:center;
-
-font-size:24px;
-
-cursor:pointer;
 
 color:#dc3545;
 
-box-shadow:0 3px 10px rgba(0,0,0,.15);
-
-transition:.3s;
 
 }
-
-
-
-.wishlist-icon:hover{
-
-transform:scale(1.15);
-
-}
-
-
-
-
-
-// Body
-
-.card-body{
-
-display:flex;
-
-flex-direction:column;
-
-}
-
 
 
 
 
 .product-name{
 
+
 font-size:18px;
 
 font-weight:600;
 
-height:50px;
+
+display:-webkit-box;
+
+-webkit-line-clamp:2;
+
+-webkit-box-orient:vertical;
 
 overflow:hidden;
+
 
 }
 
@@ -181,7 +152,8 @@ overflow:hidden;
 
 
 
-.rating{
+.brand{
+
 
 font-size:14px;
 
@@ -191,34 +163,41 @@ color:#777;
 
 
 
+
+
 .rating i{
+
 
 color:#ffc107;
 
+
+}
+
+
+
+.rating small{
+
+
+color:#777;
+
+margin-left:5px;
+
+
 }
 
 
-
-
-// Price
-
-.price{
-
-height:40px;
-
-}
 
 
 
 .discount-price{
 
-color:#dc3545;
 
-font-size:20px;
+font-size:21px;
 
 font-weight:700;
 
-margin-right:10px;
+color:#dc3545;
+
 
 }
 
@@ -226,9 +205,13 @@ margin-right:10px;
 
 .old-price{
 
+
 text-decoration:line-through;
 
 color:#888;
+
+margin-left:10px;
+
 
 }
 
@@ -236,52 +219,35 @@ color:#888;
 
 
 
-// Buttons
+.actions{
 
-.action-buttons{
 
 display:flex;
 
 gap:10px;
 
+
 }
+
 
 
 
 .cart-btn{
 
-flex:1;
-
-}
-
-
-
-.view-btn{
 
 flex:1;
 
-}
-
-
-
-
-
-@media(max-width:576px){
-
-
-.image-wrapper{
-
-height:220px;
 
 }
 
 
 
-.product-name{
 
-font-size:16px;
 
-}
+.review-btn{
+
+
+font-size:14px;
 
 
 }

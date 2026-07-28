@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { PublicProductListComponent } from './public-product-list/public-product-list.component';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { BrandListComponent } from './brands/brand-list/brand-list.component';
+import { PublicVendorShopComponent } from './public-vendor-shop/public-vendor-shop.component';
 
 const routes: Routes = [
 
@@ -29,6 +30,9 @@ const routes: Routes = [
   { path: 'brands', component: BrandListComponent },
 
   { path: 'brands/:id/:name', component: BrandProductsComponent },
+
+
+  {path: 'vendorShop/:id',component: PublicVendorShopComponent}
 
     ]
   }

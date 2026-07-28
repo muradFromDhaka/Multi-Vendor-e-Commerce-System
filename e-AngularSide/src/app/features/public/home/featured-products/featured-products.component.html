@@ -1,98 +1,111 @@
 <section class="featured-section py-5">
 
-  <div class="container">
+
+<div class="container">
 
 
-    <!-- Section Header -->
-    <div class="section-header text-center mb-5">
-
-      <h2>
-        Featured Products
-      </h2>
-
-      <p>
-        Discover our latest and popular products
-      </p>
-
-    </div>
+<div class="section-header text-center mb-5">
 
 
-
-    <!-- Loading -->
-    <div
-      class="text-center py-5"
-      *ngIf="loading">
-
-      <div class="spinner-border text-dark"></div>
-
-      <p class="mt-3">
-        Loading products...
-      </p>
-
-    </div>
+<h2>
+Featured Products
+</h2>
 
 
-
-    <!-- Product List -->
-
-    <div
-      class="row g-4"
-      *ngIf="!loading && products.length > 0">
+<p class="text-muted">
+Discover our most popular products
+</p>
 
 
-      <div
-        class="col-xl-3 col-lg-4 col-md-6"
-        *ngFor="let product of products">
-
-
-        <app-product-card
-          [product]="product">
-        </app-product-card>
-
-
-      </div>
-
-
-    </div>
+</div>
 
 
 
 
-    <!-- Empty State -->
 
-    <div
-      class="text-center py-5"
-      *ngIf="!loading && products.length === 0">
+<!-- Loading -->
 
-
-      <h5>
-        No products found
-      </h5>
+<div 
+class="text-center"
+*ngIf="loading">
 
 
-    </div>
+<div class="spinner-border"></div>
+
+
+</div>
 
 
 
-    <!-- View All Button -->
-
-    <div
-      class="text-center mt-5"
-      *ngIf="products.length > 0">
 
 
-      <button
-        class="btn btn-outline-dark px-4">
-
-        View All Products
-
-      </button>
+<!-- Products -->
 
 
-    </div>
+<div
+
+class="row g-4"
+
+*ngIf="!loading && products.length > 0">
 
 
-  </div>
+
+
+
+<div
+
+class="col-xl-3 col-lg-4 col-md-6"
+
+*ngFor="let product of products">
+
+
+<app-product-card
+
+[product]="product"
+
+(wishlist)="handleWishlist($event)"
+
+(cart)="handleCart($event)"
+
+(view)="openProduct($event)"
+
+(review)="writeReview($event)">
+
+</app-product-card>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+<!-- Empty -->
+
+<div
+
+class="text-center"
+
+*ngIf="!loading && products.length === 0">
+
+
+<p class="text-muted">
+
+No featured products available
+
+</p>
+
+
+</div>
+
+
+
+</div>
 
 
 </section>
