@@ -13,82 +13,172 @@
   <!-- Cart Table -->
   <div *ngIf="cart.items.length > 0" class="table-responsive">
 
-    <table class="table align-middle">
+    <table class="table align-middle table-hover">
+
       <thead class="table-dark">
         <tr>
           <th>Product</th>
           <th class="text-center">Price</th>
           <th class="text-center">Quantity</th>
           <th class="text-center">Total</th>
-          <th class="text-center"></th>
+          <th class="text-center">Action</th>
         </tr>
       </thead>
 
       <tbody>
+
         <tr *ngFor="let item of cart.items">
-          <td>{{ item.productName }}</td>
-          <td class="text-center">
-             {{ item.unitPrice | currency:'BDT':'symbol':'1.0-0' }}
-          </td>
 
-          <td class="text-center">
-            <div class="btn-group">
-              <button class="btn btn-sm btn-outline-secondary"
-                      (click)="decreaseQty(item)">
-                −
-              </button>
-              <span class="btn btn-sm btn-light">
-                {{ item.quantity }}
-              </span>
-              <button class="btn btn-sm btn-outline-secondary"
-                      (click)="increaseQty(item)">
-                +
-              </button>
+          <!-- Product -->
+          <td>
+            <div class="fw-semibold">
+              {{ item.productName }}
             </div>
+
+            <small class="text-muted">
+              SKU : {{ item.sku }}
+            </small>
           </td>
 
-          <td class="text-center fw-bold">
-            {{ item.totalPrice | currency:'BDT':'symbol':'1.0-0' }}
-          </td>
-
+          <!-- Price -->
           <td class="text-center">
-            <button class="btn btn-sm btn-danger"
-                    (click)="removeItem(item)">
-              <i class="bi bi-trash"></i>
-            </button>
+
+            <ng-container *ngIf="item.discountPrice && item.discountPrice < item.originalPrice; else normalPrice">
+
+              <div class="text-decoration-line-through text-muted small">
+                {{ item.originalPrice | currency:'BDT':'symbol':'1.0-0' }}
+              </div>
+
+              <div class="fw-bold text-danger">
+                {{ item.discountPrice | currency:'BDT':'symbol':'1.0-0' }}
+              </div>
+
+              <small class="text-success">
+                Save
+                {{
+                  item.originalPrice - item.discountPrice
+                  | currency:'BDT':'symbol':'1.0-0'
+                }}
+              </small>
+
+            </ng-container>
+
+            <ng-template #normalPrice>
+
+              <span class="fw-bold">
+                {{ item.originalPrice | currency:'BDT':'symbol':'1.0-0' }}
+              </span>
+
+            </ng-template>
+
           </td>
+
+          <!-- Quantity -->
+          <td class="text-center">
+
+            <div class="btn-group">
+
+              <button
+                class="btn btn-sm btn-outline-secondary"
+                (click)="decreaseQty(item)">
+
+                −
+
+              </button>
+
+              <span class="btn btn-sm btn-light">
+
+                {{ item.quantity }}
+
+              </span>
+
+              <button
+                class="btn btn-sm btn-outline-secondary"
+                (click)="increaseQty(item)">
+
+                +
+
+              </button>
+
+            </div>
+
+          </td>
+
+          <!-- Total -->
+          <td class="text-center fw-bold">
+
+            {{
+              ((item.discountPrice ?? item.originalPrice) * item.quantity)
+                | currency:'BDT':'symbol':'1.0-0'
+            }}
+
+          </td>
+
+          <!-- Delete -->
+          <td class="text-center">
+
+            <button
+              class="btn btn-sm btn-danger"
+              (click)="removeItem(item)">
+
+              <i class="bi bi-trash"></i>
+
+            </button>
+
+          </td>
+
         </tr>
+
       </tbody>
+
     </table>
 
   </div>
 
   <!-- Summary -->
-  <div *ngIf="cart.items.length > 0"
-       class="d-flex justify-content-between align-items-center mt-4">
+  <div
+    *ngIf="cart.items.length > 0"
+    class="d-flex justify-content-between align-items-center mt-4">
 
     <div>
-      <strong>Total Items:</strong> {{ totalItems }} <br>
+
+      <strong>Total Items:</strong>
+
+      {{ totalItems }}
+
+      <br>
+
       <strong>Total Amount:</strong>
-      <span class="fs-5">
-        {{ cart.totalAmount | currency }}
+
+      <span class="fs-5 fw-bold text-success">
+
+        {{ cart.totalAmount | currency:'BDT':'symbol':'1.0-0' }}
+
       </span>
+
     </div>
 
     <div>
-      <button class="btn btn-outline-danger me-2"
-              (click)="clearCart()">
+
+      <button
+        class="btn btn-outline-danger me-2"
+        (click)="clearCart()">
+
         Clear Cart
+
       </button>
 
-      <button class="btn btn-success"
+      <button
+        class="btn btn-success"
         [disabled]="isPlacingOrder"
         [routerLink]="['/customer/checkout']">
+
         {{ isPlacingOrder ? 'Placing Order...' : 'Checkout' }}
+
       </button>
+
     </div>
 
   </div>
 
 </div>
-

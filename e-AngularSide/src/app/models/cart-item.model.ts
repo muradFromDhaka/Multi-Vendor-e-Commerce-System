@@ -23,6 +23,10 @@ export interface CartItemResponse{
 
   totalPrice: number;
 
+  originalPrice: number;
+  
+  discountPrice: number;
+
   imageUrl?: string;
 
   vendorId: number;

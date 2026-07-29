@@ -16,6 +16,10 @@ public class CartItemResponseDTO {
     private Integer quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice; // Total price for this item (quantity * price)
+
+    private BigDecimal originalPrice;
+    private BigDecimal discountPrice;
+
     private String imageUrl;
 
     private Integer vendorId;

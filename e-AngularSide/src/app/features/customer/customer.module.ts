@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';
-import { NavbarComponent } from './navbar/navbar.component';
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { CheckoutAddressComponent } from './checkout/checkout-address/checkout-address.component';
@@ -18,7 +17,6 @@ import { WishlistComponent } from './wishlist/wishlist.component';
 @NgModule({
   declarations: [
     CustomerComponent,
-    NavbarComponent,
     CartComponent,
     CheckoutComponent,
     CheckoutAddressComponent,

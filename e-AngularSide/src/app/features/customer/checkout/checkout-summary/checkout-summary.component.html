@@ -27,16 +27,21 @@
         </div>
 
         <div class="d-flex justify-content-between mb-2">
+    <span>Shipping Fee</span>
 
-            <span>Shipping Fee</span>
+    <strong
+        [class.text-success]="cart?.shippingFee === 0">
 
-            <strong>{{ cart?.shippingFee | currency:'BDT ' }}</strong>
+        {{ cart?.shippingFee === 0
+            ? 'FREE'
+            : (cart?.shippingFee | currency:'BDT ') }}
 
-        </div>
+    </strong>
+</div>
 
         <div class="d-flex justify-content-between mb-3">
 
-            <span>Discount</span>
+            <span> Discount</span>
 
             <strong>- {{ cart?.discount | currency:'BDT ' }}</strong>
 
@@ -46,7 +51,7 @@
 
         <div class="d-flex justify-content-between total-price">
 
-            <span>Total</span>
+            <span>Grand Total</span>
 
             <strong>{{ cart.totalAmount | currency:'BDT ' }}</strong>
 

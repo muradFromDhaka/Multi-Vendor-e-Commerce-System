@@ -32,6 +32,8 @@ export class CheckoutSummaryComponent implements OnInit {
 
       next: (response) => {
         this.cart = response;
+
+        console.log("checkoutSummary Response ---------", this.cart)
         this.loading = false;
       },
 
