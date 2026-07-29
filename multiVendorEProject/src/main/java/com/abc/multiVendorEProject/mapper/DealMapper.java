@@ -8,47 +8,75 @@ import org.springframework.stereotype.Component;
 @Component
 public class DealMapper {
 
-    public Deal toEntity(DealRequestDto dto){
+    // ==========================
+    // Request DTO -> Entity
+    // ==========================
+    public Deal toEntity(DealRequestDto dto) {
+
+        if (dto == null) {
+            return null;
+        }
+
         Deal deal = new Deal();
+
         deal.setTitle(dto.title());
         deal.setDiscountPercent(dto.discountPercent());
         deal.setStartTime(dto.startTime());
         deal.setEndTime(dto.endTime());
+
+        // Default value
+        deal.setActive(true);
+
         return deal;
     }
 
-
+    // ==========================
+    // Entity -> Response DTO
+    // ==========================
     public DealResponseDto toDto(Deal deal) {
 
-        if (deal.getProduct() == null) {
-            return new DealResponseDto(
-                    deal.getId(),
-                    deal.getTitle(),
-                    deal.getDiscountPercent(),
-                    deal.getStartTime(),
-                    deal.getEndTime(),
-                    null,
-                    null
-            );
-        } else {
-            return new DealResponseDto(
-                    deal.getId(),
-                    deal.getTitle(),
-                    deal.getDiscountPercent(),
-                    deal.getStartTime(),
-                    deal.getEndTime(),
-                    deal.getProduct().getId(),
-                    deal.getProduct().getName()
-            );
+        if (deal == null) {
+            return null;
         }
+
+        return new DealResponseDto(
+
+                deal.getId(),
+
+                deal.getTitle(),
+
+                deal.getDiscountPercent(),
+
+                deal.getActive(),
+
+                deal.getStartTime(),
+
+                deal.getEndTime(),
+
+                deal.getProduct() != null
+                        ? deal.getProduct().getId()
+                        : null,
+
+                deal.getProduct() != null
+                        ? deal.getProduct().getName()
+                        : null
+        );
     }
 
+    // ==========================
+    // Update Entity
+    // ==========================
+    public void updateEntity(
+            Deal deal,
+            DealRequestDto dto
+    ) {
 
-    public void updateEntity(Deal deal, DealRequestDto dto) {
         deal.setTitle(dto.title());
         deal.setDiscountPercent(dto.discountPercent());
         deal.setStartTime(dto.startTime());
         deal.setEndTime(dto.endTime());
 
+        // Product update Service layer-এ করবেন
     }
+
 }

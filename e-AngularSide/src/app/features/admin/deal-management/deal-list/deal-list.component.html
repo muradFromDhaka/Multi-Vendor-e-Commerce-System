@@ -1,0 +1,163 @@
+<div class="container-fluid mt-3">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h2>Deal List</h2>
+<!-- 
+        <a
+            routerLink="/admin/deal-management/dealForm"
+            class="btn btn-primary">
+
+            + New Deal
+
+        </a> -->
+
+    </div>
+
+    <table
+        class="table table-bordered table-hover table-striped">
+
+        <thead class="table-dark">
+
+        <tr>
+
+            <th>#</th>
+
+            <th>Title</th>
+
+            <th>Product</th>
+
+            <th>Discount</th>
+
+            <th>Start</th>
+
+            <th>End</th>
+
+            <th>Status</th>
+
+            <th width="220">Action</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tr *ngFor="let deal of deals; let i=index">
+
+            <td>{{page*size+i+1}}</td>
+
+            <td>{{deal.title}}</td>
+
+            <td>{{deal.productName}}</td>
+
+            <td>
+
+                <span class="badge bg-danger">
+
+                    {{deal.discountPercent}}%
+
+                </span>
+
+            </td>
+
+            <td>{{deal.startTime | date:'medium'}}</td>
+
+            <td>{{deal.endTime | date:'medium'}}</td>
+
+            <td>
+
+                <span
+                    *ngIf="!isExpired(deal.endTime)"
+                    class="badge bg-success">
+
+                    Active
+
+                </span>
+
+                <span
+                    *ngIf="isExpired(deal.endTime)"
+                    class="badge bg-secondary">
+
+                    Expired
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <button
+                    class="btn btn-info btn-sm me-2"
+                    (click)="viewDeal(deal.id)">
+
+                    View
+
+                </button>
+
+                <button
+                    class="btn btn-warning btn-sm me-2"
+                    (click)="editDeal(deal.id)">
+
+                    Edit
+
+                </button>
+
+                <button
+                    class="btn btn-danger btn-sm"
+                    (click)="deleteDeal(deal.id)">
+
+                    Delete
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        <tr *ngIf="!loading && deals.length==0">
+
+            <td
+                colspan="8"
+                class="text-center">
+
+                No Deal Found
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    <div
+        class="d-flex justify-content-between align-items-center">
+
+        <button
+            class="btn btn-outline-primary"
+            (click)="previousPage()"
+            [disabled]="page==0">
+
+            Previous
+
+        </button>
+
+        <span>
+
+            Page {{page+1}} of {{totalPages}}
+
+        </span>
+
+        <button
+            class="btn btn-outline-primary"
+            (click)="nextPage()"
+            [disabled]="page>=totalPages-1">
+
+            Next
+
+        </button>
+
+    </div>
+
+</div>

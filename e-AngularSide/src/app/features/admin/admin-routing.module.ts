@@ -71,6 +71,14 @@ const routes: Routes = [
          path:'banner-management',
          loadChildren:()=>import('./banner-management/banner-management.module')
         .then(m=>m.BannerManagementModule)
+      },
+
+
+      {
+         path: 'deal-management',
+         loadChildren: () =>
+         import('./deal-management/deal-management.module')
+         .then(m => m.DealManagementModule)
       }
       
     ],

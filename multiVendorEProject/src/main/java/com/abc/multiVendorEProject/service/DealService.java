@@ -7,89 +7,140 @@ import com.abc.multiVendorEProject.entity.Product;
 import com.abc.multiVendorEProject.mapper.DealMapper;
 import com.abc.multiVendorEProject.repository.DealRepository;
 import com.abc.multiVendorEProject.repository.ProductRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DealService {
 
-    private final DealMapper dealMapper;
     private final DealRepository dealRepository;
     private final ProductRepository productRepository;
+    private final DealMapper dealMapper;
 
-    public Page<DealResponseDto> getAllDeals(int page, int size, String sortBy, String sortDir){
-        Sort sort = sortDir.equalsIgnoreCase("desc")
-                ? Sort.by(sortBy).descending()
-                : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page,size, sort);
+    // ==========================================
+    // Get All Deals (Admin)
+    // ==========================================
+    @Transactional(readOnly = true)
+    public Page<DealResponseDto> getAllDeals(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir) {
 
-        return dealRepository.findAll(pageable)
-                .map(d -> dealMapper.toDto(d));
+        return dealRepository
+                .findAll(createPageable(page, size, sortBy, sortDir))
+                .map(dealMapper::toDto);
     }
 
-    public DealResponseDto getDealById(Long id){
+    // ==========================================
+    // Get Deal By Id
+    // ==========================================
+    @Transactional(readOnly = true)
+    public DealResponseDto getDealById(Long id) {
+
         Deal deal = dealRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Deal not found with id"+ id));
+                .orElseThrow(() ->
+                        new RuntimeException("Deal not found with id: " + id));
 
         return dealMapper.toDto(deal);
     }
 
-    @Transactional
-    public DealResponseDto createDeal(DealRequestDto dto){
+    // ==========================================
+    // Create Deal
+    // ==========================================
+    public DealResponseDto createDeal(DealRequestDto dto) {
+
         Product product = productRepository.findById(dto.productId())
-                .orElseThrow(()-> new RuntimeException("Product not found with id"+ dto.productId()));
+                .orElseThrow(() ->
+                        new RuntimeException("Product not found with id: " + dto.productId()));
 
         Deal deal = dealMapper.toEntity(dto);
 
         deal.setProduct(product);
+
         Deal savedDeal = dealRepository.save(deal);
 
         return dealMapper.toDto(savedDeal);
     }
 
-    @Transactional
-    public DealResponseDto updateDeal(DealRequestDto dto, Long id) {
-        Deal existingDeal = dealRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Deal not found with id " + id));
+    // ==========================================
+    // Update Deal
+    // ==========================================
+    public DealResponseDto updateDeal(Long id, DealRequestDto dto) {
+
+        Deal deal = dealRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Deal not found with id: " + id));
 
         Product product = productRepository.findById(dto.productId())
-                .orElseThrow(() -> new RuntimeException("Product not found with id " + dto.productId()));
+                .orElseThrow(() ->
+                        new RuntimeException("Product not found with id: " + dto.productId()));
 
-        dealMapper.updateEntity(existingDeal, dto);
-        existingDeal.setProduct(product);
+        dealMapper.updateEntity(deal, dto);
 
-        Deal updateDeal = dealRepository.save(existingDeal);
+        deal.setProduct(product);
 
-        return dealMapper.toDto(updateDeal);
+        Deal updatedDeal = dealRepository.save(deal);
+
+        return dealMapper.toDto(updatedDeal);
     }
 
+    // ==========================================
+    // Delete Deal
+    // ==========================================
+    public void deleteDeal(Long id) {
 
-    public void deleteDeal(Long id){
         Deal deal = dealRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Deal not found with id " + id));
+                .orElseThrow(() ->
+                        new RuntimeException("Deal not found with id: " + id));
 
-            dealRepository.delete(deal);
+        dealRepository.delete(deal);
     }
 
+    // ==========================================
+    // Active Deals (Home Page)
+    // ==========================================
+    @Transactional(readOnly = true)
+    public Page<DealResponseDto> getActiveDeals(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir) {
 
-    public Page<DealResponseDto> getActiveDeals(int page, int size, String sortBy, String sortDir) {
+        return dealRepository
+                .findActiveDeals(createPageable(page, size, sortBy, sortDir))
+                .map(dealMapper::toDto);
+    }
+
+    // ==========================================
+    // Pageable Helper
+    // ==========================================
+    private Pageable createPageable(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir) {
 
         Sort sort = sortDir.equalsIgnoreCase("desc")
                 ? Sort.by(sortBy).descending()
                 : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page,size, sort);
 
-        return dealRepository.findActiveDeals(pageable)
-                .map(dealMapper::toDto);
+        return PageRequest.of(page, size, sort);
+    }
 
+
+    @Transactional(readOnly = true)
+    public DealResponseDto getActiveDealByProduct(Long productId) {
+
+        Deal deal = dealRepository.findActiveDealByProductId(productId)
+                .orElseThrow(() ->
+                        new RuntimeException("No active deal found for this product"));
+
+        return dealMapper.toDto(deal);
     }
 
 }
-
-

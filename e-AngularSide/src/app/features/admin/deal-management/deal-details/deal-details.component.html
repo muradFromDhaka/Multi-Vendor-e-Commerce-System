@@ -1,0 +1,106 @@
+<div class="container mt-4" *ngIf="!loading && deal">
+
+    <div class="card shadow">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+            <h3 class="mb-0">
+                Deal Details
+            </h3>
+
+            <span
+                class="badge"
+                [ngClass]="isExpired() ? 'bg-secondary' : 'bg-success'">
+
+                {{isExpired() ? 'Expired' : 'Active'}}
+
+            </span>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <tbody>
+
+                <tr>
+                    <th width="220">Deal ID</th>
+                    <td>{{deal.id}}</td>
+                </tr>
+
+                <tr>
+                    <th>Title</th>
+                    <td>{{deal.title}}</td>
+                </tr>
+
+                <tr>
+                    <th>Product</th>
+                    <td>{{deal.productName}}</td>
+                </tr>
+
+                <tr>
+                    <th>Discount</th>
+                    <td>{{deal.discountPercent}}%</td>
+                </tr>
+
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        <span
+                            class="badge"
+                            [ngClass]="deal.active ? 'bg-success':'bg-danger'">
+
+                            {{deal.active ? 'Enabled' : 'Disabled'}}
+
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Start Time</th>
+                    <td>{{deal.startTime | date:'medium'}}</td>
+                </tr>
+
+                <tr>
+                    <th>End Time</th>
+                    <td>{{deal.endTime | date:'medium'}}</td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="card-footer text-end">
+
+            <button
+                class="btn btn-warning me-2"
+                (click)="editDeal()">
+
+                Edit
+
+            </button>
+
+            <button
+                class="btn btn-secondary"
+                (click)="back()">
+
+                Back
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div
+    class="text-center mt-5"
+    *ngIf="loading">
+
+    <div class="spinner-border"></div>
+
+</div>

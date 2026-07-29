@@ -1,0 +1,124 @@
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+
+        {{isEditMode ? 'Update Deal' : 'Create Deal'}}
+
+    </h2>
+
+    <form
+        [formGroup]="dealForm"
+        (ngSubmit)="submit()">
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Deal Title
+            </label>
+
+            <input
+                class="form-control"
+                formControlName="title">
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Product
+            </label>
+
+            <select
+                class="form-select"
+                formControlName="productId">
+
+                <option [ngValue]="null">
+                    Select Product
+                </option>
+
+                <option
+                    *ngFor="let product of products"
+                    [value]="product.id">
+
+                    {{product.name}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Discount (%)
+            </label>
+
+            <input
+                type="number"
+                class="form-control"
+                formControlName="discountPercent">
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Start Time
+            </label>
+
+            <input
+                type="datetime-local"
+                class="form-control"
+                formControlName="startTime">
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                End Time
+            </label>
+
+            <input
+                type="datetime-local"
+                class="form-control"
+                formControlName="endTime">
+
+        </div>
+
+        <div class="form-check mb-4">
+
+            <input
+                type="checkbox"
+                class="form-check-input"
+                formControlName="active">
+
+            <label class="form-check-label">
+
+                Active
+
+            </label>
+
+        </div>
+
+        <button
+            class="btn btn-primary me-2"
+            [disabled]="loading">
+
+            {{loading ? 'Saving...' : 'Save Deal'}}
+
+        </button>
+
+        <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancel()">
+
+            Cancel
+
+        </button>
+
+    </form>
+
+</div>
