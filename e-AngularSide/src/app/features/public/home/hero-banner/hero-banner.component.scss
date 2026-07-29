@@ -1,337 +1,243 @@
-// .hero{
-
-// width: 80%;
-// height:350px;
-
-// position:relative;
-
-// overflow:hidden;
-
-
-// background:#111;
-
-
-// display:flex;
-
-// align-items:center;
-
-
-// }
-
+// hero-banner.component.scss - WITH ROUNDED BORDER & SMALLER WIDTH
 
 .hero {
+  position: relative;
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  overflow: hidden;
 
-  width:80%;
+  // Background Image with Rounded Border
+  .hero-background {
+    position: absolute;
+    top: 20px;  // Top theke gap
+    left: 20px; // Left theke gap
+    right: 20px; // Right theke gap
+    bottom: 20px; // Bottom theke gap
+    z-index: 0;
+    border-radius: 30px; // ROUNDED BORDER
+    overflow: hidden; // Border er moddhe image thakbe
 
-  min-height:350px;
+    .hero-bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
 
-  margin:40px auto;
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+      border-radius: 30px; // Overlay o rounded
+    }
+  }
 
-  border-radius:30px;
+  // Content - Width komabo
+  .container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 900px; // 1140px theke kom
+    margin: 0 auto;
+    padding: 0 15px;
+  }
 
-  overflow:hidden;
+  .hero-content {
+    min-height: 40vh; // 50vh theke kom
+    padding: 2rem 0;
+    display: flex;
+    align-items: center;
+  }
 
-  position:relative;
+  .hero-text {
+    text-align: center;
+    width: 100%;
+    max-width: 650px; // 800px theke kom
+    margin: 0 auto;
+    padding: 1.5rem 0; // 2rem theke kom
 
-  background:#111;
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.3rem 1rem; // kom
+      border-radius: 50px;
+      font-size: 0.7rem; // kom
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 1rem; // kom
+    }
 
-  box-shadow:
-  0 15px 40px rgba(0,0,0,.15);
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem); // kom
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(to right, #ffffff, #c7d2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
+    p.lead {
+      font-size: clamp(0.9rem, 1.2vw, 1.1rem); // kom
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 500px; // 600px theke kom
+      margin: 0 auto 1.5rem; // 2rem theke kom
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem; // 1rem theke kom
+      justify-content: center;
+      margin-bottom: 1.5rem; // 2rem theke kom
+
+      .btn-primary {
+        padding: 0.5rem 1.5rem; // kom
+        font-size: 0.9rem; // kom
+        border-radius: 50px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        border: none;
+        color: #fff;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5);
+          color: #fff;
+        }
+      }
+
+      .btn-outline-light {
+        padding: 0.5rem 1.5rem; // kom
+        font-size: 0.9rem; // kom
+        border-radius: 50px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+          border-color: #fff;
+        }
+      }
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 1.5rem; // 2rem theke kom
+      justify-content: center;
+      flex-wrap: wrap;
+
+      div {
+        text-align: center;
+
+        span:first-child {
+          font-size: clamp(1rem, 1.5vw, 1.5rem); // kom
+          font-weight: 700;
+          display: block;
+          color: #fff;
+        }
+
+        .text-light {
+          font-size: 0.7rem; // kom
+          color: rgba(255, 255, 255, 0.7) !important;
+        }
+      }
+    }
+  }
+
+  // Slider Buttons - Position adjust
+  .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 40px; // 45px theke kom
+    height: 40px; // 45px theke kom
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.1rem; // 1.3rem theke kom
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    &.prev { left: 2rem; } // 1rem theke beshi (border er jonno)
+    &.next { right: 2rem; } // 1rem theke beshi (border er jonno)
+
+    @media (max-width: 768px) {
+      width: 32px;
+      height: 32px;
+      font-size: 0.9rem;
+      
+      &.prev { left: 1rem; }
+      &.next { right: 1rem; }
+    }
+  }
+
+  // Dots - Position adjust
+  .dots {
+    position: absolute;
+    bottom: 2.5rem; // 1.5rem theke beshi (border er jonno)
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 0.6rem;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+
+    span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &.active {
+        background: #fff;
+        width: 25px;
+        border-radius: 10px;
+      }
+    }
+  }
 }
 
-
-@media(max-width:768px){
-
-.hero{
-
-width:95%;
-
-height:auto;
-
-min-height:450px;
-
-border-radius:20px;
-
-}
-
-}
-
-
-
-
-.hero-overlay{
-
-
-position:absolute;
-
-inset:0;
-
-
-background:
-
-linear-gradient(
-90deg,
-rgba(0,0,0,.65),
-rgba(0,0,0,.2)
-);
-
-
-}
-
-
-
-
-.hero-content{
-
-
-position:relative;
-
-z-index:2;
-
-color:white;
-
-
-}
-
-
-
-
-.hero-content h1{
-
-
-font-size:55px;
-
-font-weight:800;
-
-line-height:1.2;
-
-
-}
-
-
-
-
-.hero-content p{
-
-
-font-size:20px;
-
-margin:25px 0;
-
-
-color:#eee;
-
-
-}
-
-
-
-
-.hero-image{
-
-
-max-height:450px;
-
-max-width:100%;
-
-
-object-fit:contain;
-
-
-animation:fadeImage .8s;
-
-
-}
-
-
-
-
-@keyframes fadeImage{
-
-
-from{
-
-opacity:0;
-
-transform:translateX(40px);
-
-}
-
-
-to{
-
-opacity:1;
-
-transform:translateX(0);
-
-}
-
-
-}
-
-
-
-
-
-.slider-btn{
-
-
-position:absolute;
-
-top:50%;
-
-
-transform:translateY(-50%);
-
-
-width:50px;
-
-height:50px;
-
-
-border-radius:50%;
-
-
-border:none;
-
-
-background:white;
-
-
-font-size:25px;
-
-
-z-index:3;
-
-
-}
-
-
-
-.prev{
-
-left:30px;
-
-}
-
-
-.next{
-
-right:30px;
-
-}
-
-
-
-
-.dots{
-
-
-position:absolute;
-
-bottom:30px;
-
-left:50%;
-
-
-transform:translateX(-50%);
-
-
-display:flex;
-
-gap:10px;
-
-
-}
-
-
-
-
-
-.dots span{
-
-
-width:12px;
-
-height:12px;
-
-
-border-radius:50%;
-
-
-background:white;
-
-
-opacity:.5;
-
-
-cursor:pointer;
-
-
-}
-
-
-
-
-.dots span.active{
-
-
-opacity:1;
-
-width:30px;
-
-border-radius:10px;
-
-
-}
-
-
-
-
-
-@media(max-width:992px){
-
-
-.hero{
-
-
-height:auto;
-
-padding:80px 0;
-
-
-}
-
-
-
-.hero-content{
-
-
-text-align:center;
-
-
-}
-
-
-
-.hero-content h1{
-
-
-font-size:38px;
-
-
-}
-
-
-.slider-btn{
-
-
-display:none;
-
-
-}
-
-
-
-}
+// Utility classes
+.text-center { text-align: center !important; }
+.text-light { color: rgba(255, 255, 255, 0.7) !important; }
+.d-flex { display: flex !important; }
+.justify-content-center { justify-content: center !important; }
+.align-items-center { align-items: center !important; }
+.fw-bold { font-weight: 700 !important; }
+.mt-5 { margin-top: 2rem !important; }
+.ms-2 { margin-left: 0.5rem !important; }
+.me-2 { margin-right: 0.5rem !important; }
+.mx-auto { margin: 0 auto !important; }
+.gap-5 { gap: 2rem !important; }
+.shadow-lg { box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important; }
+.rounded-pill { border-radius: 50px !important; }

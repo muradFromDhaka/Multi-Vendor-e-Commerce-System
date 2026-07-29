@@ -49,6 +49,7 @@ public class SecurityConfig {
                                          "/api/vendor/**",
                                          "/api/brands/**",
                                          "/api/attributes/**",
+                                         "/api/admin/banners/active",
                                          "/uploadDir/**",
                                          "/swagger-ui/**",
                                          "/v3/api-docs/**"

@@ -1,0 +1,141 @@
+<div class="details-container">
+
+
+<div
+class="loading"
+*ngIf="loading">
+
+Loading banner details...
+
+</div>
+
+
+
+
+<div
+class="card"
+*ngIf="!loading && banner">
+
+
+<div class="image-section">
+
+
+<img
+[src]="banner.imageUrl"
+alt="Banner Image">
+
+
+</div>
+
+
+
+
+<div class="info-section">
+
+
+<h2>
+{{banner.title}}
+</h2>
+
+
+
+<p class="subtitle">
+
+{{banner.subtitle}}
+
+</p>
+
+
+
+<div class="info-row">
+
+<strong>
+Button Text:
+</strong>
+
+<span>
+{{banner.buttonText}}
+</span>
+
+</div>
+
+
+
+<div class="info-row">
+
+<strong>
+Button Link:
+</strong>
+
+<span>
+{{banner.buttonLink || '-'}}
+</span>
+
+</div>
+
+
+
+
+<div class="info-row">
+
+<strong>
+Display Order:
+</strong>
+
+<span>
+{{banner.displayOrder}}
+</span>
+
+</div>
+
+
+
+
+<div class="info-row">
+
+<strong>
+Status:
+</strong>
+
+
+<span
+[class.active]="banner.active"
+[class.inactive]="!banner.active">
+
+
+{{
+
+banner.active
+?
+'Active'
+:
+'Inactive'
+
+}}
+
+
+</span>
+
+
+</div>
+
+
+
+<button
+class="back-btn"
+(click)="backToList()">
+
+Back To List
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>

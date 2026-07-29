@@ -65,6 +65,13 @@ const routes: Routes = [
       {path: 'attributeValue',component: AttributeValueComponent},
       {path: 'productVariantList',component: ProductVariantListComponent},
       {path: 'productVariantDetails/:id',component: ProductVariantDetailsComponent},
+
+
+      {
+         path:'banner-management',
+         loadChildren:()=>import('./banner-management/banner-management.module')
+        .then(m=>m.BannerManagementModule)
+      }
       
     ],
 }

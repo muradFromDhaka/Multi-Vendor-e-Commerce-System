@@ -82,7 +82,7 @@ import { ProductAnalyticsComponent } from './admin-dashboard/product-analytics/p
   RecentOrdersComponent,
   RecentActivitiesComponent,
   DashboardHeaderComponent,
-  ProductAnalyticsComponent,
+  ProductAnalyticsComponent
   ],
   imports: [
     CommonModule,

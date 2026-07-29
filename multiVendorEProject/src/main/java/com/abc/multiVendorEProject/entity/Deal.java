@@ -14,17 +14,16 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Deal {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Deal extends BaseEntity{
 
     @Column(nullable = false, length = 150)
     private String title;
 
     @Column(nullable = false)
     private Integer discountPercent;
+
+    @Column(nullable = false)
+    private Boolean active = true;
 
     @Column(nullable = false)
     private LocalDateTime startTime;
