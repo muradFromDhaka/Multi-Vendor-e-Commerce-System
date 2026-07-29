@@ -128,8 +128,8 @@ public class ProductMapper {
 
         System.out.println("==========================");
         System.out.println("Product ID: " + product.getId());
-        System.out.println("Images: " + product.getImageUrls());
-        System.out.println("Variants: " + product.getVariants().size());
+        System.out.println("Average Rating: " + product.getAverageRating());
+        System.out.println("Total Reviews: " + product.getTotalReviews());
         System.out.println("==========================");
 
         return dto;

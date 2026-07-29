@@ -3,6 +3,7 @@ package com.abc.multiVendorEProject.mapper;
 import com.abc.multiVendorEProject.DTOs.projectDtos.DealRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.DealResponseDto;
 import com.abc.multiVendorEProject.entity.Deal;
+import com.abc.multiVendorEProject.entity.Product;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -39,6 +40,11 @@ public class DealMapper {
             return null;
         }
 
+        Product product = deal.getProduct();
+
+//        System.out.println("productName----------------------------"+ product.getName());
+//        System.out.println("productImage----------------------------"+ product.getImageUrls());
+
         return new DealResponseDto(
 
                 deal.getId(),
@@ -53,13 +59,15 @@ public class DealMapper {
 
                 deal.getEndTime(),
 
-                deal.getProduct() != null
-                        ? deal.getProduct().getId()
+                product != null ? product.getId() : null,
+
+                product != null
+                        && product.getImageUrls() != null
+                        && !product.getImageUrls().isEmpty()
+                        ? product.getImageUrls().get(0)
                         : null,
 
-                deal.getProduct() != null
-                        ? deal.getProduct().getName()
-                        : null
+                product != null ? product.getName() : null
         );
     }
 

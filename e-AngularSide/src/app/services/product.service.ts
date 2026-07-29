@@ -176,6 +176,24 @@ getMostPopular(
 }
 
 
+getTopRated(
+  page = 0,
+  size = 8
+): Observable<PageResponse<ProductListResponse>> {
+
+  return this.http.get<PageResponse<ProductListResponse>>(
+    `${this.baseUrl}/top-rated`,
+    {
+      params: {
+        page,
+        size
+      }
+    }
+  );
+
+}
+
+
   getDeals(
   page = 0,
   size = 4,

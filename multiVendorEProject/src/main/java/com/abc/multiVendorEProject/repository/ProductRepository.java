@@ -112,4 +112,14 @@ AND v.discountPrice < v.price
 """)
     Page<Product> findDiscountedProducts(Pageable pageable);
 
+
+    @Query("""
+SELECT p
+FROM Product p
+WHERE p.status = 'ACTIVE'
+ORDER BY p.averageRating DESC,
+         p.totalReviews DESC
+""")
+    Page<Product> findTopRated(Pageable pageable);
+
 }

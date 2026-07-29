@@ -1,135 +1,91 @@
 <section class="flash-sale">
 
+    <div class="container">
 
-<div class="container">
+        <div class="section-header">
 
+            <div>
 
-<div class="sale-header">
+                <h2>⚡ Flash Sale</h2>
 
+                <p>Limited Time Deals</p>
 
-<div>
+            </div>
 
-<h2>
+            <div class="timer">
 
-🔥 Flash Sale
+                <span>{{hours | number:'2.0'}}</span>
 
-</h2>
+                :
 
+                <span>{{minutes | number:'2.0'}}</span>
 
-<p>
+                :
 
-Limited time deals
+                <span>{{seconds | number:'2.0'}}</span>
 
-</p>
+            </div>
 
-</div>
+        </div>
 
+        <div
+            class="row"
+            *ngIf="!loading">
 
+            <div
+                class="col-lg-3 col-md-6 mb-4"
+                *ngFor="let deal of deals">
 
+                <div class="deal-card">
 
-<div class="countdown">
+                    <div class="discount-badge">
 
+                        -{{deal.discountPercent}}%
 
-<div>
+                    </div>
 
-<span>{{hours}}</span>
+                    <img
+                        [src]="baseImageUrl+ deal.productImage"
+                        class="product-image">
 
-<small>Hours</small>
+                    <div class="card-body">
 
-</div>
+                        <h5>
 
+                            {{deal.productName}}
 
-<div>
+                        </h5>
 
-<span>{{minutes}}</span>
+                        <p>
 
-<small>Minutes</small>
+                            {{deal.title}}
 
-</div>
+                        </p>
 
+                        <button
+                            [routerLink]="['/publicProductView',deal.productId]"
+                            class="btn btn-danger btn-sm">
 
-<div>
+                            Shop Now
 
-<span>{{seconds}}</span>
+                        </button>
 
-<small>Seconds</small>
+                    </div>
 
-</div>
+                </div>
 
+            </div>
 
-</div>
+        </div>
 
+        <div
+            class="text-center py-5"
+            *ngIf="loading">
 
+            Loading Deals...
 
-</div>
+        </div>
 
-
-
-
-
-<div class="row">
-
-
-<div
-
-class="col-lg-4 col-md-6"
-
-*ngFor="let product of products">
-
-
-<div class="sale-card">
-
-
-<img
-
-[src]="product.image">
-
-
-<h5>
-
-{{product.name}}
-
-</h5>
-
-
-
-<div>
-
-
-<span class="old-price">
-
-{{product.price | currency:'BDT'}}
-
-</span>
-
-
-<span class="discount-price">
-
-{{product.discountPrice | currency:'BDT'}}
-
-</span>
-
-
-</div>
-
-
-<button class="btn btn-danger">
-
-Shop Now
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
+    </div>
 
 </section>

@@ -18,6 +18,8 @@ public record DealResponseDto(
 
         Long productId,
 
+        String productImage,
+
         String productName
 
 ) {}

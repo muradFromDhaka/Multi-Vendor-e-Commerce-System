@@ -39,7 +39,7 @@ export class HeroBannerComponent implements OnInit, OnDestroy {
 
         this.banners = response.content;
 
-        console.log('Active Banners:================', this.banners);
+        // console.log('Active Banners:================', this.banners);
 
         if (this.banners.length > 1) {
           this.startSlider();

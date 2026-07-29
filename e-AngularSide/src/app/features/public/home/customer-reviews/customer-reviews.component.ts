@@ -27,7 +27,8 @@ export class CustomerReviewsComponent implements OnInit {
 
     next: (reviews) => {
       this.reviews = reviews;
-      console.log(this.reviews);
+
+      // console.log("What Our Customers Say======================", this.reviews);
     },
 
     error: console.error

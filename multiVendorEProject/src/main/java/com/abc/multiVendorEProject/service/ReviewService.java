@@ -214,13 +214,22 @@ public class ReviewService {
 
         Long totalReviews = reviewRepository.countByProduct(product);
 
+        System.out.println("========== UPDATE PRODUCT RATING ==========");
+        System.out.println("Product ID : " + product.getId());
+        System.out.println("Average    : " + avgRating);
+        System.out.println("Reviews    : " + totalReviews);
+
         product.setAverageRating(
                 avgRating != null ? avgRating : 0.0);
 
         product.setTotalReviews(
                 totalReviews != null ? totalReviews.intValue() : 0);
 
-        productRepository.save(product);
+        Product saved = productRepository.save(product);
+
+        System.out.println("Saved Avg  : " + saved.getAverageRating());
+        System.out.println("Saved Total: " + saved.getTotalReviews());
+
     }
 
 }

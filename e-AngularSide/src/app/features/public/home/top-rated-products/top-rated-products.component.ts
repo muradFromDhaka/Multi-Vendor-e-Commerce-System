@@ -27,7 +27,6 @@ export class TopRatedProductsComponent implements OnInit {
   ngOnInit(): void {
 
     this.loadTopRatedProducts();
-    console.log("Top rated products: ", this.loadTopRatedProducts);
 
   }
 
@@ -47,7 +46,7 @@ export class TopRatedProductsComponent implements OnInit {
 
 
     this.productService
-        .getLatest()
+        .getTopRated()
         .subscribe({
 
           next:(res)=>{
@@ -56,12 +55,15 @@ export class TopRatedProductsComponent implements OnInit {
 
             this.products = res.content
               .filter(product =>
-                (product.averageRating ?? 0) >= 4
+                (product.averageRating ?? 0) >= 2
               )
               .slice(0,8);
 
-              // console.log("Top rated products:", this.products);
+ console.log("All Products:", res.content);
 
+  res.content.forEach(product => {
+    console.log(product.name, product.averageRating);
+  });
             this.loading=false;
 
 

@@ -6,6 +6,7 @@ import com.abc.multiVendorEProject.service.Public.PublicProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,20 +14,20 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PublicProductController {
 
-    private final PublicProductService customerProductService;
+    private final PublicProductService publicProductService;
 
     @GetMapping
     public Page<ProductListResponseDTO> getAllProducts(
             Pageable pageable) {
 
-        return customerProductService.getAllProducts(pageable);
+        return publicProductService.getAllProducts(pageable);
     }
 
     @GetMapping("/{productId}")
     public ProductDetailsResponseDto getProductById(
             @PathVariable Long productId) {
 
-        return customerProductService.getProductById(productId);
+        return publicProductService.getProductById(productId);
     }
 
     @GetMapping("/category/{categoryId}")
@@ -34,7 +35,7 @@ public class PublicProductController {
             @PathVariable Long categoryId,
             Pageable pageable) {
 
-        return customerProductService.getProductsByCategory(
+        return publicProductService.getProductsByCategory(
                 categoryId,
                 pageable
         );
@@ -45,7 +46,7 @@ public class PublicProductController {
             @PathVariable Long brandId,
             Pageable pageable) {
 
-        return customerProductService.getProductsByBrand(
+        return publicProductService.getProductsByBrand(
                 brandId,
                 pageable
         );
@@ -56,7 +57,7 @@ public class PublicProductController {
             @PathVariable Long vendorId,
             Pageable pageable) {
 
-        return customerProductService.getProductsByVendor(
+        return publicProductService.getProductsByVendor(
                 vendorId,
                 pageable
         );
@@ -67,7 +68,7 @@ public class PublicProductController {
             @RequestParam(required = false) String keyword,
             Pageable pageable) {
 
-        return customerProductService.searchProducts(
+        return publicProductService.searchProducts(
                 keyword,
                 pageable
         );
@@ -77,28 +78,48 @@ public class PublicProductController {
     public Page<ProductListResponseDTO> getLatestProducts(
             Pageable pageable) {
 
-        return customerProductService.getLatestProducts(pageable);
+        return publicProductService.getLatestProducts(pageable);
     }
 
     @GetMapping("/trending")
     public Page<ProductListResponseDTO> getTrendingProducts(
             Pageable pageable) {
 
-        return customerProductService.getTrendingProducts(pageable);
+        return publicProductService.getTrendingProducts(pageable);
     }
 
     @GetMapping("/popular")
     public Page<ProductListResponseDTO> getMostPopularProducts(
             Pageable pageable) {
 
-        return customerProductService.getMostPopularProducts(pageable);
+        return publicProductService.getMostPopularProducts(pageable);
+    }
+
+    @GetMapping("/top-rated")
+    public ResponseEntity<Page<ProductListResponseDTO>> topRated(
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "8")
+            int size
+    ) {
+
+        return ResponseEntity.ok(
+                publicProductService.getTopRated(
+                        page,
+                        size,
+                        "averageRating",
+                        "desc"
+                )
+        );
     }
 
     @GetMapping("/deals")
     public Page<ProductListResponseDTO> getDealsProducts(
             Pageable pageable) {
 
-        return customerProductService
+        return publicProductService
                 .getDealsProducts(pageable);
 
     }

@@ -16,6 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -199,6 +200,20 @@ public class PublicProductService {
                         pageable
                 )
         );
+    }
+
+
+    public Page<ProductListResponseDTO> getTopRated(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return productRepository
+                .findTopRated(pageable)
+                .map(ProductMapper::toListDto);
     }
 
     public Page<ProductListResponseDTO> getDealsProducts(

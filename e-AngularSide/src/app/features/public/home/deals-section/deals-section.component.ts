@@ -46,7 +46,7 @@ export class DealsSectionComponent implements OnInit {
 
           this.deals = res.content;
 
-          console.log("Deals:-----------------", this.deals)
+          // console.log("Deals:-----------------", this.deals)
 
           this.loading = false;
 

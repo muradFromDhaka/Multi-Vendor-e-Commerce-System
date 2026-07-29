@@ -30,6 +30,8 @@ export interface DealResponse {
 
   productId: number;
 
+  productImage: string;
+
   productName: string;
 
 }
