@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CheckoutService } from '../../services/checkout.service';
 import { CartDto } from 'src/app/models/cart.model';
 
@@ -14,7 +14,10 @@ export class CheckoutSummaryComponent implements OnInit {
 
   cart?: CartDto;
 
+  @Input()
   loading = false;
+
+  
 
   constructor(
     private checkoutService: CheckoutService
@@ -43,10 +46,6 @@ export class CheckoutSummaryComponent implements OnInit {
 
     });
 
-  }
-
-  onPlaceOrder(): void {
-    this.placeOrder.emit();
   }
 
 }

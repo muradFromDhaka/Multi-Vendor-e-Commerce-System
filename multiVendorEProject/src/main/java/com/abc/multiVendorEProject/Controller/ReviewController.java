@@ -4,6 +4,7 @@ import com.abc.multiVendorEProject.DTOs.projectDtos.ReviewDto.ProductReviewSumma
 import com.abc.multiVendorEProject.DTOs.projectDtos.ReviewDto.ReviewRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.ReviewDto.ReviewResponseDto;
 import com.abc.multiVendorEProject.service.ReviewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ public class ReviewController {
     // ==========================
     @PostMapping
     public ResponseEntity<ReviewResponseDto> createReview(
-            @RequestBody ReviewRequestDto request) {
+            @Valid @RequestBody ReviewRequestDto request) {
 
         return ResponseEntity.ok(
                 reviewService.createReview(request));
@@ -36,7 +37,7 @@ public class ReviewController {
     @PutMapping("/{reviewId}")
     public ResponseEntity<ReviewResponseDto> updateReview(
             @PathVariable Long reviewId,
-            @RequestBody ReviewRequestDto request) {
+            @Valid @RequestBody ReviewRequestDto request) {
 
         return ResponseEntity.ok(
                 reviewService.updateReview(reviewId, request));

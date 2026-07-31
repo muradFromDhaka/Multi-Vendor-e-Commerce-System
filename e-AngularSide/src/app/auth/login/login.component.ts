@@ -32,7 +32,7 @@ export class LoginComponent {
 
       } else if (this.authService.hasRole('ROLE_VENDOR')) {
 
-        this.router.navigate(['/vendor/vendorDashboard']);
+        this.router.navigate(['/vendor/dashboard']);
 
       } else {
 

@@ -14,15 +14,15 @@ export class CustomerPaymentService {
 
   constructor(private http: HttpClient) {}
 
-  createPayment(
-    request: PaymentRequest
-  ): Observable<PaymentResponse> {
+  // createPayment(
+  //   request: PaymentRequest
+  // ): Observable<PaymentResponse> {
 
-    return this.http.post<PaymentResponse>(
-      this.apiUrl,
-      request
-    );
-  }
+  //   return this.http.post<PaymentResponse>(
+  //     this.apiUrl,
+  //     request
+  //   );
+  // }
 
   getPaymentById(
     paymentId: number

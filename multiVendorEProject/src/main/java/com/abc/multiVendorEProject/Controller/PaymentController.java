@@ -18,14 +18,6 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-
-    @PostMapping
-    public ResponseEntity<PaymentResponseDto> createPayment(
-            @Valid @RequestBody PaymentRequestDto dto){
-
-        return ResponseEntity.ok(paymentService.createPayment(dto));
-    }
-
     @GetMapping("/{paymentId}")
     public ResponseEntity<PaymentResponseDto>  getPaymentById(@PathVariable Long paymentId){
         return ResponseEntity.ok(paymentService.getPaymentById(paymentId));

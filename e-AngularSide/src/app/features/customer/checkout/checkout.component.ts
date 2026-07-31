@@ -17,6 +17,8 @@ export class CheckoutComponent implements OnInit {
     paymentMethod: PaymentMethod.CASH_ON_DELIVERY
   };
 
+  loading = false;
+
   constructor(
     private router: Router,
     private checkoutService: CheckoutService
@@ -28,11 +30,11 @@ export class CheckoutComponent implements OnInit {
 
   selectedPayment!: CheckoutPaymentSelection;
 
-onPaymentSelected(
-  payment: CheckoutPaymentSelection
-) {
+onPaymentSelected(payment: CheckoutPaymentSelection): void {
 
   this.selectedPayment = payment;
+
+  this.orderRequest.paymentMethod = payment.paymentMethod;
 
 }
 
@@ -44,20 +46,25 @@ onPaymentSelected(
 
   }
 
-  // onPaymentSelected(paymentMethod: PaymentMethod): void {
-
-  //   this.orderRequest.paymentMethod = paymentMethod;
-
-  // }
 
   placeOrder(): void {
+
+    console.log(this.orderRequest);
+
+    if (this.loading) {
+    return;
+  }
+
+  this.loading = true;
 
     this.checkoutService.placeOrder(this.orderRequest)
       .subscribe({
 
         next: (response) => {
 
-          console.log(this.orderRequest);
+          // console.log(this.orderRequest);
+
+          this.loading = false;
 
           alert('Order placed successfully');
 
@@ -67,11 +74,17 @@ onPaymentSelected(
 
         error: (err) => {
 
-          console.error(err);
+          this.loading = false;
 
-          alert('Failed to place order');
+          if (err.status === 409) {
 
-        }
+          alert(err.error.message);
+ 
+         return;
+       }
+
+           alert('Failed to place order');
+    }
 
       });
 

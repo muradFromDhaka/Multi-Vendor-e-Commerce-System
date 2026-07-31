@@ -17,17 +17,14 @@ import org.springframework.web.bind.annotation.*;
 public class VendorInventoryController {
 
     private final VendorInventoryService vendorInventoryService;
-    private final VendorOrderService vendorOrderService;
 
     @GetMapping
     public Page<InventoryListResponseDto> getInventory(
             Pageable pageable
     ) {
 
-        Vendor loggedInVendor = vendorOrderService.getLoggedInVendor();
 
         return vendorInventoryService.getInventory(
-                loggedInVendor.getId(),
                 pageable
         );
     }
@@ -37,10 +34,8 @@ public class VendorInventoryController {
             Pageable pageable
     ) {
 
-        Vendor loggedInVendor = vendorOrderService.getLoggedInVendor();
 
         return vendorInventoryService.getLowStockInventory(
-                loggedInVendor.getId(),
                 pageable
         );
     }
@@ -50,10 +45,8 @@ public class VendorInventoryController {
             Pageable pageable
     ) {
 
-        Vendor loggedInVendor = vendorOrderService.getLoggedInVendor();
 
         return vendorInventoryService.getOutOfStockInventory(
-                loggedInVendor.getId(),
                 pageable
         );
     }
@@ -64,10 +57,8 @@ public class VendorInventoryController {
             @Valid @RequestBody UpdateInventoryRequestDto request
     ) {
 
-        Vendor loggedInVendor = vendorOrderService.getLoggedInVendor();
 
         return vendorInventoryService.updateStock(
-                loggedInVendor.getId(),
                 variantId,
                 request
         );
@@ -79,11 +70,8 @@ public class VendorInventoryController {
             @PathVariable Long variantId
     ) {
 
-        Vendor loggedInVendor =
-                vendorOrderService.getLoggedInVendor();
 
         return vendorInventoryService.getInventoryDetails(
-                loggedInVendor.getId(),
                 variantId
         );
     }

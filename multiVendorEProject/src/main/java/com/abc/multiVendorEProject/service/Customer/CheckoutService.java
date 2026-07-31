@@ -16,6 +16,7 @@ import com.abc.multiVendorEProject.mapper.ShippingAddressMapper;
 import com.abc.multiVendorEProject.repository.*;
 import com.abc.multiVendorEProject.repository.VariantRepository.ProductVariantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,6 +59,7 @@ public class CheckoutService {
 
     }
 
+    @Transactional
     private User getCurrentUser() {
 
         Authentication auth = SecurityContextHolder
@@ -79,7 +82,7 @@ public class CheckoutService {
         String orderNumber;
 
         do {
-            orderNumber = "ORD-" + System.currentTimeMillis();
+            orderNumber = "ORD-" + UUID.randomUUID();
         } while (orderRepository.existsByOrderNumber(orderNumber));
 
         return orderNumber;
@@ -97,6 +100,7 @@ public class CheckoutService {
     }
 
 
+    @Transactional
     private ShippingAddress saveShippingAddress(
             OrderRequestDto request,
             User user) {
@@ -119,6 +123,7 @@ public class CheckoutService {
     }
 
 
+    @Transactional
     private void reduceStock(
             List<OrderItem> orderItems) {
 
@@ -134,29 +139,13 @@ public class CheckoutService {
         );
     }
 
-    private BigDecimal calculateSubtotal(
-            List<OrderItem> orderItems) {
 
-        return orderItems.stream()
-                .map(OrderItem::getTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private BigDecimal calculateTotalPrice(
-            BigDecimal subtotal,
-            BigDecimal shippingFee,
-            BigDecimal discount) {
-
-        return subtotal
-                .add(shippingFee)
-                .subtract(discount);
-    }
-
-
+    @Transactional
     private Order createOrder(
             User user,
             ShippingAddress shippingAddress,
-            PaymentMethod paymentMethod) {
+            PaymentMethod paymentMethod,
+            CartDto cartSummary) {
 
         Order order = new Order();
 
@@ -165,10 +154,10 @@ public class CheckoutService {
         order.setOrderStatus(OrderStatus.PENDING);
         order.setShippingAddress(shippingAddress);
 
-        order.setShippingFee(BigDecimal.ZERO);
-        order.setDiscount(BigDecimal.ZERO);
-        order.setSubtotal(BigDecimal.ZERO);
-        order.setTotalPrice(BigDecimal.ZERO);
+        order.setSubtotal(cartSummary.getSubtotal());
+        order.setShippingFee(cartSummary.getShippingFee());
+        order.setDiscount(cartSummary.getDiscount());
+        order.setTotalPrice(cartSummary.getTotalAmount());
 
         Payment payment = new Payment();
         payment.setPaymentMethod(paymentMethod);
@@ -181,6 +170,7 @@ public class CheckoutService {
         return order;
     }
 
+    @Transactional
     private List<VendorOrder> createVendorOrders(
             Order order,
             List<OrderItem> orderItems) {
@@ -188,6 +178,11 @@ public class CheckoutService {
         Map<Vendor, List<OrderItem>> grouped =
                 orderItems.stream()
                         .collect(Collectors.groupingBy(OrderItem::getVendor));
+
+        BigDecimal distributedShipping = BigDecimal.ZERO;
+
+        int currentVendor = 0;
+        int totalVendors = grouped.size();
 
         List<VendorOrder> vendorOrders = new ArrayList<>();
 
@@ -205,27 +200,71 @@ public class CheckoutService {
 
             vendorOrder.setVendorOrderStatus(VendorOrderStatus.PENDING);
 
-            vendorOrder.setShippingFee(BigDecimal.ZERO);
-
-            vendorOrder.setDiscount(BigDecimal.ZERO);
-
-            BigDecimal subtotal =
-                    items.stream()
+            BigDecimal subtotal = items.stream()
                             .map(OrderItem::getTotalPrice)
                             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
             vendorOrder.setSubtotal(subtotal);
 
-            vendorOrder.setTotalPrice(subtotal);
+            BigDecimal shippingFee = BigDecimal.ZERO;
+
+            if (order.getShippingFee().compareTo(BigDecimal.ZERO) > 0
+                    && order.getSubtotal().compareTo(BigDecimal.ZERO) > 0) {
+
+                if (currentVendor == totalVendors - 1) {
+
+                    // Last vendor gets the remaining shipping
+                    shippingFee = order.getShippingFee()
+                            .subtract(distributedShipping);
+
+                } else {
+
+                    shippingFee = subtotal
+                            .multiply(order.getShippingFee())
+                            .divide(
+                                    order.getSubtotal(),
+                                    2,
+                                    java.math.RoundingMode.HALF_UP
+                            );
+
+                    distributedShipping =
+                            distributedShipping.add(shippingFee);
+                }
+            }
+
+            vendorOrder.setShippingFee(shippingFee);
+
+            int totalQuantity = items.stream()
+                    .mapToInt(OrderItem::getQuantity)
+                    .sum();
+
+            BigDecimal discount = BigDecimal.ZERO;
+
+            if (totalQuantity >= 3) {
+                discount = subtotal.multiply(PricingConstants.VENDOR_DISCOUNT_RATE);
+            }
+
+            vendorOrder.setDiscount(discount);
+
+//            vendorOrder.setTotalPrice(subtotal);
+
+            // Final Total
+            vendorOrder.setTotalPrice(
+                    subtotal
+                            .subtract(discount)
+                            .add(vendorOrder.getShippingFee())
+            );
 
             vendorOrder.setVendorOrderNumber(
                     "VORD-"
-                            + System.currentTimeMillis()
+                            + UUID.randomUUID()
                             + "-"
                             + vendor.getId()
             );
 
             vendorOrders.add(vendorOrder);
+
+            currentVendor++;
         }
 
         return vendorOrderRepository.saveAll(vendorOrders);
@@ -233,6 +272,7 @@ public class CheckoutService {
 
 
 
+    @Transactional
     private List<OrderItem> createOrderItems(Order order, Cart cart) {
 
         List<OrderItem> orderItems = new ArrayList<>();
@@ -243,11 +283,10 @@ public class CheckoutService {
 
             item.setOrder(order);
 
-            ProductVariant variant = cartItem.getProductVariant();
-
-            if (variant == null) {
-                throw new RuntimeException("Product variant not found");
-            }
+            ProductVariant variant = productVariantRepository.findById(
+                    cartItem.getProductVariant().getId()
+            ).orElseThrow(() ->
+                    new RuntimeException("Product variant not found"));
 
             // Quantity validation
             if (cartItem.getQuantity() <= 0) {
@@ -269,6 +308,8 @@ public class CheckoutService {
 
 
             item.setUnitPrice(cartItem.getUnitPrice());
+
+            cartItem.calculateTotalPrice();
 
             item.setTotalPrice(cartItem.getTotalPrice());
 
@@ -322,43 +363,33 @@ public class CheckoutService {
 
         validateCart(cart);
 
+        CartDto cartSummary = cartService.getCart();
+
         ShippingAddress shippingAddress =
                 saveShippingAddress(request, user);
 
         Order order = createOrder(
                 user,
                 shippingAddress,
-                request.getPaymentMethod()
+                request.getPaymentMethod(),
+                cartSummary
         );
 
         order = orderRepository.save(order);
 
-        List<OrderItem> orderItems =
-                createOrderItems(order, cart);
-
-        BigDecimal subtotal =
-                calculateSubtotal(orderItems);
-
-        order.setSubtotal(subtotal);
-
-        order.setTotalPrice(
-                calculateTotalPrice(
-                        subtotal,
-                        order.getShippingFee(),
-                        order.getDiscount()
-                )
-        );
-
-        order.getPayment().setAmount(order.getTotalPrice());
-
-//        orderRepository.save(order);
+        List<OrderItem> orderItems = createOrderItems(order, cart);
 
         List<VendorOrder> vendorOrders = createVendorOrders(order, orderItems);
 
         assignVendorOrders(orderItems, vendorOrders);
 
-        reduceStock(orderItems);
-
+        try {
+            reduceStock(orderItems);
+        } catch (ObjectOptimisticLockingFailureException e) {
+            throw new RuntimeException(
+                    "Some products were updated by another customer. Please review your cart."
+            );
+        }
         cartService.clearCart();
 
         return OrderMapper.toResponseDto(order);

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { InventoryListResponse } from '../../models/vendor-inventory.model';
 import { VendorInventoryService } from '../../services/vendor-inventory.service';
+import { environment } from 'src/app/services/environments';
 
 @Component({
   selector: 'app-vendor-inventory',
@@ -9,6 +10,7 @@ import { VendorInventoryService } from '../../services/vendor-inventory.service'
 })
 export class VendorInventoryComponent {
 
+  baseImageUrl = environment.baseImageUrl;
 
     inventories: InventoryListResponse[] = [];
   

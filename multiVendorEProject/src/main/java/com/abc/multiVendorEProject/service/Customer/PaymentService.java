@@ -30,42 +30,6 @@ public class PaymentService {
     private final OrderRepository orderRepository;
     private final PaymentMapper paymentMapper;
 
-    @Transactional
-    public PaymentResponseDto createPayment(PaymentRequestDto dto) {
-
-        // 1. Validate Order
-        Order order = orderRepository.findById(dto.orderId())
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + dto.orderId()));
-
-        // 2. Prevent duplicate payment for same order
-        paymentRepository.findByOrder(order).ifPresent(p -> {
-            throw new RuntimeException("Payment already exists for this order");
-        });
-
-        if (order.getPayment() != null) {
-            throw new RuntimeException("Payment already exists.");
-        }
-
-        // 3. Prevent duplicate transaction ID
-        if (dto.transactionId()!=null && paymentRepository.existsByTransactionId(dto.transactionId())) {
-            throw new RuntimeException("Transaction ID already exists");
-        }
-
-        // 4. Map DTO → Entity
-        Payment payment = paymentMapper.toEntity(dto);
-
-        // 5. Set system-controlled fields
-        payment.setOrder(order);
-        payment.setAmount(order.getTotalPrice());
-        payment.setPaidAt(null);
-        payment.setPaymentStatus(PaymentStatus.PENDING);
-
-        Payment savedPayment = paymentRepository.save(payment);
-
-        return paymentMapper.toDto(savedPayment);
-    }
-
-
     public PaymentResponseDto getPaymentById(Long id) {
 
         Payment payment = paymentRepository.findById(id)

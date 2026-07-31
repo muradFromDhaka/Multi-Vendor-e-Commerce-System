@@ -28,6 +28,9 @@ public class ProductVariant extends BaseEntity {
     @Column(nullable = false)
     private Integer stock = 0;
 
+    @Version
+    private Long version;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;

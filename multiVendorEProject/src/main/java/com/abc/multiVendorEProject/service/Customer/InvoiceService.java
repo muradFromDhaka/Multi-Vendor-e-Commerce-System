@@ -2,7 +2,10 @@ package com.abc.multiVendorEProject.service.Customer;
 
 import com.abc.multiVendorEProject.entity.Order;
 import com.abc.multiVendorEProject.entity.OrderItem;
+import com.abc.multiVendorEProject.entity.Payment;
+import com.abc.multiVendorEProject.entity.User;
 import com.abc.multiVendorEProject.repository.OrderRepository;
+import com.abc.multiVendorEProject.repository.UserRepository;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
@@ -12,6 +15,9 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.draw.LineSeparator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -24,12 +30,20 @@ import java.time.format.DateTimeFormatter;
 public class InvoiceService {
 
     private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
 
     public byte[] generateInvoice(Long orderId) {
+
+        User user = getCurrentUser();
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Order not found"));
+
+        if (!order.getUser().getUserName().equals(user.getUserName())) {
+            throw new RuntimeException(
+                    "You are not authorized to download this invoice.");
+        }
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -223,11 +237,14 @@ public class InvoiceService {
 
             table.addCell(createBodyCell(item.getVariant().getProduct().getName()));
 
+            table.addCell(createBodyCell(item.getVariant().getSku()));
+
             table.addCell(createBodyCell(String.valueOf(item.getQuantity())));
 
             table.addCell(createBodyCell(formatMoney(item.getUnitPrice())));
 
             table.addCell(createBodyCell(formatMoney(item.getTotalPrice())));
+
         }
 
         document.add(table);
@@ -473,7 +490,7 @@ public class InvoiceService {
         cell.setPadding(10);
 
         cell.addElement(new Paragraph(
-                order.getShippingAddress().getUser().getUserName(),
+                order.getUser().getUserName(),
                 boldFont));
 
         cell.addElement(new Paragraph(
@@ -523,18 +540,43 @@ public class InvoiceService {
         table.setWidthPercentage(100);
         table.setWidths(new float[]{1f, 1f});
 
+        Payment payment = order.getPayment();
+
         table.addCell(createInfoCell(
                 "Payment Method",
-                order.getPayment().getPaymentMethod().name()
+                payment != null
+                        ? payment.getPaymentMethod().name()
+                        : "N/A"
         ));
 
         table.addCell(createInfoCell(
                 "Payment Status",
-                order.getPayment().getPaymentStatus().name()
+                payment != null
+                        ? payment.getPaymentStatus().name()
+                        : "N/A"
         ));
+
 
         document.add(table);
     }
 
+
+    private User getCurrentUser() {
+
+        Authentication auth = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        if (auth == null
+                || !auth.isAuthenticated()
+                || auth instanceof AnonymousAuthenticationToken) {
+
+            throw new RuntimeException("User not logged in");
+        }
+
+        return userRepository.findById(auth.getName())
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+    }
 
 }

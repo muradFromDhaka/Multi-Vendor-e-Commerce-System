@@ -15,6 +15,7 @@ import com.abc.multiVendorEProject.repository.VariantRepository.ProductVariantRe
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -108,12 +109,21 @@ public class OrderService {
 
         cancelVendorOrders(order);
 
-        productVariantRepository.saveAll(
-                order.getOrderItems()
-                        .stream()
-                        .map(OrderItem::getVariant)
-                        .toList()
-        );
+        try {
+
+            productVariantRepository.saveAll(
+                    order.getOrderItems()
+                            .stream()
+                            .map(OrderItem::getVariant)
+                            .toList()
+            );
+
+        } catch (ObjectOptimisticLockingFailureException ex) {
+
+            throw new RuntimeException(
+                    "Product stock changed while cancelling order. Please try again."
+            );
+        }
 
         order.setOrderStatus(OrderStatus.CANCELLED);
 
@@ -295,7 +305,7 @@ public class OrderService {
 
             order.setOrderStatus(newStatus);
 
-            System.out.println("New Status ============================= " + newStatus);
+//            System.out.println("New Status ============================= " + newStatus);
 
             orderRepository.save(order);
         }

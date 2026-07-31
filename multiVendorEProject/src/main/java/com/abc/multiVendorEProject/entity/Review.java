@@ -1,10 +1,7 @@
 package com.abc.multiVendorEProject.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +27,7 @@ public class Review extends BaseEntity{
     @Column(nullable = false)
     private Double rating; // 1 to 5
 
-    @Column(length = 1000)
+    @Column(nullable = false, length = 1000)
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -14,6 +14,7 @@ import com.abc.multiVendorEProject.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,11 +108,18 @@ public class VendorOrderService {
 
         vendorOrder.setVendorOrderStatus(request.vendorOrderStatus());
 
-        vendorOrderRepository.save(vendorOrder);
+        try {
 
-        // Parent Order Update
-        orderService.updateParentOrderStatus(
-                vendorOrder.getOrder().getId());
+            vendorOrderRepository.save(vendorOrder);
+
+            orderService.updateParentOrderStatus(
+                    vendorOrder.getOrder().getId());
+
+        } catch (ObjectOptimisticLockingFailureException ex) {
+
+            throw new RuntimeException(
+                    "This order was updated by another request.");
+        }
 
         return VendorOrderMapper.toDetailsDto(vendorOrder);
     }

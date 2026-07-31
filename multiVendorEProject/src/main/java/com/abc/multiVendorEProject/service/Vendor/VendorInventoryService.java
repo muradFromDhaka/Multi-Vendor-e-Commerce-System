@@ -4,12 +4,16 @@ import com.abc.multiVendorEProject.Config.ResourceNotFoundException;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Inventory.InventoryListResponseDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Inventory.UpdateInventoryRequestDto;
 import com.abc.multiVendorEProject.entity.Variant.ProductVariant;
+import com.abc.multiVendorEProject.entity.Vendor;
 import com.abc.multiVendorEProject.enums.StockStatus;
 import com.abc.multiVendorEProject.repository.VariantRepository.ProductVariantRepository;
+import com.abc.multiVendorEProject.repository.VendorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -19,48 +23,66 @@ import java.util.stream.Collectors;
 public class VendorInventoryService {
 
     private final ProductVariantRepository productVariantRepository;
+    private final VendorRepository vendorRepository;
 
     private static final int LOW_STOCK_THRESHOLD = 5;
 
 
+
+
+    private Vendor getLoggedInVendor() {
+
+        String userName = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return vendorRepository.findByUserUserName(userName)
+                .orElseThrow(() ->
+                        new RuntimeException("Vendor not found."));
+    }
+
     public Page<InventoryListResponseDto> getInventory(
-            Long vendorId,
             Pageable pageable
     ) {
 
+        Vendor vendor = getLoggedInVendor();
         return productVariantRepository
-                .findByProductVendorId(vendorId, pageable)
+                .findByProductVendorId(vendor.getId(), pageable)
                 .map(this::mapToInventoryDto);
     }
 
     public Page<InventoryListResponseDto> getLowStockInventory(
-            Long vendorId,
             Pageable pageable
     ) {
 
+        Vendor vendor = getLoggedInVendor();
+
         return productVariantRepository
                 .findLowStockVariants(
-                        vendorId,
+                        vendor.getId(),
                         LOW_STOCK_THRESHOLD,
                         pageable
                 )
                 .map(this::mapToInventoryDto);
     }
     public Page<InventoryListResponseDto> getOutOfStockInventory(
-            Long vendorId,
             Pageable pageable
     ) {
 
+        Vendor vendor = getLoggedInVendor();
+
         return productVariantRepository
-                .findOutOfStockVariants(vendorId, pageable)
+                .findOutOfStockVariants(vendor.getId(), pageable)
                 .map(this::mapToInventoryDto);
     }
 
 
     public InventoryListResponseDto getInventoryDetails(
-            Long vendorId,
             Long variantId
     ) {
+
+        Vendor vendor = getLoggedInVendor();
 
         ProductVariant variant = productVariantRepository
                 .findById(variantId)
@@ -72,7 +94,7 @@ public class VendorInventoryService {
         if (!variant.getProduct()
                 .getVendor()
                 .getId()
-                .equals(vendorId)) {
+                .equals(vendor.getId())) {
 
             throw new AccessDeniedException(
                     "You are not authorized to view this inventory.");
@@ -85,10 +107,11 @@ public class VendorInventoryService {
 
 
     public InventoryListResponseDto updateStock(
-            Long vendorId,
             Long variantId,
             UpdateInventoryRequestDto request
     ) {
+
+        Vendor vendor = getLoggedInVendor();
 
         ProductVariant variant = productVariantRepository
                 .findById(variantId)
@@ -96,7 +119,7 @@ public class VendorInventoryService {
                         new ResourceNotFoundException("Variant not found."));
 
         // Verify Vendor Ownership
-        if (!variant.getProduct().getVendor().getId().equals(vendorId)) {
+        if (!variant.getProduct().getVendor().getId().equals(vendor.getId())) {
             throw new AccessDeniedException(
                     "You are not authorized to update this inventory.");
         }
@@ -106,12 +129,26 @@ public class VendorInventoryService {
         }
 
         // Update Stock
+        if (request.getStock() < 0) {
+            throw new IllegalArgumentException(
+                    "Stock cannot be negative.");
+        }
+
         variant.setStock(request.getStock());
 
-        ProductVariant updatedVariant =
-                productVariantRepository.save(variant);
+        try {
 
-        return mapToInventoryDto(updatedVariant);
+            ProductVariant updatedVariant =
+                    productVariantRepository.save(variant);
+
+            return mapToInventoryDto(updatedVariant);
+
+        } catch (ObjectOptimisticLockingFailureException ex) {
+
+            throw new RuntimeException(
+                    "Stock was updated by another request. Please refresh and try again.");
+        }
+
     }
 
 

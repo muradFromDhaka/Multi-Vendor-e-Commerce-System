@@ -35,13 +35,6 @@ public class CartService {
     private final UserRepository userRepository;
 
 
-    private static final BigDecimal BULK_DISCOUNT_5 = new BigDecimal("0.10");
-    private static final BigDecimal BULK_DISCOUNT_10 = new BigDecimal("0.15");
-    private static final BigDecimal VENDOR_DISCOUNT_RATE = new BigDecimal("0.05");
-    private static final BigDecimal FREE_SHIPPING_LIMIT = new BigDecimal("50.00");
-    private static final BigDecimal BASE_SHIPPING_FEE = new BigDecimal("5.00");
-    private static final BigDecimal EXTRA_VENDOR_FEE = new BigDecimal("3.00");
-
     // ===========================================
     // Get Current Logged-in User
     // ===========================================
@@ -67,23 +60,33 @@ public class CartService {
         Cart cart = cartRepository.findByUser(currentUser)
                 .orElseGet(() -> createNewCartForUser(currentUser));
 
-        cart.calculateTotalAmount(); // Calculate total
         return mapCartToDto(cart);
     }
 
-    // ===========================================
-    // Add Item to Cart
-    // ===========================================
-    public CartDto addItemToCart(CartItemRequestDto request) {
-        User currentUser = getCurrentUser();
 
+    private BigDecimal getSellingPrice(ProductVariant variant) {
+
+        if (variant.getDiscountPrice() != null
+                && variant.getDiscountPrice().compareTo(variant.getPrice()) < 0) {
+            return variant.getDiscountPrice();
+        }
+
+        return variant.getPrice();
+    }
+
+    // ===========================================
+// Add Item to Cart
+// ===========================================
+    public CartDto addItemToCart(CartItemRequestDto request) {
+
+        User currentUser = getCurrentUser();
 
         Cart cart = cartRepository.findByUser(currentUser)
                 .orElseGet(() -> createNewCartForUser(currentUser));
 
-        ProductVariant variant =
-                productVariantRepository.findById(request.getProductVariantId())
-                        .orElseThrow(() -> new RuntimeException("Product not found"));
+        ProductVariant variant = productVariantRepository
+                .findById(request.getProductVariantId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
         Optional<CartItem> existingItem = cart.getItems().stream()
                 .filter(item -> item.getProductVariant().getId().equals(variant.getId()))
@@ -91,29 +94,34 @@ public class CartService {
 
         CartItem cartItem;
 
-        if (existingItem.isEmpty()) {
+        if (existingItem.isPresent()) {
+
+            // Existing cart item
+            cartItem = existingItem.get();
+            cartItem.setQuantity(
+                    cartItem.getQuantity() + request.getQuantity()
+            );
+
+        } else {
+
+            // New cart item
             cartItem = new CartItem();
+            cartItem.setCart(cart);
             cartItem.setProductVariant(variant);
             cartItem.setQuantity(request.getQuantity());
-            cartItem.setCart(cart);
-
-            // Set price & totalPrice
-            cartItem.setUnitPrice(variant.getPrice());
-            cartItem.calculateTotalPrice();
 
             cart.getItems().add(cartItem);
-        } else {
-            cartItem = existingItem.get();
-            int newQuantity = cartItem.getQuantity() + request.getQuantity();
-            cartItem.setQuantity(newQuantity);
-
-            // Update price & totalPrice
-            cartItem.setUnitPrice(variant.getPrice());
-            cartItem.calculateTotalPrice();
         }
 
-        cart.calculateTotalAmount(); // Update cart total
+        // Update selling price & total price
+        cartItem.setUnitPrice(getSellingPrice(variant));
+        cartItem.calculateTotalPrice();
+
+        // Update cart total
+        cart.calculateTotalAmount();
+
         cartRepository.save(cart);
+
         return mapCartToDto(cart);
     }
 
@@ -121,6 +129,7 @@ public class CartService {
     // Update Cart Item Quantity
     // ===========================================
     public CartDto updateCartItem(Long cartItemId, CartItemRequestDto request) {
+
         Cart cart = getCartEntity();
 
         CartItem cartItem = cart.getItems().stream()
@@ -128,12 +137,15 @@ public class CartService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Cart item not found"));
 
+        ProductVariant variant = cartItem.getProductVariant();
+
         cartItem.setQuantity(request.getQuantity());
-        cartItem.setUnitPrice(cartItem.getProductVariant().getPrice());
+        cartItem.setUnitPrice(getSellingPrice(variant));
         cartItem.calculateTotalPrice();
 
         cart.calculateTotalAmount();
         cartRepository.save(cart);
+
         return mapCartToDto(cart);
     }
 
@@ -165,32 +177,6 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    private BigDecimal calculateVariantDiscount(Cart cart) {
-
-        BigDecimal totalDiscount = BigDecimal.ZERO;
-
-        for (CartItem item : cart.getItems()) {
-
-            ProductVariant variant = item.getProductVariant();
-
-            BigDecimal price = variant.getPrice();
-            BigDecimal discountPrice = variant.getDiscountPrice();
-
-            if (price != null
-                    && discountPrice != null
-                    && discountPrice.compareTo(price) < 0) {
-
-                BigDecimal perItemDiscount = price.subtract(discountPrice);
-
-                totalDiscount = totalDiscount.add(
-                        perItemDiscount.multiply(BigDecimal.valueOf(item.getQuantity()))
-                );
-            }
-        }
-
-        return totalDiscount;
-    }
-
 
     private BigDecimal calculateBulkDiscount(Cart cart) {
 
@@ -198,18 +184,17 @@ public class CartService {
                 .mapToInt(CartItem::getQuantity)
                 .sum();
 
-        // Original subtotal (discount ছাড়া)
+        // Selling Price ভিত্তিক Subtotal
         BigDecimal subtotal = cart.getItems().stream()
-                .map(item -> item.getProductVariant().getPrice()
-                        .multiply(BigDecimal.valueOf(item.getQuantity())))
+                .map(CartItem::getTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if (totalItems >= 10) {
-            return subtotal.multiply(BULK_DISCOUNT_10);
+            return subtotal.multiply(PricingConstants.BULK_DISCOUNT_RATE_FOR_10_ITEMS);
         }
 
         if (totalItems >= 5) {
-            return subtotal.multiply(BULK_DISCOUNT_5);
+            return subtotal.multiply(PricingConstants.BULK_DISCOUNT_RATE_FOR_5_ITEMS);
         }
 
         return BigDecimal.ZERO;
@@ -218,11 +203,7 @@ public class CartService {
 
     private BigDecimal calculateSubtotal(Cart cart) {
         return cart.getItems().stream()
-                .map(item ->
-                        item.getProductVariant()
-                                .getPrice()
-                                .multiply(BigDecimal.valueOf(item.getQuantity()))
-                )
+                .map(CartItem::getTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -237,25 +218,22 @@ public class CartService {
                         item -> item.getProductVariant().getProduct().getVendor().getId()
                 ));
 
-        for (List<CartItem> vendorItems : itemsByVendor.values()) {
+        for (Map.Entry<Long, List<CartItem>> entry : itemsByVendor.entrySet()) {
 
-            // মোট Quantity
-            int totalQty = vendorItems.stream()
+            BigDecimal vendorSubtotal = entry.getValue().stream()
+                    .map(CartItem::getTotalPrice)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            int totalQuantity = entry.getValue().stream()
                     .mapToInt(CartItem::getQuantity)
                     .sum();
 
-            // Original Subtotal
-            BigDecimal vendorSubtotal = vendorItems.stream()
-                    .map(item ->
-                            item.getProductVariant().getPrice()
-                                    .multiply(BigDecimal.valueOf(item.getQuantity()))
-                    )
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            if (totalQuantity >= 3) {
 
-            if (totalQty >= 3) {
                 totalDiscount = totalDiscount.add(
-                        vendorSubtotal.multiply(VENDOR_DISCOUNT_RATE)
+                        vendorSubtotal.multiply(PricingConstants.VENDOR_DISCOUNT_RATE)
                 );
+
             }
         }
 
@@ -265,14 +243,13 @@ public class CartService {
 
     private BigDecimal calculateShippingFee(Cart cart) {
 
-        BigDecimal subtotal = cart.getItems().stream()
-                .map(item ->
-                        item.getProductVariant().getPrice()
-                                .multiply(BigDecimal.valueOf(item.getQuantity()))
-                )
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if (cart.getItems().isEmpty()) {
+            return BigDecimal.ZERO;
+        }
 
-        if (subtotal.compareTo(FREE_SHIPPING_LIMIT) >= 0) {
+        BigDecimal subtotal = calculateSubtotal(cart);
+
+        if (subtotal.compareTo(PricingConstants.FREE_SHIPPING_LIMIT) >= 0) {
             return BigDecimal.ZERO;
         }
 
@@ -284,9 +261,9 @@ public class CartService {
         long extraVendors = Math.max(0, vendorCount - 1);
 
         BigDecimal extraVendorFee =
-                EXTRA_VENDOR_FEE.multiply(BigDecimal.valueOf(extraVendors));
+                PricingConstants.EXTRA_VENDOR_FEE.multiply(BigDecimal.valueOf(extraVendors));
 
-        return BASE_SHIPPING_FEE.add(extraVendorFee);
+        return PricingConstants.BASE_SHIPPING_FEE.add(extraVendorFee);
     }
 
 
@@ -313,17 +290,14 @@ public class CartService {
         // ডিসকাউন্ট ক্যালকুলেশন
         BigDecimal totalDiscount = BigDecimal.ZERO;
 
-        // ১. ভ্যারিয়েন্ট ডিসকাউন্ট
-        totalDiscount = totalDiscount.add(calculateVariantDiscount(cart));
-
-        // ২. বাল্ক ডিসকাউন্ট
+        // 1. বাল্ক ডিসকাউন্ট
         totalDiscount = totalDiscount.add(calculateBulkDiscount(cart));
 
-        // ৩. ভেন্ডর ডিসকাউন্ট
+        // 2. ভেন্ডর ডিসকাউন্ট
         totalDiscount = totalDiscount.add(calculateVendorDiscount(cart));
 
         // ম্যাক্সিমাম ডিসকাউন্ট ৫০% এর বেশি না
-        BigDecimal maxDiscount = subtotal.multiply(new BigDecimal("0.50"));
+        BigDecimal maxDiscount = subtotal.multiply(PricingConstants.MAX_DISCOUNT_RATE);
         if (totalDiscount.compareTo(maxDiscount) > 0) {
             totalDiscount = maxDiscount;
         }

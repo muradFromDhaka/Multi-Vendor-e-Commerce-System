@@ -51,6 +51,11 @@ addItemToCart(request: CartItemRequest): void {
       if (err.status === 401) {
         alert('Please login irst!');
         this.router.navigate(['/login']); // Redirect to login page
+      }else if (err.status === 409) {
+
+         alert(err.error.message);
+         this.loadCart();
+
       } else {
         alert('Something went wrong, please try again.');
       }
@@ -65,8 +70,25 @@ addItemToCart(request: CartItemRequest): void {
     this.http
       .put<CartDto>(`${this.apiUrl}/${cartItemId}`, request)
       .subscribe({
+     
         next: cart => this.cartSubject.next(cart),
-        error: err => console.error('Error updating item:', err)
+  
+        error: err => {
+
+          console.error(err);
+
+          if (err.status === 409) {
+
+           alert(err.error.message);
+
+          this.loadCart();
+
+           return;
+          }
+
+         alert('Failed to update cart.');
+
+     }
       });
   }
 
@@ -75,10 +97,27 @@ addItemToCart(request: CartItemRequest): void {
      =============================== */
   removeCartItem(cartItemId: number): void {
     this.http
-      .delete<CartDto>(`${this.apiUrl}/${cartItemId}`)
+      .delete<void>(`${this.apiUrl}/${cartItemId}`)
       .subscribe({
-        next: cart => {this.loadCart(); },
-        error: err => console.error('Error removing item:', err)
+       
+        next:() => {this.loadCart(); },
+       
+        error: err => {
+
+  console.error(err);
+
+  if (err.status === 409) {
+
+    alert(err.error.message);
+
+    this.loadCart();
+
+    return;
+  }
+
+  alert('Failed to remove item.');
+
+}
       });
   }
 
@@ -87,24 +126,31 @@ addItemToCart(request: CartItemRequest): void {
      =============================== */
   clearCart(): void {
     this.http
-      .delete<CartDto>(`${this.apiUrl}/clear`)
+      .delete<void>(`${this.apiUrl}/clear`)
       .subscribe({
-        next: cart => this.cartSubject.next(cart),
-        error: err => console.error('Error clearing cart:', err)
+    
+           next: () => {
+        this.loadCart();
+      },
+     
+        error: err => {
+
+          console.error(err);
+
+           if (err.status === 409) {
+
+           alert(err.error.message);
+  
+           this.loadCart();
+ 
+             return;
+        }
+
+      alert('Failed to clear cart.');
+ 
+    }
       });
   }
-
-  /* ===============================
-     Checkout
-     =============================== */
-  // checkout(): void {
-  //   this.http
-  //     .post<CartDto>(`${this.apiUrl}/checkout`, {})
-  //     .subscribe({
-  //       next: cart => this.cartSubject.next(cart),
-  //       error: err => console.error('Checkout failed:', err)
-  //     });
-  // }
 
   /* ===============================
      Helpers

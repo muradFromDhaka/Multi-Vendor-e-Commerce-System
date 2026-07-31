@@ -17,6 +17,7 @@ import com.abc.multiVendorEProject.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,12 +74,19 @@ public class AdminOrderService {
                     variant.getStock() + item.getQuantity());
         }
 
-        productVariantRepository.saveAll(
+        try {
 
-                order.getOrderItems()
-                        .stream()
-                        .map(OrderItem::getVariant)
-                        .toList());
+            productVariantRepository.saveAll(
+                    order.getOrderItems()
+                            .stream()
+                            .map(OrderItem::getVariant)
+                            .toList());
+
+        } catch (ObjectOptimisticLockingFailureException ex) {
+
+            throw new RuntimeException(
+                    "Product stock changed while cancelling order. Please try again.");
+        }
     }
 
     private void cancelVendorOrders(Order order) {
@@ -415,58 +423,6 @@ public class AdminOrderService {
 
         return OrderMapper.toAdminDetailsDto(savedOrder);
     }
-
-//    @Transactional(readOnly = true)
-//    public BigDecimal getRevenueBetween(
-//            LocalDateTime start,
-//            LocalDateTime end) {
-//
-//        return orderRepository.getRevenueBetween(start, end);
-//    }
-//
-//    @Transactional(readOnly = true)
-//    public BigDecimal getTodayRevenue() {
-//
-//        LocalDate today = LocalDate.now();
-//
-//        return orderRepository.getRevenueBetween(
-//                today.atStartOfDay(),
-//                today.plusDays(1).atStartOfDay().minusNanos(1)
-//        );
-//    }
-
-//    @Transactional(readOnly = true)
-//    public BigDecimal getMonthlyRevenue() {
-//
-//        LocalDate now = LocalDate.now();
-//
-//        LocalDate start = now.withDayOfMonth(1);
-//        LocalDate end = start.plusMonths(1).minusDays(1);
-//
-//        return orderRepository.getRevenueBetween(
-//                start.atStartOfDay(),
-//                end.atTime(LocalTime.MAX)
-//        );
-//    }
-
-//    @Transactional(readOnly = true)
-//    public BigDecimal getYearlyRevenue() {
-//
-//        LocalDate now = LocalDate.now();
-//
-//        LocalDate start = now.withDayOfYear(1);
-//        LocalDate end = start.plusYears(1).minusDays(1);
-//
-//        return orderRepository.getRevenueBetween(
-//                start.atStartOfDay(),
-//                end.atTime(LocalTime.MAX)
-//        );
-//    }
-//
-//    @Transactional(readOnly = true)
-//    public BigDecimal getTotalRevenue() {
-//        return orderRepository.getTotalRevenue();
-//    }
 
 
     // ===============================
