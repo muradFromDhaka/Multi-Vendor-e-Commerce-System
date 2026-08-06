@@ -1,232 +1,356 @@
-<div class="vendor-dashboard">
+<div class="dashboard-container">
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-
-    <h2 class="logo">
-      Vendor Panel
-    </h2>
-
-    <ul>
-
-      <li
-        [class.active]="activeTab === 'profile'"
-        (click)="selectTab('profile')">
-
-        👤 Profile
-
-      </li>
-
-      <li
-        [class.active]="activeTab === 'products'"
-        (click)="selectTab('products')">
-
-        📦 Products
-
-      </li>
-
-      <li
-        [class.active]="activeTab === 'orders'"
-        (click)="selectTab('orders')">
-
-        🛒 Orders
-
-      </li>
-
-    </ul>
-
-  </aside>
-
-  <!-- Content -->
-  <div class="content">
-
-    <!-- ================= PROFILE ================= -->
-
-    <div *ngIf="activeTab === 'profile'" class="card">
-
-      <h2>Vendor Profile</h2>
-
-      <div *ngIf="vendor" class="profile">
-
-        <div class="banner">
-
-          <img
-            *ngIf="vendor.bannerUrl"
-            [src]="vendor.bannerUrl">
-
-        </div>
-
-        <div class="logo">
-
-          <img
-            *ngIf="vendor.logoUrl"
-            [src]="vendor.logoUrl">
-
-        </div>
-
-        <h3>{{ vendor.shopName }}</h3>
-
-        <p>
-          <strong>Owner :</strong>
-          {{ vendor.userName }}
-        </p>
-
-        <p>
-          <strong>Email :</strong>
-          {{ vendor.businessEmail }}
-        </p>
-
-        <p>
-          <strong>Phone :</strong>
-          {{ vendor.phone }}
-        </p>
-
-        <p>
-          <strong>Address :</strong>
-          {{ vendor.address }}
-        </p>
-
-        <p>
-          <strong>Description :</strong>
-          {{ vendor.description }}
-        </p>
-
-      </div>
-
+  <div class="dashboard-header">
+    <div>
+      <h2>Vendor Dashboard</h2>
+      <p>Monitor your store performance and business insights.</p>
     </div>
-
-    <!-- ================= PRODUCTS ================= -->
-
-    <div *ngIf="activeTab === 'products'" class="card">
-
-      <div class="table-header">
-
-        <h2>My Products</h2>
-
-        <button routerLink="/admin/adminProductForm">
-          + Add Product
-        </button>
-
-      </div>
-
-      <table>
-
-        <thead>
-
-          <tr>
-
-            <th>Name</th>
-            <th>Price</th>
-            <th>Rating</th>
-            <th>Status</th>
-            <th>Action</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          <tr *ngFor="let product of products">
-
-            <td>{{ product.name }}</td>
-
-            <td>
-
-              <span *ngIf="product.discountPrice">
-
-                {{ product.discountPrice | currency }}
-
-              </span>
-
-              <span
-                [class.strike]="product.discountPrice">
-
-                {{ product.price | currency }}
-
-              </span>
-
-            </td>
-
-            <td>
-
-              ⭐ {{ product.averageRating || 0 }}
-
-            </td>
-
-            <td>
-
-              {{ product.status }}
-
-            </td>
-
-            <td>
-
-              <button
-                class="edit"
-                [routerLink]="['/admin/adminEditProductForm', product.id]">
-
-                Edit
-
-              </button>
-
-              <button
-                class="delete"
-                (click)="deleteProduct(product)">
-
-                Delete
-
-              </button>
-
-            </td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-    <!-- ================= ORDERS ================= -->
-
-    <div *ngIf="activeTab === 'orders'" class="card">
-
-      <h2>Vendor Orders</h2>
-
-      <table>
-
-        <thead>
-
-          <tr>
-
-            <th>ID</th>
-            <th>Customer</th>
-            <th>Status</th>
-            <th>Total</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          <tr *ngFor="let order of orders">
-
-            <td>{{ order.id }}</td>
-
-            <td>{{ order.customerName }}</td>
-
-            <td>{{ order.vendorOrderStatus }}</td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
   </div>
 
+  <!-- Revenue -->
+  <section class="dashboard-section">
+
+    <h3>Revenue</h3>
+
+    <div class="card-grid three">
+
+      <div class="dashboard-card revenue">
+        <span class="title">Today Revenue</span>
+        <h2>{{dashboard?.todayRevenue | currency}}</h2>
+      </div>
+
+      <div class="dashboard-card revenue">
+        <span class="title">Monthly Revenue</span>
+        <h2>{{dashboard?.monthlyRevenue | currency}}</h2>
+      </div>
+
+      <div class="dashboard-card revenue">
+        <span class="title">Total Revenue</span>
+        <h2>{{dashboard?.totalRevenue | currency}}</h2>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Orders -->
+
+  <section class="dashboard-section">
+
+    <h3>Orders</h3>
+
+    <div class="card-grid three">
+
+      <div class="dashboard-card orders">
+        <span>Total Orders</span>
+        <h2>{{dashboard?.totalOrders}}</h2>
+      </div>
+
+      <div class="dashboard-card warning">
+        <span>Pending</span>
+        <h2>{{dashboard?.pendingOrders}}</h2>
+      </div>
+
+      <div class="dashboard-card info">
+        <span>Processing</span>
+        <h2>{{dashboard?.processingOrders}}</h2>
+      </div>
+
+      <div class="dashboard-card primary">
+        <span>Shipped</span>
+        <h2>{{dashboard?.shippedOrders}}</h2>
+      </div>
+
+      <div class="dashboard-card success">
+        <span>Delivered</span>
+        <h2>{{dashboard?.deliveredOrders}}</h2>
+      </div>
+
+      <div class="dashboard-card danger">
+        <span>Cancelled</span>
+        <h2>{{dashboard?.cancelledOrders}}</h2>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Products -->
+
+  <section class="dashboard-section">
+
+    <h3>Products</h3>
+
+    <div class="card-grid three">
+
+      <div class="dashboard-card">
+        <span>Total Products</span>
+        <h2>{{dashboard?.totalProducts}}</h2>
+      </div>
+
+      <div class="dashboard-card warning">
+        <span>Low Stock</span>
+        <h2>{{dashboard?.lowStockProducts}}</h2>
+      </div>
+
+      <div class="dashboard-card danger">
+        <span>Out Of Stock</span>
+        <h2>{{dashboard?.outOfStockProducts}}</h2>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Customers -->
+
+  <section class="dashboard-section">
+
+    <h3>Customers & Reviews</h3>
+
+    <div class="card-grid three">
+
+      <div class="dashboard-card">
+        <span>Total Customers</span>
+        <h2>{{dashboard?.totalCustomers}}</h2>
+      </div>
+
+      <div class="dashboard-card">
+        <span>Total Reviews</span>
+        <h2>{{dashboard?.totalReviews}}</h2>
+      </div>
+
+      <div class="dashboard-card success">
+        <span>Average Rating</span>
+        <h2>{{dashboard?.averageRating | number:'1.1-1'}} ★</h2>
+      </div>
+
+    </div>
+
+  </section>
+
 </div>
+
+
+<section class="dashboard-section">
+
+    <h3>Recent Orders</h3>
+
+    <table class="dashboard-table">
+
+        <thead>
+
+        <tr>
+
+            <th>Order</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tr *ngFor="let order of dashboard?.recentOrders">
+
+            <td>#{{order.orderNumber}}</td>
+
+            <td>{{order.customerName}}</td>
+
+            <td>{{order.totalAmount | currency}}</td>
+
+            <td>
+
+                <span class="status">
+
+                    {{order.status}}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                {{order.orderDate | date:'medium'}}
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</section>
+
+
+<section class="dashboard-section">
+
+<h3>Top Selling Products</h3>
+
+<div class="product-grid">
+
+<div
+class="product-card"
+*ngFor="let product of dashboard?.topSellingProducts">
+
+<img
+[src]="baseImageUrl + product.imageUrl"
+alt="">
+
+<h4>
+
+{{product.productName}}
+
+</h4>
+
+<p>
+
+Sold :
+
+<strong>
+
+{{product.soldQuantity}}
+
+</strong>
+
+</p>
+
+<p>
+
+Revenue :
+
+<strong>
+
+{{product.revenue | currency}}
+
+</strong>
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="dashboard-section">
+
+<h3>
+
+Low Stock Products
+
+</h3>
+
+<table class="dashboard-table">
+
+<thead>
+
+<tr>
+
+<th>Product</th>
+
+<th>SKU</th>
+
+<th>Stock</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr
+*ngFor="let product of dashboard?.lowStockProductsList">
+
+<td>
+
+{{product.productName}}
+
+</td>
+
+<td>
+
+{{product.sku}}
+
+</td>
+
+<td>
+
+<span class="danger">
+
+{{product.stock}}
+
+</span>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</section>
+
+
+
+
+<section class="dashboard-section">
+
+<h3>
+
+Latest Reviews
+
+</h3>
+
+<div class="review-grid">
+
+<div
+class="review-card"
+*ngFor="let review of dashboard?.latestReviews">
+
+<div class="stars">
+
+⭐ {{review.rating}} / 5
+
+</div>
+
+<h4>
+
+{{review.productName}}
+
+</h4>
+
+<p>
+
+{{review.comment}}
+
+</p>
+
+<div class="footer">
+
+<span>
+
+{{review.customerName}}
+
+</span>
+
+<span>
+
+{{review.reviewDate | date}}
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>

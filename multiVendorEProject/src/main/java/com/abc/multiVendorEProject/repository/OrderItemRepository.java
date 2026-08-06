@@ -1,5 +1,6 @@
 package com.abc.multiVendorEProject.repository;
 
+import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.VendorDashboard.TopSellingProductDto;
 import com.abc.multiVendorEProject.entity.*;
 import com.abc.multiVendorEProject.entity.Variant.ProductVariant;
 import org.springframework.data.domain.Page;
@@ -147,6 +148,23 @@ GROUP BY oi.vendor
 ORDER BY SUM(oi.totalPrice) DESC
 """)
     Page<Vendor> findTopVendorsByRevenue(Pageable pageable);
+
+
+    @Query("""
+SELECT p,
+       SUM(oi.quantity),
+       SUM(oi.totalPrice)
+FROM OrderItem oi
+JOIN oi.variant v
+JOIN v.product p
+WHERE oi.vendor.id = :vendorId
+GROUP BY p
+ORDER BY SUM(oi.quantity) DESC
+""")
+    List<Object[]> getTopSellingProducts(
+            @Param("vendorId") Long vendorId,
+            Pageable pageable
+    );
 
 
 }

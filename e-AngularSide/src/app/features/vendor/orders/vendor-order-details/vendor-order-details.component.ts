@@ -4,6 +4,7 @@ import { finalize } from 'rxjs';
 import { UpdateVendorOrderStatusRequest, VendorOrderDetailsResponse, VendorOrderStatus } from '../../models/vendorOrder.model';
 import { VendorOrderService } from '../../services/vendor-order.service';
 import { PaymentStatus } from 'src/app/models/order.model';
+import { environment } from 'src/app/services/environments';
 
 @Component({
   selector: 'app-vendor-order-details',
@@ -13,6 +14,8 @@ import { PaymentStatus } from 'src/app/models/order.model';
 export class VendorOrderDetailsComponent implements OnInit {
 
   vendorOrder?: VendorOrderDetailsResponse;
+
+  baseImageUrl = environment.baseImageUrl;
 
   loading = false;
 

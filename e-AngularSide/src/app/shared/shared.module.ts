@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
     ProductCardComponent,
     ReviewFormComponent,
     ReviewListComponent,
-    ReviewSummaryComponent
+    ReviewSummaryComponent,
   ],
   imports: [
     CommonModule,
@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
     ProductCardComponent,
     ReviewFormComponent,
     ReviewListComponent,
-    ReviewSummaryComponent
+    ReviewSummaryComponent,
   ]
 
 })

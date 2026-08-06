@@ -19,7 +19,7 @@ public class ReviewResponseDto {
 
     private String productName;
 
-    private Double rating;
+    private Integer rating;
 
     private String comment;
 

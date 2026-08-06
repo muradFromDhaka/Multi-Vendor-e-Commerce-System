@@ -1,0 +1,203 @@
+<div
+    class="sidebar"
+    [class.closed]="!(sidebarOpen$ | async)">
+
+    <!-- Logo -->
+    <div class="sidebar-header">
+
+        <h2>Admin Panel</h2>
+
+        <!-- <span>Admin Panel</span> -->
+
+    </div>
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="menu-group">
+
+        <h4>MAIN</h4>
+
+        <a
+            routerLink="/admin/adminDashboard"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }">
+
+            <span class="icon">📊</span>
+            <span class="title">Dashboard</span>
+
+        </a>
+
+    </div>
+
+    <!-- ================= CATALOG ================= -->
+
+    <div class="menu-group">
+
+        <h4>CATALOG</h4>
+
+        <a
+            routerLink="/admin/adminProductList"
+            routerLinkActive="active">
+
+            <span class="icon">📦</span>
+            <span class="title">Products</span>
+
+        </a>
+
+        <a
+            routerLink="/admin/adminCategoryList"
+            routerLinkActive="active">
+
+            <span class="icon">🗂</span>
+            <span class="title">Categories</span>
+
+        </a>
+
+        <a
+            routerLink="/admin/brand"
+            routerLinkActive="active">
+
+            <span class="icon">🏷</span>
+            <span class="title">Brands</span>
+
+        </a>
+
+        <a
+            routerLink="/admin/productVariantList"
+            routerLinkActive="active">
+
+            <span class="icon">🧩</span>
+            <span class="title">Product Variants</span>
+
+        </a>
+
+        <a
+            routerLink="/admin/attribute"
+            routerLinkActive="active">
+
+            <span class="icon">⚙</span>
+            <span class="title">Attributes</span>
+
+        </a>
+
+        <a
+            routerLink="/admin/attributeValue"
+            routerLinkActive="active">
+
+            <span class="icon">📝</span>
+            <span class="title">Attribute Values</span>
+
+        </a>
+
+    </div>
+
+    <!-- ================= USER MANAGEMENT ================= -->
+
+    <div class="menu-group">
+
+        <h4>USER MANAGEMENT</h4>
+
+        <a
+            routerLink="/admin/vendors"
+            routerLinkActive="active">
+
+            <span class="icon">🏪</span>
+            <span class="title">Vendors</span>
+
+        </a>
+
+        <a
+            routerLink="/admin/customers"
+            routerLinkActive="active">
+
+            <span class="icon">👥</span>
+            <span class="title">Customers</span>
+
+        </a>
+
+        <a
+            routerLink="/admin/roles"
+            routerLinkActive="active">
+
+            <span class="icon">🔐</span>
+            <span class="title">Roles</span>
+
+        </a>
+
+    </div>
+
+    <!-- ================= SALES ================= -->
+
+    <div class="menu-group">
+
+        <h4>SALES</h4>
+
+        <a
+            routerLink="/admin/orders"
+            routerLinkActive="active">
+
+            <span class="icon">🛒</span>
+            <span class="title">Orders</span>
+
+        </a>
+
+        <a
+            routerLink="/admin/payments"
+            routerLinkActive="active">
+
+            <span class="icon">💳</span>
+            <span class="title">Payments</span>
+
+        </a>
+
+    </div>
+
+    <!-- ================= MARKETING ================= -->
+
+    <div class="menu-group">
+
+        <h4>MARKETING</h4>
+
+        <a
+            routerLink="/admin/banner-management/banner"
+            routerLinkActive="active">
+
+            <span class="icon">🎯</span>
+            <span class="title">Banners</span>
+
+        </a>
+
+        <a
+            routerLink="/admin/deal-management"
+            routerLinkActive="active">
+
+            <span class="icon">🔥</span>
+            <span class="title">Deals</span>
+
+        </a>
+
+    </div>
+
+    <!-- ================= SYSTEM ================= -->
+
+    <div class="menu-group">
+
+        <h4>SYSTEM</h4>
+
+        <a>
+
+            <span class="icon">📈</span>
+            <span class="title">Analytics</span>
+
+        </a>
+
+        <a>
+
+            <span class="icon">⚙</span>
+            <span class="title">Settings</span>
+
+        </a>
+
+    </div>
+
+</div>

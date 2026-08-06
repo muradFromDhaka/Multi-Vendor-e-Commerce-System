@@ -27,7 +27,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @EntityGraph(attributePaths = {"variants"})
     Page<Product> findByBrandId(Long brandId, Pageable pageable);
-    
+
+
+    Page<Product> findByVendorIdOrderBySoldCountDesc(
+            Long vendorId,
+            Pageable pageable
+    );
 
     @EntityGraph(attributePaths = {"variants"})
     @Query("""

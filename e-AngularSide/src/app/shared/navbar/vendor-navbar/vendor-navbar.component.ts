@@ -9,6 +9,7 @@ import { OrderResponse } from 'src/app/models/order.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
 import { OrderService } from 'src/app/services/order.service';
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-vendor-navbar',
@@ -30,7 +31,8 @@ export class VendorNavbarComponent {
       private router: Router,
       private acRoute: ActivatedRoute,
       private orderService:OrderService,
-      private cartService: CartService
+      private cartService: CartService,
+       public layoutService: LayoutService
     ){}
    
   
@@ -82,7 +84,14 @@ this.subscriptions.add(
     }
 
     
+@Output() menuClick = new EventEmitter<void>();
 
+toggleSidebar(): void {
+
+   console.log("CLICK");
+   
+    this.layoutService.toggleSidebar();
+}
 
 
 searchProduct() {
@@ -132,7 +141,7 @@ searchProduct() {
       this.router.navigate(['/home'])
     }
   
-       @Output() toggleSidebar = new EventEmitter<boolean>();
+      //  @Output() toggleSidebar = new EventEmitter<boolean>();
       
       notificationCount: number = 3;
       pendingOrders!: number;
@@ -218,7 +227,7 @@ searchProduct() {
     
       onToggleSidebar() {
         this.isSidebarOpen = !this.isSidebarOpen;
-        this.toggleSidebar.emit(this.isSidebarOpen);
+        // this.toggleSidebar.emit(this.isSidebarOpen);
       }
     
       markAllAsRead() {

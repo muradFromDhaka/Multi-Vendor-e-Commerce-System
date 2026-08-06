@@ -1,0 +1,310 @@
+// ===============================
+// Page
+// ===============================
+
+:host {
+  display: block;
+}
+
+// ===============================
+// Cards
+// ===============================
+
+.card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all .25s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, .08) !important;
+  }
+}
+
+.card-header {
+  background: #fff;
+  border-bottom: 1px solid #ececec;
+  padding: 1rem 1.25rem;
+
+  h5 {
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+.card-body {
+
+  h1 {
+    font-size: 2.3rem;
+    font-weight: 700;
+  }
+
+  h6 {
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+}
+
+// ===============================
+// Stars
+// ===============================
+
+.text-warning {
+
+  font-size: 1rem;
+  letter-spacing: 1px;
+
+}
+
+.fs-4 {
+
+  span {
+
+    margin-right: 2px;
+
+  }
+
+}
+
+// ===============================
+// Progress
+// ===============================
+
+.progress {
+
+  height: 8px;
+
+  border-radius: 10px;
+
+  background: #ececec;
+
+  overflow: hidden;
+
+}
+
+.progress-bar {
+
+  transition: width .4s ease;
+
+}
+
+// ===============================
+// Table
+// ===============================
+
+.table {
+
+  margin-bottom: 0;
+
+}
+
+.table thead th {
+
+  font-size: .9rem;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  color: #6c757d;
+
+  white-space: nowrap;
+
+}
+
+.table tbody td {
+
+  vertical-align: middle;
+
+  padding-top: .9rem;
+
+  padding-bottom: .9rem;
+
+}
+
+.table tbody tr {
+
+  transition: background .2s ease;
+
+}
+
+.table tbody tr:hover {
+
+  background: #fafafa;
+
+}
+
+// ===============================
+// Customer Name
+// ===============================
+
+.table strong {
+
+  font-weight: 600;
+
+}
+
+// ===============================
+// Search
+// ===============================
+
+.form-control,
+.form-select {
+
+  border-radius: 10px;
+
+}
+
+.form-control:focus,
+.form-select:focus {
+
+  box-shadow: none;
+
+  border-color: #0d6efd;
+
+}
+
+// ===============================
+// Pagination
+// ===============================
+
+.pagination {
+
+  margin: 0;
+
+}
+
+.page-link {
+
+  border-radius: 8px;
+
+  margin-left: 3px;
+
+  margin-right: 3px;
+
+  border: none;
+
+  min-width: 40px;
+
+  text-align: center;
+
+}
+
+.page-item.active .page-link {
+
+  font-weight: 600;
+
+}
+
+.page-item.disabled .page-link {
+
+  opacity: .5;
+
+}
+
+// ===============================
+// Spinner
+// ===============================
+
+.spinner-border {
+
+  width: 3rem;
+
+  height: 3rem;
+
+}
+
+// ===============================
+// Empty State
+// ===============================
+
+.text-muted {
+
+  font-size: .9rem;
+
+}
+
+// ===============================
+// Responsive
+// ===============================
+
+@media (max-width: 992px) {
+
+  .card-header {
+
+    .d-flex {
+
+      gap: 1rem;
+
+    }
+
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .card-body {
+
+    h1 {
+
+      font-size: 2rem;
+
+    }
+
+  }
+
+  .table {
+
+    min-width: 700px;
+
+  }
+
+  .pagination {
+
+    justify-content: center;
+
+    margin-top: 1rem;
+
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  .card-header {
+
+    h5 {
+
+      width: 100%;
+
+      margin-bottom: 1rem;
+
+    }
+
+  }
+
+  .form-control {
+
+    width: 100% !important;
+
+  }
+
+  .form-select {
+
+    width: 100%;
+
+  }
+
+  .page-link {
+
+    min-width: 34px;
+
+    font-size: .85rem;
+
+    padding: .4rem .65rem;
+
+  }
+
+}

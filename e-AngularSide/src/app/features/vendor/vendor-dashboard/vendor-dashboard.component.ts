@@ -1,103 +1,57 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { OrderResponse } from 'src/app/models/order.model';
-import { VendorResponse } from 'src/app/models/vendor.model';
-import { OrderService } from 'src/app/services/order.service';
-import { ProductService } from 'src/app/services/product.service';
-import { VendorService } from '../services/vendor.service';
-import { ProductListResponse } from 'src/app/models/product.model';
-import { VendorOrderService } from '../services/vendor-order.service';
-import { VendorOrderListResponse } from '../models/vendorOrder.model';
-import { VendorProductService } from '../services/vendor-product.service';
+import { VendorDashboard } from '../models/vendor-dashboard.model';
+import { VendorDashboardService } from '../services/vendor-dashboard.service';
+import { environment } from 'src/app/services/environments';
 
 @Component({
   selector: 'app-vendor-dashboard',
   templateUrl: './vendor-dashboard.component.html',
   styleUrls: ['./vendor-dashboard.component.scss']
 })
-export class VendorDashboardComponent implements OnInit {
+export class VendorDashboardComponent
+implements OnInit {
 
-  activeTab: string = 'profile';
-  modalOpen: boolean = false;
-  editingProduct: any = null;
+  dashboard?: VendorDashboard;
+  baseImageUrl = environment.baseImageUrl;
 
-   vendor?: VendorResponse;
-
-  orders: VendorOrderListResponse[] = [];
-   
-
-  products: ProductListResponse[] = [];
-
-
-  productForm!: FormGroup; 
+  loading = false;
 
   constructor(
-    private router: Router,
-    private vendorProducService: VendorProductService,
-    private vendorService: VendorService,
-    private vendorOrderService: VendorOrderService,
-  ){}
+    private dashboardService: VendorDashboardService
+  ) { }
+
   ngOnInit(): void {
-    this.loadVendor();
-    this.loadProducts();
-    this.loadOrders();
+
+    this.loadDashboard();
+
   }
 
-   loadVendor() {
-    this.vendorService.getMyVendor().subscribe((res) => this.vendor = res);
+  loadDashboard(): void {
+
+    this.loading = true;
+
+    this.dashboardService
+      .getDashboard()
+      .subscribe({
+
+        next: response => {
+
+          this.dashboard = response;
+
+          this.loading = false;
+
+        },
+
+        error: error => {
+
+          console.error(error);
+
+          this.loading = false;
+
+        }
+
+      });
+
   }
-
-    loadProducts() {
-    this.vendorProducService.getMyProducts()
-      .subscribe(res => this.products = res.content);
-  }
-
-
-  loadOrders() {
-    this.vendorOrderService.getVendorOrders()
-      .subscribe(res => this.orders = res.content);
-  }
-
-
-  selectTab(tab: string) {
-    this.activeTab = tab;
-    // this.router.navigate(['/vendor/vendorProfile'])
-  }
-
-
-  openModal() {
-    this.modalOpen = true;
-    this.editingProduct = null;
-  }
-
-  closeModal() {
-    this.modalOpen = false;
-  }
-
-  editProduct(product: any) {
-    this.editingProduct = product;
-    this.modalOpen = true;
-  }
-
-  saveProduct() {
-    if(this.editingProduct) {
-      Object.assign(this.editingProduct, this.productForm);
-    } else {
-      // this.products.push({ ...this.productForm });
-    }
-    this.closeModal();
-  }
-
-  deleteProduct(product: ProductListResponse) {
-    if (!confirm('Delete Product?')) {
-        return;
-    }
-    this.vendorProducService
-        .deleteProduct(product.id)
-        .subscribe(() => {
-            this.loadProducts();
-        });
-}
 
 }

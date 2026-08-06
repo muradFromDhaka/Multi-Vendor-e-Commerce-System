@@ -13,9 +13,9 @@ public class ReviewRequestDto {
     private Long productId;
 
     @NotNull
-    @DecimalMin("1.0")
-    @DecimalMax("5.0")
-    private Double rating;
+    @Min('1')
+    @Max('5')
+    private Integer rating;
 
     @NotBlank
     @Size(max = 1000)

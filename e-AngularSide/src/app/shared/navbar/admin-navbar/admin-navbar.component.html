@@ -7,7 +7,20 @@
   <div class="navbar-top">
     <div class="navbar-container">
       <div class="nav-left">
-        <a routerLink="" class="brand-logo">
+
+                <button
+    class="menu-toggle"
+    type="button"
+    (click)="toggleSidebar()"
+    aria-label="Toggle Sidebar">
+
+    <span></span>
+    <span></span>
+    <span></span>
+
+</button>
+        
+        <a routerLink="/admin/adminDashboard" class="brand-logo">
           <div class="logo-wrapper">
             <span class="logo-icon">A</span>
             <span class="logo-text">P U R I O N</span>
@@ -208,24 +221,6 @@
           <span class="nav-link-text">Dashboard</span>
         </a>
 
-         <a
-          routerLink="/admin/roles"
-          routerLinkActive="active"
-          class="nav-link"
-        >
-          <span class="nav-link-icon">🛡️</span>
-          <span class="nav-link-text"> Roles</span>
-        </a>
-
-        <a
-          routerLink="/admin/vendors"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="nav-link"
-        >
-          <span class="nav-link-icon">💼</span>
-          <span class="nav-link-text">Vendors</span>
-        </a>
 
         <a
           routerLink="/admin/adminProductList"
@@ -254,75 +249,6 @@
           <span class="nav-link-icon">🏷️</span>
           <span class="nav-link-text">Brand</span>
         </a>
-
-        <a
-          routerLink="/admin/customers"
-          routerLinkActive="active"
-          class="nav-link"
-        >
-          <span class="nav-link-icon">👥</span>
-          <span class="nav-link-text">Customers</span>
-        </a>
-        
-        <a
-          routerLink="/admin/orders"
-          routerLinkActive="active"
-          class="nav-link"
-        >
-          <span class="nav-link-icon">🚚</span>
-          <span class="nav-link-text">Orders</span>
-          <span class="order-badge" *ngIf="pendingOrders > 0">{{
-            pendingOrders
-          }}</span>
-        </a>
-
-         <a
-          routerLink="/admin/payments"
-          routerLinkActive="active"
-          class="nav-link"
-        >
-          <span class="nav-link-icon">🎯</span>
-          <span class="nav-link-text">Payment</span>
-        </a>
-
-<!-- ===============  Variant ================== -->
-<div class="nav-item dropdown">
-
-  <div class="nav-link more-dropdown">
-
-    <span class="nav-link-icon">🧊</span>
-
-    <span class="nav-link-text">Variants</span>
-
-    <span class="dropdown-arrow">▼</span>
-
-  </div>
-
-  <div class="dropdown-menu">
-
-    <a routerLink="/admin/attribute" class="dropdown-item">
-      🎯 Variants Attribute
-    </a>
-
-    <a routerLink="/admin/attributeValue" class="dropdown-item">
-      📝 Attribute Value
-    </a>
-
-    <a routerLink="/admin/productVariantList" class="dropdown-item">
-      🧩Product Variant
-    </a>
-
-    <a routerLink="/admin/banner-management/banner" class="dropdown-item">
-        Banner
-    </a>
-
-    <a routerLink="/admin/deal-management/deal" class="dropdown-item">
-        Deals
-    </a>
-
-  </div>
-
-</div>
 
 
         <!-- More Dropdown -->

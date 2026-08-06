@@ -8,11 +8,9 @@ import com.abc.multiVendorEProject.Util.NotFoundException;
 import com.abc.multiVendorEProject.entity.Product;
 import com.abc.multiVendorEProject.entity.Review;
 import com.abc.multiVendorEProject.entity.User;
+import com.abc.multiVendorEProject.entity.Vendor;
 import com.abc.multiVendorEProject.mapper.ReviewMapper;
-import com.abc.multiVendorEProject.repository.OrderItemRepository;
-import com.abc.multiVendorEProject.repository.ProductRepository;
-import com.abc.multiVendorEProject.repository.ReviewRepository;
-import com.abc.multiVendorEProject.repository.UserRepository;
+import com.abc.multiVendorEProject.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +29,7 @@ public class ReviewService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final OrderItemRepository orderItemRepository;
+    private final VendorRepository vendorRepository;
 
     public ReviewResponseDto createReview(ReviewRequestDto request) {
 
@@ -104,7 +103,6 @@ public class ReviewService {
 
         return ReviewMapper.toDto(review);
     }
-
 
 
     public Page<ReviewResponseDto> getReviewsByProduct(
@@ -214,10 +212,10 @@ public class ReviewService {
 
         Long totalReviews = reviewRepository.countByProduct(product);
 
-        System.out.println("========== UPDATE PRODUCT RATING ==========");
-        System.out.println("Product ID : " + product.getId());
-        System.out.println("Average    : " + avgRating);
-        System.out.println("Reviews    : " + totalReviews);
+//        System.out.println("========== UPDATE PRODUCT RATING ==========");
+//        System.out.println("Product ID : " + product.getId());
+//        System.out.println("Average    : " + avgRating);
+//        System.out.println("Reviews    : " + totalReviews);
 
         product.setAverageRating(
                 avgRating != null ? avgRating : 0.0);
@@ -227,9 +225,75 @@ public class ReviewService {
 
         Product saved = productRepository.save(product);
 
-        System.out.println("Saved Avg  : " + saved.getAverageRating());
-        System.out.println("Saved Total: " + saved.getTotalReviews());
+//        System.out.println("Saved Avg  : " + saved.getAverageRating());
+//        System.out.println("Saved Total: " + saved.getTotalReviews());
 
+    }
+
+    public Page<ReviewResponseDto> getVendorReviews(Pageable pageable) {
+
+        User user = getCurrentUser();
+
+        Vendor vendor = vendorRepository
+                .findByUserUserName(user.getUserName())
+                .orElseThrow(() -> new NotFoundException("Vendor not found"));
+
+        return reviewRepository
+                .findByProduct_Vendor_Id(vendor.getId(), pageable)
+                .map(ReviewMapper::toDto);
+    }
+
+
+    public ProductReviewSummaryDto getVendorReviewSummary() {
+
+        User user = getCurrentUser();
+
+        Vendor vendor = vendorRepository
+                .findByUserUserName(user.getUserName())
+                .orElseThrow(() ->
+                        new NotFoundException("Vendor not found"));
+
+        ProductReviewSummaryDto dto =
+                new ProductReviewSummaryDto();
+
+        Double avg =
+                reviewRepository.getAverageRatingByVendor(vendor.getId());
+
+        dto.setAverageRating(
+                avg != null ? avg : 0.0
+        );
+
+        dto.setTotalReviews(
+                reviewRepository.countByVendor(vendor.getId()));
+
+        dto.setFiveStar(
+                reviewRepository.countByVendorAndRating(vendor.getId(), 5));
+
+        dto.setFourStar(
+                reviewRepository.countByVendorAndRating(vendor.getId(), 4));
+
+        dto.setThreeStar(
+                reviewRepository.countByVendorAndRating(vendor.getId(), 3));
+
+        dto.setTwoStar(
+                reviewRepository.countByVendorAndRating(vendor.getId(), 2));
+
+        dto.setOneStar(
+                reviewRepository.countByVendorAndRating(vendor.getId(), 1));
+
+        return dto;
+    }
+
+
+    private User getCurrentUser() {
+        String username = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return userRepository.findById(username)
+                .orElseThrow(() ->
+                        new NotFoundException("User not found"));
     }
 
 }

@@ -102,4 +102,31 @@ export class ReviewService {
   );
 }
 
+
+// ===========================
+// Vendor Reviews
+// ===========================
+getVendorReviews(
+  page: number = 0,
+  size: number = 10,
+  sort: string = 'createdAt,desc'
+): Observable<PageResponse<ReviewResponse>> {
+
+  return this.http.get<PageResponse<ReviewResponse>>(
+    `${this.apiUrl}/vendor?page=${page}&size=${size}&sort=${sort}`
+  );
+}
+
+// ===========================
+// Vendor Review Summary
+// ===========================
+getVendorReviewSummary(): Observable<ProductReviewSummary> {
+
+  return this.http.get<ProductReviewSummary>(
+    `${this.apiUrl}/vendor/summary`
+  );
+
+}
+
+
 }

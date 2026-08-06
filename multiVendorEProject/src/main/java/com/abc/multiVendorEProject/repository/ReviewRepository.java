@@ -3,6 +3,7 @@ package com.abc.multiVendorEProject.repository;
 import com.abc.multiVendorEProject.entity.Product;
 import com.abc.multiVendorEProject.entity.Review;
 import com.abc.multiVendorEProject.entity.User;
+import com.abc.multiVendorEProject.entity.Vendor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,10 +17,6 @@ import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    // =========================
-    // Basic CRUD Queries
-    // =========================
-
     Page<Review> findByProduct(Product product, Pageable pageable);
 
     List<Review> findByUser(User user);
@@ -29,6 +26,15 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Long countByProduct(Product product);
 
     Long countByProductAndRating(Product product, Double rating);
+
+    List<Review> findTop5ByProductVendorIdOrderByCreatedAtDesc(
+            Long vendorId
+    );
+
+    Page<Review> findByProduct_Vendor_Id(
+            Long vendorId,
+            Pageable pageable
+    );
 
     // =========================
     // Product Review Summary
@@ -52,4 +58,30 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     BigDecimal getAverageRating();
 
     List<Review> findTop6ByOrderByCreatedAtDesc();
+
+    @Query("""
+        SELECT AVG(r.rating)
+        FROM Review r
+        WHERE r.product.vendor.id = :vendorId
+        """)
+    Double getAverageRatingByVendor(Long vendorId);
+
+    @Query("""
+        SELECT COUNT(r)
+        FROM Review r
+        WHERE r.product.vendor.id = :vendorId
+        """)
+    Long countByVendor(Long vendorId);
+
+
+    @Query("""
+        SELECT COUNT(r)
+        FROM Review r
+        WHERE r.product.vendor.id = :vendorId
+        AND r.rating = :rating
+        """)
+    Long countByVendorAndRating(
+            Long vendorId,
+            Integer rating
+    );
 }

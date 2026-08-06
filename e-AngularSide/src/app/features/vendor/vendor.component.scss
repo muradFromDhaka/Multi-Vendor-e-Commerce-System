@@ -1,0 +1,11 @@
+.vendor-layout {
+    display: flex;
+    height: calc(100vh - 70px); // Navbar height
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;     // ✅ শুধু Content scroll করবে
+    padding: 24px;
+    background: #f5f7fb;
+}

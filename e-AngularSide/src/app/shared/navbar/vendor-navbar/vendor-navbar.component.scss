@@ -651,3 +651,65 @@ $amazon-yellow: #febd69;
 .dropdown-arrow {
   margin-left: auto;
 }
+
+
+.menu-toggle{
+
+    width:42px;
+    height:42px;
+
+    border:none;
+    outline:none;
+
+    background:#ffffff;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:5px;
+
+    transition:.25s;
+
+    margin-right:16px;
+
+}
+
+.menu-toggle:hover{
+
+    background:#f3f4f6;
+
+    border-color:#2563eb;
+
+}
+
+.menu-toggle span{
+
+    width:18px;
+
+    height:2px;
+
+    background:#374151;
+
+    border-radius:10px;
+
+    transition:.3s;
+
+}
+
+
+.menu-toggle:hover span{
+
+    background:#2563eb;
+
+}

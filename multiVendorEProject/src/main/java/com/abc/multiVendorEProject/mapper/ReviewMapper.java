@@ -40,6 +40,8 @@ public class ReviewMapper {
 
         dto.setComment(review.getComment());
 
+        dto.setCreatedAt(review.getCreatedAt());
+
         return dto;
     }
 }

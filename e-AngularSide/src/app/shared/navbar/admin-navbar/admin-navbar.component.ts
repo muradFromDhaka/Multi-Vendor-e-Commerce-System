@@ -7,6 +7,7 @@ import { OrderResponse } from 'src/app/models/order.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
 import { OrderService } from 'src/app/services/order.service';
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-admin-navbar',
@@ -27,7 +28,8 @@ export class AdminNavbarComponent {
        private router: Router,
        private acRoute: ActivatedRoute,
        private orderService: OrderService,
-       private cartService: CartService
+       private cartService: CartService,
+       private layoutService: LayoutService
     ){}
    
   
@@ -90,6 +92,16 @@ export class AdminNavbarComponent {
     get totalOrders(): number {
     return this.orders.length;
   }
+
+
+  @Output() menuClick = new EventEmitter<void>();
+
+toggleSidebar(): void {
+
+   console.log("CLICK");
+   
+    this.layoutService.toggleSidebar();
+}
   
   
   
@@ -99,7 +111,7 @@ export class AdminNavbarComponent {
       this.router.navigate(['/home'])
     }
   
-       @Output() toggleSidebar = new EventEmitter<boolean>();
+      //  @Output() toggleSidebar = new EventEmitter<boolean>();
       
       notificationCount: number = 3;
       pendingOrders!: number;
@@ -194,7 +206,7 @@ export class AdminNavbarComponent {
     
       onToggleSidebar() {
         this.isSidebarOpen = !this.isSidebarOpen;
-        this.toggleSidebar.emit(this.isSidebarOpen);
+        // this.toggleSidebar.emit(this.isSidebarOpen);
       }
     
       markAllAsRead() {

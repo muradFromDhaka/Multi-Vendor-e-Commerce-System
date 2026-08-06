@@ -7,7 +7,20 @@
   <div class="navbar-top">
     <div class="navbar-container">
       <div class="nav-left">
-        <a routerLink="" class="brand-logo">
+
+        <button
+    class="menu-toggle"
+    type="button"
+    (click)="toggleSidebar()"
+    aria-label="Toggle Sidebar">
+
+    <span></span>
+    <span></span>
+    <span></span>
+
+</button>
+
+        <a routerLink="/vendor/dashboard" class="brand-logo">
           <div class="logo-wrapper">
             <span class="logo-icon">V</span>
             <span class="logo-text">P U R I O N</span>
@@ -189,12 +202,6 @@
     <div class="navbar-container">
       <div class="secondary-nav">
 
-        <a routerLink="/" routerLinkActive="active" class="nav-link">
-          <span class="nav-link-icon">🏠</span>
-          <span class="nav-link-text">Home</span>
-        </a>
-
-
         <a
           routerLink="/vendor/dashboard"
           routerLinkActive="active"
@@ -203,15 +210,6 @@
         >
           <span class="nav-link-icon">📊</span>
           <span class="nav-link-text">Dashboard</span>
-        </a>
-
-        <a
-          routerLink="/vendor/profile"
-          routerLinkActive="active"
-          class="nav-link"
-        >
-          <span class="nav-link-icon">🏪</span>
-          <span class="nav-link-text">Shop Profile</span>
         </a>
 
         <a
@@ -244,81 +242,7 @@
           }}</span>
         </a>
 
-        <a
-          routerLink="/vendor/inventory"
-          routerLinkActive="active"
-          class="nav-link"
-          *ngIf="currentUser$"
-        >
-          <span class="nav-link-icon">📦</span>
-          <span class="nav-link-text">Inventory</span>
-        </a>
 
-
-        <a
-          routerLink="/vendor/reviews"
-          routerLinkActive="active"
-          class="nav-link"
-        >
-          <span class="nav-link-icon">⭐</span>
-          <span class="nav-link-text">Reviews</span>
-        </a>
-
-        <a
-          routerLink="/vendor/vendorCustomer"
-          routerLinkActive="active"
-          class="nav-link"
-        >
-          <span class="nav-link-icon">⭐</span>
-          <span class="nav-link-text">Customer</span>
-        </a>
-
-        <!-- More Dropdown -->
-        <div class="nav-item dropdown">
-          <button
-            class="nav-link more-dropdown"
-            (click)="toggleDropdown('more')"
-          >
-            <span class="nav-link-icon">⋯</span>
-            <span class="nav-link-text">More</span>
-            <span class="dropdown-arrow">▼</span>
-          </button>
-          <div
-            class="dropdown-menu more-dropdown-menu"
-            [class.show]="dropdowns.more"
-          >
-            <a href="/admin/promotions" class="dropdown-item">
-              <span class="dropdown-icon">🎯</span>
-              Promotions
-            </a>
-            <a href="/admin/promotions" class="dropdown-item">
-              <span class="dropdown-icon">📋</span>
-              Reports
-            </a><a href="/admin/promotions" class="dropdown-item">
-              <span class="dropdown-icon">📈</span>
-              Analytics
-            </a><a href="/admin/promotions" class="dropdown-item">
-              <span class="dropdown-icon">📦</span>
-              Inventory
-            </a>
-            <a href="/admin/shipping" class="dropdown-item">
-              <span class="dropdown-icon">🚚</span>
-              Shipping
-            </a>
-            <a href="/admin/tax" class="dropdown-item">
-              <span class="dropdown-icon">💰</span>
-              Tax Settings
-            </a>
-            <a href="/admin/returns" class="dropdown-item">
-              <span class="dropdown-icon">↩️</span>
-              Returns
-            </a>
-            <a href="/admin/support" class="dropdown-item">
-              <span class="dropdown-icon">🛟</span>
-              Customer Support
-            </a>
-          </div>
-        </div>
       </div>
 
       <div class="secondary-actions">

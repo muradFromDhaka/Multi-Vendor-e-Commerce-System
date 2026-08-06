@@ -1,0 +1,97 @@
+
+<div
+    class="sidebar"
+    [class.closed]="!(sidebarOpen$ | async)">
+
+    <!-- Logo -->
+    <div class="sidebar-header">
+
+        <h2>Vendor Panel</h2>
+
+        <!-- <span>Vendor Panel</span> -->
+
+    </div>
+
+
+
+    <!-- STORE -->
+    <div class="menu-group">
+
+        <h4>STORE</h4>
+
+        <a
+            routerLink="/vendor/profile"
+            routerLinkActive="active">
+
+            <span class="icon">🏪</span>
+            <span class="title">Shop Profile</span>
+
+        </a>
+
+        <a
+            routerLink="/vendor/inventory"
+            routerLinkActive="active">
+
+            <span class="icon">📦</span>
+            <span class="title">Inventory</span>
+
+        </a>
+
+        <a
+            routerLink="/vendor/vendorProductVariantList"
+            routerLinkActive="active">
+
+            <span class="icon">🧩</span>
+            <span class="title">ProductVariants</span>
+
+        </a>
+
+    </div>
+
+    <!-- CUSTOMERS -->
+    <div class="menu-group">
+
+        <h4>CUSTOMERS</h4>
+
+        <a
+            routerLink="/vendor/vendorCustomer"
+            routerLinkActive="active">
+
+            <span class="icon">👥</span>
+            <span class="title">Customers</span>
+
+        </a>
+
+        <a
+            routerLink="/vendor/reviews"
+            routerLinkActive="active">
+
+            <span class="icon">⭐</span>
+            <span class="title">Reviews</span>
+
+        </a>
+
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="menu-group">
+
+        <h4>ACCOUNT</h4>
+
+        <a>
+
+            <span class="icon">⚙</span>
+            <span class="title">Settings</span>
+
+        </a>
+
+        <a (click)="logOut()">
+
+            <span class="icon">🚪</span>
+            <span class="title">Logout</span>
+
+        </a>
+
+    </div>
+
+</div>

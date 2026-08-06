@@ -3,11 +3,14 @@ package com.abc.multiVendorEProject.service.Vendor;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.UpdateVendorOrderStatusRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.VendorOrderDetailsResponseDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.vendorOrderDto.VendorOrderListResponseDto;
+import com.abc.multiVendorEProject.entity.OrderItem;
+import com.abc.multiVendorEProject.entity.Product;
 import com.abc.multiVendorEProject.entity.Vendor;
 import com.abc.multiVendorEProject.entity.VendorOrder;
 import com.abc.multiVendorEProject.enums.VendorOrderStatus;
 import com.abc.multiVendorEProject.mapper.VendorOrderMapper;
 import com.abc.multiVendorEProject.repository.OrderItemRepository;
+import com.abc.multiVendorEProject.repository.ProductRepository;
 import com.abc.multiVendorEProject.repository.VendorOrderRepository;
 import com.abc.multiVendorEProject.repository.VendorRepository;
 import com.abc.multiVendorEProject.service.OrderService;
@@ -20,6 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Transactional
@@ -31,6 +38,8 @@ public class VendorOrderService {
     private final VendorRepository vendorRepository;
     private final OrderItemRepository orderItemRepository;
     private final OrderService orderService;
+    private final ProductRepository productRepository;
+
 
     @Transactional(readOnly = true)
     public Page<VendorOrderListResponseDto> getVendorOrders(Pageable pageable) {
@@ -112,6 +121,14 @@ public class VendorOrderService {
 
             vendorOrderRepository.save(vendorOrder);
 
+            if (request.vendorOrderStatus() == VendorOrderStatus.DELIVERED) {
+                updateSoldCount(vendorOrder, SoldCountAction.INCREASE);
+            }
+
+            if (request.vendorOrderStatus() == VendorOrderStatus.RETURNED) {
+                updateSoldCount(vendorOrder, SoldCountAction.DECREASE);
+            }
+
             orderService.updateParentOrderStatus(
                     vendorOrder.getOrder().getId());
 
@@ -123,7 +140,6 @@ public class VendorOrderService {
 
         return VendorOrderMapper.toDetailsDto(vendorOrder);
     }
-
 
     // ===============================
 // Helper
@@ -141,15 +157,45 @@ public class VendorOrderService {
                         new RuntimeException("Vendor not found."));
     }
 
+    private enum SoldCountAction {
+        INCREASE,
+        DECREASE
+    }
+
+    private void updateSoldCount(
+            VendorOrder vendorOrder,
+            SoldCountAction action
+    ) {
+
+        Map<Long, Product> products = new HashMap<>();
+
+        for (OrderItem item : vendorOrder.getOrderItems()) {
+
+            Product product = item.getVariant().getProduct();
+
+            if (action == SoldCountAction.INCREASE) {
+                product.setSoldCount(product.getSoldCount() + item.getQuantity());
+            } else {
+                product.setSoldCount(
+                        Math.max(0, product.getSoldCount() - item.getQuantity())
+                );
+            }
+
+            products.put(product.getId(), product);
+        }
+
+        productRepository.saveAll(products.values());
+    }
+
 
     private void validateVendorOrderStatusTransition(
             VendorOrderStatus currentVendorOrderStatus,
             VendorOrderStatus newVendorOrderStatus) {
 
-        if (currentVendorOrderStatus == VendorOrderStatus.DELIVERED) {
-            throw new RuntimeException(
-                    "Delivered vendor order cannot be updated.");
-        }
+//        if (currentVendorOrderStatus == VendorOrderStatus.DELIVERED) {
+//            throw new RuntimeException(
+//                    "Delivered vendor order cannot be updated.");
+//        }
 
         if (currentVendorOrderStatus == VendorOrderStatus.CANCELLED) {
             throw new RuntimeException(
@@ -199,6 +245,13 @@ public class VendorOrderService {
                 if (newVendorOrderStatus != VendorOrderStatus.DELIVERED) {
                     throw new RuntimeException(
                             "Shipped order can only be DELIVERED.");
+                }
+            }
+
+            case DELIVERED -> {
+                if (newVendorOrderStatus != VendorOrderStatus.RETURNED) {
+                    throw new RuntimeException(
+                            "Delivered order can only be RETURNED.");
                 }
             }
 

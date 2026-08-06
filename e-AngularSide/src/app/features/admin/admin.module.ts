@@ -40,6 +40,7 @@ import { DashboardChartsComponent } from './admin-dashboard/dashboard-charts/das
 import { RecentOrdersComponent } from './admin-dashboard/recent-orders/recent-orders.component';
 import { RecentActivitiesComponent } from './admin-dashboard/recent-activities/recent-activities.component';
 import { ProductAnalyticsComponent } from './admin-dashboard/product-analytics/product-analytics.component';
+import { AdminSidebarComponent } from './admin-sidebar/admin-sidebar.component';
 
 
 @NgModule({
@@ -82,7 +83,8 @@ import { ProductAnalyticsComponent } from './admin-dashboard/product-analytics/p
   RecentOrdersComponent,
   RecentActivitiesComponent,
   DashboardHeaderComponent,
-  ProductAnalyticsComponent
+  ProductAnalyticsComponent,
+  AdminSidebarComponent
   ],
   imports: [
     CommonModule,

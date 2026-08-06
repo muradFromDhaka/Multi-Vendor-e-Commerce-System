@@ -2,6 +2,7 @@ package com.abc.multiVendorEProject.repository.VariantRepository;
 
 import com.abc.multiVendorEProject.entity.Product;
 import com.abc.multiVendorEProject.entity.Variant.ProductVariant;
+import com.abc.multiVendorEProject.entity.Vendor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +18,12 @@ public interface ProductVariantRepository
 
 
     long count();
+
+    long countByProductVendor(Vendor vendor);
+
+    long countByProductVendorAndStockLessThan(Vendor vendor, Integer stock);
+
+    long countByProductVendorAndStock(Vendor vendor, Integer stock);
 
     long countByStock(Integer stock);
 
@@ -135,5 +142,19 @@ AND pv.stock = 0
             Pageable pageable
     );
 
+
+    @Query("""
+    SELECT pv
+    FROM ProductVariant pv
+    WHERE pv.product.vendor.id = :vendorId
+      AND pv.stock > 0
+      AND pv.stock <= :maxStock
+    ORDER BY pv.stock ASC
+""")
+    List<ProductVariant> findTop5LowStockProducts(
+            @Param("vendorId") Long vendorId,
+            @Param("maxStock") Integer maxStock,
+            Pageable pageable
+    );
 
 }

@@ -22,11 +22,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Review extends BaseEntity{
 
-    @DecimalMin("1.0")
-    @DecimalMax("5.0")
+    @Min(1)
+    @Max(5)
     @Column(nullable = false)
-    private Double rating; // 1 to 5
+    private Integer rating; // 1 to 5
 
+    @NotBlank
+    @Size(min = 5, max = 1000)
     @Column(nullable = false, length = 1000)
     private String comment;
 

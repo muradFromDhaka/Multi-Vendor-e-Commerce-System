@@ -24,6 +24,9 @@ import { VendorCustomerListComponent } from './customers/vendor-customer-list/ve
 import { VendorCustomerDetailsComponent } from './customers/vendor-customer-details/vendor-customer-details.component';
 import { VendorInventoryComponent } from './inventory/vendor-inventory/vendor-inventory.component';
 import { UpdateStockComponent } from './inventory/update-stock/update-stock.component';
+import { VendorHeaderComponent } from './layout/vendor-header/vendor-header.component';
+import { VendorSidebarComponent } from './layout/vendor-sidebar/vendor-sidebar.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -47,13 +50,17 @@ import { UpdateStockComponent } from './inventory/update-stock/update-stock.comp
     VendorCustomerListComponent,
     VendorCustomerDetailsComponent,
     VendorInventoryComponent,
-    UpdateStockComponent
+    UpdateStockComponent,
+    VendorHeaderComponent,
+    VendorSidebarComponent
+    
   ],
   imports: [
     CommonModule,
     VendorRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    SharedModule,
   ]
 })
 export class VendorModule { }
