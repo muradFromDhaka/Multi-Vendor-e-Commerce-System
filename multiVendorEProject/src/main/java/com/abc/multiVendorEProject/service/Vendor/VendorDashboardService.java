@@ -6,17 +6,19 @@ import com.abc.multiVendorEProject.entity.Variant.ProductVariant;
 import com.abc.multiVendorEProject.entity.Vendor;
 import com.abc.multiVendorEProject.entity.VendorOrder;
 import com.abc.multiVendorEProject.enums.VendorOrderStatus;
-import com.abc.multiVendorEProject.repository.OrderItemRepository;
-import com.abc.multiVendorEProject.repository.ProductRepository;
-import com.abc.multiVendorEProject.repository.ReviewRepository;
+import com.abc.multiVendorEProject.repository.*;
 import com.abc.multiVendorEProject.repository.VariantRepository.ProductVariantRepository;
-import com.abc.multiVendorEProject.repository.VendorOrderRepository;
 import com.abc.multiVendorEProject.service.VendorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,6 +26,7 @@ import java.util.List;
 public class VendorDashboardService {
 
     private final VendorService vendorService;
+    private final VendorRepository vendorRepository;
     private final ProductVariantRepository productVariantRepository;
     private final VendorOrderRepository vendorOrderRepository;
     private final OrderItemRepository orderItemRepository;
@@ -192,4 +195,114 @@ public class VendorDashboardService {
 
                 .build();
     }
+
+
+    @Transactional(readOnly = true)
+    public VendorPerformanceResponseDto getPerformance(
+            LocalDate fromDate,
+            LocalDate toDate) {
+
+        if (fromDate == null || toDate == null) {
+            throw new RuntimeException(
+                    "From date and To date are required."
+            );
+        }
+
+        if (fromDate.isAfter(toDate)) {
+            throw new RuntimeException(
+                    "From date cannot be after To date."
+            );
+        }
+
+        Vendor vendor = getLoggedInVendor();
+
+        LocalDateTime fromDateTime =
+                fromDate.atStartOfDay();
+
+        LocalDateTime toDateTime =
+                toDate.plusDays(1).atStartOfDay();
+
+        BigDecimal revenue =
+                vendorOrderRepository.getRevenueByDateRange(
+                        vendor,
+                        fromDateTime,
+                        toDateTime
+                );
+
+        Long orders =
+                vendorOrderRepository.countOrdersByDateRange(
+                        vendor,
+                        fromDateTime,
+                        toDateTime
+                );
+
+        Long productsSold =
+                orderItemRepository.getProductsSoldByDateRange(
+                        vendor,
+                        fromDateTime,
+                        toDateTime
+                );
+
+        Long newCustomers =
+                vendorOrderRepository.countNewCustomersByDateRange(
+                        vendor,
+                        fromDateTime,
+                        toDateTime
+                );
+
+        if (revenue == null) {
+            revenue = BigDecimal.ZERO;
+        }
+
+        if (orders == null) {
+            orders = 0L;
+        }
+
+        if (productsSold == null) {
+            productsSold = 0L;
+        }
+
+        if (newCustomers == null) {
+            newCustomers = 0L;
+        }
+
+        BigDecimal averageOrderValue = BigDecimal.ZERO;
+
+        if (orders > 0) {
+
+            averageOrderValue =
+                    revenue.divide(
+                            BigDecimal.valueOf(orders),
+                            2,
+                            RoundingMode.HALF_UP
+                    );
+        }
+
+        return new VendorPerformanceResponseDto(
+                revenue,
+                orders,
+                productsSold,
+                newCustomers,
+                averageOrderValue
+        );
+    }
+
+
+    private Vendor getLoggedInVendor() {
+
+        String userName = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return vendorRepository.findByUserUserName(userName)
+                .orElseThrow(() ->
+                        new RuntimeException("Vendor not found."));
+    }
+
+//    private enum SoldCountAction {
+//        INCREASE,
+//        DECREASE
+//    }
+
 }

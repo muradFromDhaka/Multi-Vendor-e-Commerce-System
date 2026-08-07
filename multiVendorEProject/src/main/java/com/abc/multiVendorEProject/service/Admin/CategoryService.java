@@ -1,10 +1,11 @@
-package com.abc.multiVendorEProject.service;
+package com.abc.multiVendorEProject.service.Admin;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.CategoryRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.CategoryResponseDto;
 import com.abc.multiVendorEProject.entity.Category;
 import com.abc.multiVendorEProject.mapper.CategoryMapper;
 import com.abc.multiVendorEProject.repository.CategoryRepository;
+import com.abc.multiVendorEProject.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

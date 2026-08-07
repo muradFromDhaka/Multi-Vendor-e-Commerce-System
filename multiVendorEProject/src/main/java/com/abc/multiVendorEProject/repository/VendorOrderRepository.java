@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,4 +104,47 @@ WHERE vo.vendor=:vendor
     );
 
     List<VendorOrder> findTop5ByVendorOrderByCreatedAtDesc(Vendor vendor);
+
+
+    @Query("""
+    SELECT COUNT(vo)
+    FROM VendorOrder vo
+    WHERE vo.vendor = :vendor
+    AND vo.createdAt >= :fromDateTime
+    AND vo.createdAt < :toDateTime
+""")
+    Long countOrdersByDateRange(
+            @Param("vendor") Vendor vendor,
+            @Param("fromDateTime") LocalDateTime fromDateTime,
+            @Param("toDateTime") LocalDateTime toDateTime
+    );
+
+    @Query("""
+    SELECT COALESCE(SUM(vo.totalPrice), 0)
+    FROM VendorOrder vo
+    WHERE vo.vendor = :vendor
+    AND vo.vendorOrderStatus = 'DELIVERED'
+    AND vo.createdAt >= :fromDateTime
+    AND vo.createdAt < :toDateTime
+""")
+    BigDecimal getRevenueByDateRange(
+            @Param("vendor") Vendor vendor,
+            @Param("fromDateTime") LocalDateTime fromDateTime,
+            @Param("toDateTime") LocalDateTime toDateTime
+    );
+
+
+    @Query("""
+    SELECT COUNT(DISTINCT vo.order.user.id)
+    FROM VendorOrder vo
+    WHERE vo.vendor = :vendor
+    AND vo.createdAt >= :fromDateTime
+    AND vo.createdAt < :toDateTime
+""")
+    Long countNewCustomersByDateRange(
+            @Param("vendor") Vendor vendor,
+            @Param("fromDateTime") LocalDateTime fromDateTime,
+            @Param("toDateTime") LocalDateTime toDateTime
+    );
+
 }

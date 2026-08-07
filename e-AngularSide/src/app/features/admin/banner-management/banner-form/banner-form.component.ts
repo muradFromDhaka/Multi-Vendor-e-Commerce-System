@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BannerService } from '../../services/banner.service';
 import { BannerResponse } from '../../models/banner.model';
+import { environment } from 'src/app/services/environments';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { BannerResponse } from '../../models/banner.model';
 })
 export class BannerFormComponent implements OnInit {
 
+  baseImageUrl = environment.baseImageUrl;;
 
   bannerForm!: FormGroup;
 
@@ -146,7 +148,7 @@ export class BannerFormComponent implements OnInit {
 
 
         this.imagePreview =
-        banner.imageUrl;
+        this.baseImageUrl + banner.imageUrl;
 
 
       },

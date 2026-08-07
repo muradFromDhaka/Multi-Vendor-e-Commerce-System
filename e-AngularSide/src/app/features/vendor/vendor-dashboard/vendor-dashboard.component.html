@@ -1,356 +1,708 @@
-<div class="dashboard-container">
+<div class="vendor-dashboard">
 
-  <div class="dashboard-header">
-    <div>
-      <h2>Vendor Dashboard</h2>
-      <p>Monitor your store performance and business insights.</p>
-    </div>
-  </div>
+    <!-- =========================
+         Dashboard Header
+    ========================== -->
 
-  <!-- Revenue -->
-  <section class="dashboard-section">
+    <div class="dashboard-header">
 
-    <h3>Revenue</h3>
+        <div>
+            <h2>Vendor Dashboard</h2>
 
-    <div class="card-grid three">
+            <p>
+                Overview of your store performance and activities.
+            </p>
+        </div>
 
-      <div class="dashboard-card revenue">
-        <span class="title">Today Revenue</span>
-        <h2>{{dashboard?.todayRevenue | currency}}</h2>
-      </div>
+        <button
+            type="button"
+            class="btn btn-outline-primary"
+            (click)="loadDashboard()"
+            [disabled]="loading">
 
-      <div class="dashboard-card revenue">
-        <span class="title">Monthly Revenue</span>
-        <h2>{{dashboard?.monthlyRevenue | currency}}</h2>
-      </div>
+            Refresh
 
-      <div class="dashboard-card revenue">
-        <span class="title">Total Revenue</span>
-        <h2>{{dashboard?.totalRevenue | currency}}</h2>
-      </div>
+        </button>
 
     </div>
 
-  </section>
 
-  <!-- Orders -->
+    <!-- =========================
+         Performance
+    ========================== -->
 
-  <section class="dashboard-section">
+    <section class="dashboard-section">
 
-    <h3>Orders</h3>
+        <div class="section-header">
 
-    <div class="card-grid three">
+            <div>
+                <h3>Performance</h3>
 
-      <div class="dashboard-card orders">
-        <span>Total Orders</span>
-        <h2>{{dashboard?.totalOrders}}</h2>
-      </div>
+                <p>
+                    Analyze your store performance by date range.
+                </p>
+            </div>
 
-      <div class="dashboard-card warning">
-        <span>Pending</span>
-        <h2>{{dashboard?.pendingOrders}}</h2>
-      </div>
-
-      <div class="dashboard-card info">
-        <span>Processing</span>
-        <h2>{{dashboard?.processingOrders}}</h2>
-      </div>
-
-      <div class="dashboard-card primary">
-        <span>Shipped</span>
-        <h2>{{dashboard?.shippedOrders}}</h2>
-      </div>
-
-      <div class="dashboard-card success">
-        <span>Delivered</span>
-        <h2>{{dashboard?.deliveredOrders}}</h2>
-      </div>
-
-      <div class="dashboard-card danger">
-        <span>Cancelled</span>
-        <h2>{{dashboard?.cancelledOrders}}</h2>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- Products -->
-
-  <section class="dashboard-section">
-
-    <h3>Products</h3>
-
-    <div class="card-grid three">
-
-      <div class="dashboard-card">
-        <span>Total Products</span>
-        <h2>{{dashboard?.totalProducts}}</h2>
-      </div>
-
-      <div class="dashboard-card warning">
-        <span>Low Stock</span>
-        <h2>{{dashboard?.lowStockProducts}}</h2>
-      </div>
-
-      <div class="dashboard-card danger">
-        <span>Out Of Stock</span>
-        <h2>{{dashboard?.outOfStockProducts}}</h2>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- Customers -->
-
-  <section class="dashboard-section">
-
-    <h3>Customers & Reviews</h3>
-
-    <div class="card-grid three">
-
-      <div class="dashboard-card">
-        <span>Total Customers</span>
-        <h2>{{dashboard?.totalCustomers}}</h2>
-      </div>
-
-      <div class="dashboard-card">
-        <span>Total Reviews</span>
-        <h2>{{dashboard?.totalReviews}}</h2>
-      </div>
-
-      <div class="dashboard-card success">
-        <span>Average Rating</span>
-        <h2>{{dashboard?.averageRating | number:'1.1-1'}} ★</h2>
-      </div>
-
-    </div>
-
-  </section>
-
-</div>
+        </div>
 
 
-<section class="dashboard-section">
+        <!-- Date Filter -->
 
-    <h3>Recent Orders</h3>
+        <div class="performance-filter">
 
-    <table class="dashboard-table">
+            <div class="date-field">
 
-        <thead>
+                <label for="fromDate">
+                    From Date
+                </label>
 
-        <tr>
+                <input
+                    id="fromDate"
+                    type="date"
+                    class="form-control"
+                    [(ngModel)]="fromDate">
 
-            <th>Order</th>
-            <th>Customer</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Date</th>
+            </div>
 
-        </tr>
 
-        </thead>
+            <div class="date-field">
 
-        <tbody>
+                <label for="toDate">
+                    To Date
+                </label>
 
-        <tr *ngFor="let order of dashboard?.recentOrders">
+                <input
+                    id="toDate"
+                    type="date"
+                    class="form-control"
+                    [(ngModel)]="toDate">
 
-            <td>#{{order.orderNumber}}</td>
+            </div>
 
-            <td>{{order.customerName}}</td>
 
-            <td>{{order.totalAmount | currency}}</td>
+            <div class="filter-action">
 
-            <td>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    (click)="loadPerformance()"
+                    [disabled]="performanceLoading">
 
-                <span class="status">
+                    <span
+                        *ngIf="performanceLoading"
+                        class="spinner-border spinner-border-sm me-2">
+                    </span>
 
-                    {{order.status}}
+                    {{ performanceLoading ? 'Loading...' : 'Apply' }}
 
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Performance Cards -->
+
+        <div
+            class="card-grid five"
+            *ngIf="performance">
+
+            <div class="dashboard-card revenue">
+
+                <span class="title">
+                    Revenue
                 </span>
 
-            </td>
+                <h2>
+                    {{ performance?.revenue | currency }}
+                </h2>
 
-            <td>
-
-                {{order.orderDate | date:'medium'}}
-
-            </td>
-
-        </tr>
-
-        </tbody>
-
-    </table>
-
-</section>
+            </div>
 
 
-<section class="dashboard-section">
+            <div class="dashboard-card orders">
 
-<h3>Top Selling Products</h3>
+                <span class="title">
+                    Orders
+                </span>
 
-<div class="product-grid">
+                <h2>
+                    {{ performance?.orders }}
+                </h2>
 
-<div
-class="product-card"
-*ngFor="let product of dashboard?.topSellingProducts">
+            </div>
 
-<img
-[src]="baseImageUrl + product.imageUrl"
-alt="">
 
-<h4>
+            <div class="dashboard-card primary">
 
-{{product.productName}}
+                <span class="title">
+                    Products Sold
+                </span>
 
-</h4>
+                <h2>
+                    {{ performance?.productsSold }}
+                </h2>
 
-<p>
+            </div>
 
-Sold :
 
-<strong>
+            <div class="dashboard-card info">
 
-{{product.soldQuantity}}
+                <span class="title">
+                    New Customers
+                </span>
 
-</strong>
+                <h2>
+                    {{ performance?.newCustomers }}
+                </h2>
 
-</p>
+            </div>
 
-<p>
 
-Revenue :
+            <div class="dashboard-card success">
 
-<strong>
+                <span class="title">
+                    Average Order Value
+                </span>
 
-{{product.revenue | currency}}
+                <h2>
+                    {{ performance?.averageOrderValue | currency }}
+                </h2>
 
-</strong>
+            </div>
 
-</p>
+        </div>
+
+
+        <!-- Empty State -->
+
+        <div
+            class="empty-state"
+            *ngIf="!performance && !performanceLoading">
+
+            <p>
+                Select a date range to view performance.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Revenue Overview
+    ========================== -->
+
+    <section class="dashboard-section">
+
+        <h3>Revenue Overview</h3>
+
+        <div class="card-grid three">
+
+            <div class="dashboard-card revenue">
+
+                <span class="title">
+                    Today Revenue
+                </span>
+
+                <h2>
+                    {{ dashboard?.todayRevenue | currency }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card revenue">
+
+                <span class="title">
+                    Monthly Revenue
+                </span>
+
+                <h2>
+                    {{ dashboard?.monthlyRevenue | currency }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card revenue">
+
+                <span class="title">
+                    Total Revenue
+                </span>
+
+                <h2>
+                    {{ dashboard?.totalRevenue | currency }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Orders Overview
+    ========================== -->
+
+    <section class="dashboard-section">
+
+        <h3>Orders Overview</h3>
+
+        <div class="card-grid three">
+
+            <div class="dashboard-card orders">
+
+                <span>
+                    Total Orders
+                </span>
+
+                <h2>
+                    {{ dashboard?.totalOrders }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card warning">
+
+                <span>
+                    Pending
+                </span>
+
+                <h2>
+                    {{ dashboard?.pendingOrders }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card info">
+
+                <span>
+                    Processing
+                </span>
+
+                <h2>
+                    {{ dashboard?.processingOrders }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card primary">
+
+                <span>
+                    Shipped
+                </span>
+
+                <h2>
+                    {{ dashboard?.shippedOrders }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card success">
+
+                <span>
+                    Delivered
+                </span>
+
+                <h2>
+                    {{ dashboard?.deliveredOrders }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card danger">
+
+                <span>
+                    Cancelled
+                </span>
+
+                <h2>
+                    {{ dashboard?.cancelledOrders }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Product Overview
+    ========================== -->
+
+    <section class="dashboard-section">
+
+        <h3>Product Overview</h3>
+
+        <div class="card-grid three">
+
+            <div class="dashboard-card">
+
+                <span>
+                    Total Products
+                </span>
+
+                <h2>
+                    {{ dashboard?.totalProducts }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card warning">
+
+                <span>
+                    Low Stock
+                </span>
+
+                <h2>
+                    {{ dashboard?.lowStockProducts }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card danger">
+
+                <span>
+                    Out Of Stock
+                </span>
+
+                <h2>
+                    {{ dashboard?.outOfStockProducts }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Customers & Reviews
+    ========================== -->
+
+    <section class="dashboard-section">
+
+        <h3>Customers & Reviews</h3>
+
+        <div class="card-grid three">
+
+            <div class="dashboard-card">
+
+                <span>
+                    Total Customers
+                </span>
+
+                <h2>
+                    {{ dashboard?.totalCustomers }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <span>
+                    Total Reviews
+                </span>
+
+                <h2>
+                    {{ dashboard?.totalReviews }}
+                </h2>
+
+            </div>
+
+
+            <div class="dashboard-card success">
+
+                <span>
+                    Average Rating
+                </span>
+
+                <h2>
+                    {{ dashboard?.averageRating | number:'1.1-1' }}
+                    ★
+                </h2>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Recent Orders
+    ========================== -->
+
+    <section class="dashboard-section">
+
+        <div class="section-header">
+
+            <h3>
+                Recent Orders
+            </h3>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="dashboard-table">
+
+                <thead>
+
+                <tr>
+
+                    <th>Order</th>
+                    <th>Customer</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                <tr
+                    *ngFor="let order of dashboard?.recentOrders">
+
+                    <td>
+                        #{{ order.orderNumber }}
+                    </td>
+
+
+                    <td>
+                        {{ order.customerName }}
+                    </td>
+
+
+                    <td>
+                        {{ order.totalAmount | currency }}
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="status"
+                            [ngClass]="{
+                                'pending': order.status === 'PENDING',
+                                'confirmed': order.status === 'CONFIRMED',
+                                'processing': order.status === 'PROCESSING',
+                                'packed': order.status === 'PACKED',
+                                'shipped': order.status === 'SHIPPED',
+                                'delivered': order.status === 'DELIVERED',
+                                'cancelled': order.status === 'CANCELLED',
+                                'returned': order.status === 'RETURNED'
+                            }">
+
+                            {{ order.status }}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+                        {{ order.orderDate | date:'medium' }}
+                    </td>
+
+                </tr>
+
+
+                <tr
+                    *ngIf="!dashboard?.recentOrders?.length">
+
+                    <td
+                        colspan="5"
+                        class="text-center text-muted py-4">
+
+                        No recent orders found.
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Product Insights
+    ========================== -->
+
+    <section class="dashboard-section">
+
+        <h3>Product Insights</h3>
+
+        <!-- Top Selling Products -->
+
+        <div class="dashboard-panel">
+
+            <h4>
+                Top Selling Products
+            </h4>
+
+            <div
+                class="product-list"
+                *ngIf="dashboard?.topSellingProducts?.length">
+
+                <div
+                    class="product-item"
+                    *ngFor="
+                        let product
+                        of dashboard?.topSellingProducts
+                    ">
+
+                    <img
+                        [src]="baseImageUrl + product.imageUrl"
+                        [alt]="product.productName">
+
+                    <div class="product-info">
+
+                        <strong>
+                            {{ product.productName }}
+                        </strong>
+
+                        <span>
+                            Sold:
+                            {{ product.soldQuantity }}
+                        </span>
+
+                        <span>
+                            Revenue:
+                            {{ product.revenue | currency }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="empty-state"
+                *ngIf="!dashboard?.topSellingProducts?.length">
+
+                No selling data available.
+
+            </div>
+
+        </div>
+
+
+        <!-- Low Stock -->
+
+        <div class="dashboard-panel">
+
+            <h4>
+                Low Stock Products
+            </h4>
+
+            <div
+                class="product-list"
+                *ngIf="dashboard?.lowStockProductsList?.length">
+
+                <div
+                    class="stock-item"
+                    *ngFor="
+                        let product
+                        of dashboard?.lowStockProductsList
+                    ">
+
+                    <div>
+
+                        <strong>
+                            {{ product.productName }}
+                        </strong>
+
+                        <span>
+                            SKU: {{ product.sku }}
+                        </span>
+
+                    </div>
+
+                    <strong class="stock-warning">
+                        {{ product.stock }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Latest Reviews -->
+
+        <div class="dashboard-panel">
+
+            <h4>
+                Latest Reviews
+            </h4>
+
+            <div
+                class="review-list"
+                *ngIf="dashboard?.latestReviews?.length">
+
+                <div
+                    class="review-item"
+                    *ngFor="
+                        let review
+                        of dashboard?.latestReviews
+                    ">
+
+                    <div class="review-header">
+
+                        <strong>
+                            {{ review.customerName }}
+                        </strong>
+
+                        <span>
+                            ⭐ {{ review.rating }} / 5
+                        </span>
+
+                    </div>
+
+                    <strong>
+                        {{ review.productName }}
+                    </strong>
+
+                    <p>
+                        {{ review.comment }}
+                    </p>
+
+                    <small>
+                        {{ review.reviewDate | date }}
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </div>
-
-</div>
-
-</section>
-
-
-
-<section class="dashboard-section">
-
-<h3>
-
-Low Stock Products
-
-</h3>
-
-<table class="dashboard-table">
-
-<thead>
-
-<tr>
-
-<th>Product</th>
-
-<th>SKU</th>
-
-<th>Stock</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr
-*ngFor="let product of dashboard?.lowStockProductsList">
-
-<td>
-
-{{product.productName}}
-
-</td>
-
-<td>
-
-{{product.sku}}
-
-</td>
-
-<td>
-
-<span class="danger">
-
-{{product.stock}}
-
-</span>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</section>
-
-
-
-
-<section class="dashboard-section">
-
-<h3>
-
-Latest Reviews
-
-</h3>
-
-<div class="review-grid">
-
-<div
-class="review-card"
-*ngFor="let review of dashboard?.latestReviews">
-
-<div class="stars">
-
-⭐ {{review.rating}} / 5
-
-</div>
-
-<h4>
-
-{{review.productName}}
-
-</h4>
-
-<p>
-
-{{review.comment}}
-
-</p>
-
-<div class="footer">
-
-<span>
-
-{{review.customerName}}
-
-</span>
-
-<span>
-
-{{review.reviewDate | date}}
-
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-</section>

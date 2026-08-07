@@ -1,10 +1,11 @@
-package com.abc.multiVendorEProject.service;
+package com.abc.multiVendorEProject.service.Admin;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.BannerDto.BannerRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.BannerDto.BannerResponseDto;
 import com.abc.multiVendorEProject.entity.Banner;
 import com.abc.multiVendorEProject.mapper.BannerMapper;
 import com.abc.multiVendorEProject.repository.BannerRepository;
+import com.abc.multiVendorEProject.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

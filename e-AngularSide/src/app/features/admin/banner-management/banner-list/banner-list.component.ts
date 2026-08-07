@@ -43,12 +43,26 @@ export class BannerListComponent implements OnInit {
 
         next:(response)=>{
 
+//           console.log('BASE IMAGE URL:', this.baseImageUrl);
+// console.log('BANNER IMAGE URL:', this.banners.map(banner => banner.imageUrl));
+// console.log(
+//   'FINAL IMAGE URL:',
+//   this.baseImageUrl + this.banners.map  (banner => banner.imageUrl)
+// );
+
+// console.log('First Banner:',  response[0]);
+
+console.log(
+  'First Banner Image URL:',
+  response[0]?.imageUrl
+);
+
           this.banners = response;
 
-          console.log(
-            "Banners:",
-            this.banners
-          );
+          // console.log(
+          //   "Banners:",
+          //   this.banners
+          // );
 
           this.loading = false;
 

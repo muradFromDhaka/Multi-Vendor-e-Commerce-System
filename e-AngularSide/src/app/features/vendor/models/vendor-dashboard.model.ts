@@ -33,13 +33,27 @@ export interface VendorDashboard {
 }
 
 
+export interface VendorPerformanceResponse {
+
+  revenue: number;
+
+  orders: number;
+
+  productsSold: number;
+
+  newCustomers: number;
+
+  averageOrderValue: number;
+}
+
+
 
 
 
 
 // ================================================
 
-export interface LatestReview {
+ interface LatestReview {
 
   customerName: string;
 
@@ -54,7 +68,7 @@ export interface LatestReview {
 }
 
 
-export interface RecentVendorOrder {
+ interface RecentVendorOrder {
 
   vendorOrderId: number;
 
@@ -71,7 +85,7 @@ export interface RecentVendorOrder {
 }
 
 
-export interface TopSellingProduct {
+ interface TopSellingProduct {
 
   productId: number;
 
@@ -86,7 +100,7 @@ export interface TopSellingProduct {
 }
 
 
-export interface LowStockProduct {
+ interface LowStockProduct {
 
   variantId: number;
 

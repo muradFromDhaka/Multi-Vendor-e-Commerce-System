@@ -9,7 +9,6 @@ import { ProductService } from 'src/app/services/product.service';
 
 import {
   ProductDetailsResponse,
-  ProductListResponse
 } from 'src/app/models/product.model';
 import { ProductVariantResponse } from '../../../models/productVariant.model';
 import { WishlistService } from '../../customer/services/wishlist.service';

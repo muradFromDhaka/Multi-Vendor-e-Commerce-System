@@ -2,7 +2,7 @@ package com.abc.multiVendorEProject.Controller;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.BrandRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.BrandResponseDto;
-import com.abc.multiVendorEProject.service.BrandService;
+import com.abc.multiVendorEProject.service.Admin.BrandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

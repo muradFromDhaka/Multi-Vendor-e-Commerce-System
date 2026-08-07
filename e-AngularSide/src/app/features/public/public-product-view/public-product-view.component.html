@@ -1,238 +1,359 @@
-<div class="container py-4">
+<div class="product-details-page">
 
-  <!-- Loading -->
-  <div *ngIf="loading" class="text-center py-5">
-    <div class="spinner-border text-primary"></div>
-    <p class="mt-3">Loading product...</p>
+  <div class="container">
+
+    <!-- =========================
+         Product Overview
+    ========================== -->
+    <section class="product-overview">
+
+      <div class="row g-4 g-lg-5">
+
+        <!-- =========================
+             Product Gallery
+        ========================== -->
+        <div class="col-lg-5">
+
+          <div class="product-gallery">
+
+            <!-- Main Image -->
+            <div class="main-image-wrapper">
+
+              <div class="main-image">
+
+                <img
+                  [src]="displayedImage"
+                  [alt]="product.name"
+                  class="main-product-image">
+
+              </div>
+
+            </div>
+
+            <!-- Thumbnails -->
+            <div
+              class="thumbnail-list"
+              *ngIf="currentImages?.length">
+
+              <button
+                type="button"
+                class="thumbnail-item"
+                *ngFor="let image of currentImages; let i = index"
+                [class.active]="i === selectedImageIndex"
+                (click)="selectImage(i)"
+                [attr.aria-label]="'View product image ' + (i + 1)">
+
+                <img
+                  [src]="image.startsWith('http') ? image : baseImageUrl + image"
+                  [alt]="product.name + ' image ' + (i + 1)"
+                  class="thumbnail-image">
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             Product Information
+        ========================== -->
+        <div class="col-lg-7">
+
+          <div class="product-info">
+
+            <!-- Brand -->
+            <p
+              class="product-brand"
+              *ngIf="product.brandName">
+
+              {{ product.brandName }}
+
+            </p>
+
+
+            <!-- Product Name -->
+            <h1 class="product-title">
+              {{ product.name }}
+            </h1>
+
+
+            <!-- Rating / Review anchor can be added here later -->
+
+
+            <div class="product-divider"></div>
+
+
+            <!-- =========================
+                 Price
+            ========================== -->
+            <div class="price-section">
+
+              <span
+                class="discount-price"
+                *ngIf="hasDiscount">
+
+                {{ discountPrice | currency:'BDT ' }}
+
+              </span>
+
+              <span
+                class="regular-price"
+                [class.has-discount]="hasDiscount">
+
+                {{ price | currency:'BDT ' }}
+
+              </span>
+
+              <span
+                class="discount-badge"
+                *ngIf="hasDiscount">
+
+                {{ calculateDiscountPercentage() }}% OFF
+
+              </span>
+
+            </div>
+
+
+            <!-- =========================
+                 Stock Status
+            ========================== -->
+            <div class="stock-section">
+
+              <span
+                class="stock-status in-stock"
+                *ngIf="!isOutOfStock">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                In Stock
+
+                <span class="stock-count">
+                  ({{ stock }} available)
+                </span>
+
+              </span>
+
+              <span
+                class="stock-status out-of-stock"
+                *ngIf="isOutOfStock">
+
+                <i class="bi bi-x-circle-fill"></i>
+
+                Out of Stock
+
+              </span>
+
+            </div>
+
+
+            <!-- =========================
+                 Description
+            ========================== -->
+            <div class="product-description">
+
+              <h2 class="section-title">
+                Description
+              </h2>
+
+              <p>
+                {{ product.description }}
+              </p>
+
+            </div>
+
+
+            <!-- =========================
+                 Product Information
+            ========================== -->
+            <div class="product-meta">
+
+              <h2 class="section-title">
+                Product Information
+              </h2>
+
+              <div class="meta-list">
+
+                <div class="meta-item">
+
+                  <span class="meta-label">
+                    Category
+                  </span>
+
+                  <span class="meta-value">
+                    {{ product.categoryName }}
+                  </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                  <span class="meta-label">
+                    Brand
+                  </span>
+
+                  <span class="meta-value">
+                    {{ product.brandName }}
+                  </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                  <span class="meta-label">
+                    Vendor
+                  </span>
+
+                  <span class="meta-value">
+                    {{ product.vendorName }}
+                  </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                  <span class="meta-label">
+                    Release Date
+                  </span>
+
+                  <span class="meta-value">
+                    {{ formatDate(product.releaseDate) }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- =========================
+                 Variants
+            ========================== -->
+            <div
+              class="variant-section"
+              *ngIf="(product.productVariants?.length ?? 0) > 1">
+
+              <h2 class="section-title">
+                Select Variant
+              </h2>
+
+              <div class="variant-list">
+
+                <button
+                  type="button"
+                  class="variant-button"
+                  *ngFor="let variant of product.productVariants"
+                  (click)="selectVariant(variant)">
+
+                  {{ getVariantName(variant) }}
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- =========================
+                 Actions
+            ========================== -->
+            <div class="product-actions">
+
+              <button
+                type="button"
+                class="add-to-cart-button"
+                (click)="addToCart()"
+                [disabled]="isOutOfStock">
+
+                <i class="bi bi-cart-plus"></i>
+
+                <span>
+                  {{ isOutOfStock ? 'Out of Stock' : 'Add to Cart' }}
+                </span>
+
+              </button>
+
+
+              <button
+                type="button"
+                class="wishlist-button"
+                [class.active]="product.inWishlist"
+                (click)="toggleWishlist()"
+                [attr.aria-label]="product.inWishlist
+                  ? 'Remove from wishlist'
+                  : 'Add to wishlist'">
+
+                <i
+                  class="bi"
+                  [class.bi-heart-fill]="product.inWishlist"
+                  [class.bi-heart]="!product.inWishlist">
+                </i>
+
+              </button>
+
+
+              <button
+                type="button"
+                class="back-button"
+                (click)="goBack()">
+
+                <i class="bi bi-arrow-left"></i>
+
+                Back
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         Reviews
+    ========================== -->
+    <section class="reviews-section">
+
+      <div class="review-summary">
+
+        <app-review-summary
+          [productId]="product.id">
+        </app-review-summary>
+
+      </div>
+
+
+      <div class="review-form">
+
+        <app-review-form
+          [productId]="product.id">
+        </app-review-form>
+
+      </div>
+
+
+      <div class="review-list">
+
+        <app-review-list
+          [productId]="product.id">
+        </app-review-list>
+
+      </div>
+
+    </section>
+
   </div>
-
-  <!-- Error -->
-  <div *ngIf="!loading && errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
-  </div>
-
-  <!-- Product -->
-  <div class="row" *ngIf="!loading && product">
-
-    <!-- Images -->
-    <div class="col-lg-5">
-
-      <div class="main-image">
-
-        <img
-          [src]="displayedImage"
-          class="img-fluid">
-
-      </div>
-
-      <div class="thumbnail-list mt-3">
-
-        <img
-          *ngFor="let image of currentImages; let i=index"
-          [src]="image.startsWith('http') ? image : baseImageUrl + image"
-          (click)="selectImage(i)"
-          [class.active]="i==selectedImageIndex">
-
-      </div>
-
-    </div>
-
-
-
-    <!-- Details -->
-    <div class="col-lg-7">
-
-      <h2>{{product.name}}</h2>
-
-      <p class="text-muted">
-        {{product.brandName}}
-      </p>
-
-      <hr>
-
-      <!-- Price -->
-
-      <div class="price-section">
-
-        <span
-          class="discount-price"
-          *ngIf="hasDiscount">
-
-          {{discountPrice | currency:'BDT '}}
-
-        </span>
-
-        <span
-          class="price"
-          [class.strike]="hasDiscount">
-
-          {{price | currency:'BDT '}}
-
-        </span>
-
-        <span
-          class="badge bg-danger ms-2"
-          *ngIf="hasDiscount">
-
-          {{calculateDiscountPercentage()}}% OFF
-
-        </span>
-
-      </div>
-
-      <!-- Stock -->
-
-      <p class="mt-3">
-
-        <span
-          class="badge bg-success"
-          *ngIf="!isOutOfStock">
-
-          In Stock ({{stock}})
-
-        </span>
-
-        <span
-          class="badge bg-danger"
-          *ngIf="isOutOfStock">
-
-          Out of Stock
-
-        </span>
-
-      </p>
-
-      <!-- Description -->
-
-      <div class="mt-4">
-
-        <h5>Description</h5>
-
-        <p>
-
-          {{product.description}}
-
-        </p>
-
-      </div>
-
-      <!-- Category -->
-
-      <div class="info">
-
-        <p>
-
-          <strong>Category :</strong>
-
-          {{product.categoryName}}
-
-        </p>
-
-        <p>
-
-          <strong>Brand :</strong>
-
-          {{product.brandName}}
-
-        </p>
-
-        <p>
-
-          <strong>Vendor :</strong>
-
-          {{product.vendorName}}
-
-        </p>
-
-        <p>
-
-          <strong>Release :</strong>
-
-          {{formatDate(product.releaseDate)}}
-
-        </p>
-
-      </div>
-
-      <!-- Variants -->
-
-      <div
-        class="mt-4"
-        *ngIf="product.productVariants.length>1">
-
-        <h5>Select Variant</h5>
-
-        <button
-
-          *ngFor="let variant of product.productVariants"
-
-          class="btn btn-outline-dark me-2 mb-2"
-
-          (click)="selectVariant(variant)">
-
-             {{ getVariantName(variant) }}
-             
-        </button>
-
-      </div>
-
-      <!-- Buttons -->
-
-      <div class="mt-4">
-
-
-<button
-
-class="btn btn-warning me-2"
-
-(click)="addToCart()"
-
-[disabled]="isOutOfStock">
-
-Add To Cart
-
-</button>
-
-
-  <i
-  class="bi wishlist-icon"
-  [title]="product.inWishlist ? 'Remove from wishlist' : 'Add to wishlist'"
-  [class.bi-heart-fill]="product.inWishlist"
-  [class.bi-heart]="!product.inWishlist"
-  (click)="toggleWishlist()">
-</i>
-
-
-<button
-
-class="btn btn-secondary"
-
-(click)="goBack()">
-
-Back
-
-</button>
-
 
 </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- Review Summary -->
-<app-review-summary
-    [productId]="product.id">
-</app-review-summary>
-
-<!-- Review Form -->
-<app-review-form
-    [productId]="product.id">
-</app-review-form>
-
-<!-- Review List -->
-<app-review-list
-    [productId]="product.id">
-</app-review-list>

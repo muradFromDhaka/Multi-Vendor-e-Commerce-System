@@ -4,6 +4,7 @@ package com.abc.multiVendorEProject.repository;
 import com.abc.multiVendorEProject.DTOs.projectDtos.vendorDto.Customer.VendorCustomerResponseDTO;
 import com.abc.multiVendorEProject.entity.Order;
 import com.abc.multiVendorEProject.entity.User;
+import com.abc.multiVendorEProject.entity.Vendor;
 import com.abc.multiVendorEProject.enums.OrderStatus;
 import com.abc.multiVendorEProject.enums.PaymentStatus;
 import org.springframework.data.domain.Page;
@@ -110,5 +111,20 @@ FROM (
 ) t
 """, nativeQuery = true)
     Long countRepeatCustomers();
+
+
+    @Query("""
+    SELECT COUNT(vo)
+    FROM VendorOrder vo
+    WHERE vo.vendor = :vendor
+    AND vo.vendorOrderStatus = 'DELIVERED'
+    AND vo.createdAt >= :fromDateTime
+    AND vo.createdAt < :toDateTime
+""")
+    Long countOrdersByDateRange(
+            @Param("vendor") Vendor vendor,
+            @Param("fromDateTime") LocalDateTime fromDateTime,
+            @Param("toDateTime") LocalDateTime toDateTime
+    );
 
 }

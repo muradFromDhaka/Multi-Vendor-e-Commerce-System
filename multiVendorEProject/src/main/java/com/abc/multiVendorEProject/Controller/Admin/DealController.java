@@ -2,7 +2,7 @@ package com.abc.multiVendorEProject.Controller.Admin;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.DealRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.DealResponseDto;
-import com.abc.multiVendorEProject.service.DealService;
+import com.abc.multiVendorEProject.service.Admin.DealService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

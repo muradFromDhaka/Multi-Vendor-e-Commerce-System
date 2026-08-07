@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -166,5 +167,19 @@ ORDER BY SUM(oi.quantity) DESC
             Pageable pageable
     );
 
+
+    @Query("""
+    SELECT COALESCE(SUM(oi.quantity), 0)
+    FROM OrderItem oi
+    WHERE oi.vendorOrder.vendor = :vendor
+    AND oi.vendorOrder.vendorOrderStatus = 'DELIVERED'
+    AND oi.vendorOrder.createdAt >= :fromDateTime
+    AND oi.vendorOrder.createdAt < :toDateTime
+""")
+    Long getProductsSoldByDateRange(
+            @Param("vendor") Vendor vendor,
+            @Param("fromDateTime") LocalDateTime fromDateTime,
+            @Param("toDateTime") LocalDateTime toDateTime
+    );
 
 }

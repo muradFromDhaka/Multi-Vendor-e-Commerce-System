@@ -1,4 +1,4 @@
-package com.abc.multiVendorEProject.service;
+package com.abc.multiVendorEProject.service.Admin;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.DealRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.DealResponseDto;

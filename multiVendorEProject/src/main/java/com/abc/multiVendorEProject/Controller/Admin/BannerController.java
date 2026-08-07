@@ -2,7 +2,7 @@ package com.abc.multiVendorEProject.Controller.Admin;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.BannerDto.BannerRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.BannerDto.BannerResponseDto;
-import com.abc.multiVendorEProject.service.BannerService;
+import com.abc.multiVendorEProject.service.Admin.BannerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

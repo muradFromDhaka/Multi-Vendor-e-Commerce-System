@@ -42,7 +42,7 @@ public class BannerMapper {
         banner.setSubtitle(dto.getSubtitle());
         banner.setButtonText(dto.getButtonText());
         banner.setButtonLink(dto.getButtonLink());
-        banner.setImageUrl(dto.getImageUrl());
+//        banner.setImageUrl(dto.getImageUrl());
         banner.setDisplayOrder(dto.getDisplayOrder());
         banner.setActive(dto.getActive());
 
@@ -56,7 +56,7 @@ public class BannerMapper {
         banner.setSubtitle(dto.getSubtitle());
         banner.setButtonText(dto.getButtonText());
         banner.setButtonLink(dto.getButtonLink());
-        banner.setImageUrl(dto.getImageUrl());
+//        banner.setImageUrl(dto.getImageUrl());
         banner.setDisplayOrder(dto.getDisplayOrder());
         banner.setActive(dto.getActive());
     }

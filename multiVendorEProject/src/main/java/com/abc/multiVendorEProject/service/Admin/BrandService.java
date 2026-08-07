@@ -1,10 +1,11 @@
-package com.abc.multiVendorEProject.service;
+package com.abc.multiVendorEProject.service.Admin;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.BrandRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.BrandResponseDto;
 import com.abc.multiVendorEProject.entity.Brand;
 import com.abc.multiVendorEProject.mapper.BrandMapper;
 import com.abc.multiVendorEProject.repository.BrandRepository;
+import com.abc.multiVendorEProject.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,7 +2,7 @@ package com.abc.multiVendorEProject.Controller;
 
 import com.abc.multiVendorEProject.DTOs.projectDtos.CategoryRequestDto;
 import com.abc.multiVendorEProject.DTOs.projectDtos.CategoryResponseDto;
-import com.abc.multiVendorEProject.service.CategoryService;
+import com.abc.multiVendorEProject.service.Admin.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
